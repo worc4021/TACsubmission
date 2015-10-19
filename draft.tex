@@ -93,7 +93,7 @@
 
 % *** CITATION PACKAGES ***
 %
-%\usepackage{cite}
+\usepackage{cite}
 % cite.sty was written by Donald Arseneau
 % V1.6 and later of IEEEtran pre-defines the format of the cite.sty package
 % \cite{} output to follow that of IEEE. Loading the cite package will
@@ -117,12 +117,12 @@
 % *** GRAPHICS RELATED PACKAGES ***
 %
 \ifCLASSINFOpdf
-  % \usepackage[pdftex]{graphicx}
+  \usepackage[pdftex]{graphicx}
   % declare the path(s) where your graphic files are
-  % \graphicspath{{../pdf/}{../jpeg/}}
+  \graphicspath{{../pdf/}{../jpeg/}}
   % and their extensions so you won't have to specify these with
   % every instance of \includegraphics
-  % \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+  \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
 \else
   % or other class option (dvipsone, dvipdf, if not using dvips). graphicx
   % will default to the driver specified in the system graphics.cfg if no
@@ -160,7 +160,7 @@
 
 % *** MATH PACKAGES ***
 %
-%\usepackage[cmex10]{amsmath}
+\usepackage[cmex10]{amsmath}
 % A popular package from the American Mathematical Society that provides
 % many useful and powerful commands for dealing with mathematics. If using
 % it, be sure to load this package with the cmex10 option to ensure that
@@ -178,7 +178,7 @@
 % http://www.ctan.org/tex-archive/macros/latex/required/amslatex/math/
 
 
-
+\usepackage{amsthm}
 
 
 % *** SPECIALIZED LIST PACKAGES ***
@@ -331,7 +331,7 @@
 % page by themselves.
 
 
-
+\usepackage{amssymb,mathrsfs}
 
 % *** PDF, URL AND HYPERLINK PACKAGES ***
 %
@@ -343,6 +343,28 @@
 % Basically, \url{my_url_here}.
 
 
+\providecommand{\norm}[1]{\left\|#1\right\|}
+\providecommand{\abs}[1]{\left|#1\right|}
+\providecommand{\span}{\text{span}}
+\providecommand{\conv}{\text{conv}}
+\providecommand{\rk}[1]{\text{rank}\left(#1\right)}
+
+\newcommand*{\Resize}[1]{\resizebox{\columnwidth}{!}{$#1$}}
+
+\newcounter{thmcount}
+\renewcommand{\thethmcount}{\arabic{thmcount}}
+\renewcommand{\theequation}{\arabic{section}.\arabic{equation}}
+\renewcommand{\thefigure}{\arabic{section}.\Roman{figure}}
+
+
+\newtheorem{thm}[thmcount]{Theorem}
+\newtheorem{cor}[thmcount]{Corollary}
+
+\theoremstyle{remark}
+\newtheorem{rem}[thmcount]{Remark}
+
+\theoremstyle{definition}
+\newtheorem{defi}[thmcount]{Definition}
 
 
 % *** Do not adjust lengths that control margins, column widths, etc. ***
@@ -364,7 +386,7 @@
 % not capitalized unless they are the first or last word of the title.
 % Linebreaks \\ can be used within to get better formatting as desired.
 % Do not put math or special symbols in the title.
-\title{Bare Demo of IEEEtran.cls for Journals}
+\title{State and Input Dependent Disturbances in Min-Max Model Predictive Control}
 %
 %
 % author names and IEEE memberships
@@ -376,13 +398,11 @@
 % was not built to handle multiple paragraphs
 %
 
-\author{Michael~Shell,~\IEEEmembership{Member,~IEEE,}
-        John~Doe,~\IEEEmembership{Fellow,~OSA,}
-        and~Jane~Doe,~\IEEEmembership{Life~Fellow,~IEEE}% <-this % stops a space
-\thanks{M. Shell is with the Department
-of Electrical and Computer Engineering, Georgia Institute of Technology, Atlanta,
-GA, 30332 USA e-mail: (see http://www.michaelshell.org/contact.html).}% <-this % stops a space
-\thanks{J. Doe and J. Doe are with Anonymous University.}% <-this % stops a space
+\author{Rainer~M.~Schaich,~\IEEEmembership{Member,~IEEE,}
+        Mark~Cannon
+\thanks{The authors are with the Department of Engineering Science, University of
+Oxford, Parks Road, Oxford, OX1~3PJ, e-mail: rainer.schaich@eng.ox.ac.uk, 
+mark.cannon@eng.ox.ac.uk}% <-this % stops a space
 \thanks{Manuscript received April 19, 2005; revised September 17, 2014.}}
 
 % note the % following the last \IEEEmembership and also \thanks - 
@@ -406,8 +426,8 @@ GA, 30332 USA e-mail: (see http://www.michaelshell.org/contact.html).}% <-this %
 
 
 % The paper headers
-\markboth{Journal of \LaTeX\ Class Files,~Vol.~13, No.~9, September~2014}%
-{Shell \MakeLowercase{\textit{et al.}}: Bare Demo of IEEEtran.cls for Journals}
+\markboth{IEEE TRANSACTIONS ON AUTOMATIC CONTROL}%
+{Schaich \MakeLowercase{\textit{et al.}}: \thetitle}
 % The only time the second header will appear is for the odd numbered pages
 % after the title page when using the twoside option.
 % 
@@ -491,14 +511,349 @@ I wish you the best of success.
  
 \hfill September 17, 2014
 
-\subsection{Subsection Heading Here}
-Subsection text here.
+\section{Problem statement}
+
+\section{Parametrically Convex sets}
+In this section we discuss \emph{parametric convexity}, an attribute of sets valued maps 
+(so called point-to-set maps, see e.g.~\cite{Hogan:1973}) we exploit later on to prove 
+convexity of a generalised Pontryagin difference in order to 
+%
+\begin{defi}[Parametric Convexity]\label{def:parametric:convexity}
+  Let $X\subseteq\mathbb R^d, Y\subseteq\mathbb R^n$, let $\mathscr P(Y)$ 
+  denote the power set of $Y$, 
+  and $\mathcal W:X\rightarrow \mathscr P(Y)$, $X\ni p\mapsto \mathcal W(p)
+  \subset Y$ be a continuous point-to-set map. The map $\mathcal W$ is called 
+  \emph{parametrically convex} if it satisfies
+%
+  \begin{equation}\label{eq:def:parametrically:convex}
+  \mathcal W(\lambda p_1 + (1-\lambda)p_2)\subseteq\lambda \mathcal W(p_1) \oplus (1-\lambda) \mathcal W(p_2)
+  \end{equation}
+%
+  for all $p_1,p_2\in X$ and $\lambda\in[0,1]$.
+\end{defi}
+%
+Notice that Definition~\ref{def:parametric:convexity} does not require convexity of~$\mathcal W(p)$ for all
+$p\in X$, we will however only treat maps~$\mathcal W$ for which $\mathcal W(p)$ is convex.
+
+
+\subsection{Abstract Properties}
+%
+In this subsection we introduce an equivalent characterisation of parametric 
+convexity that will yield some insight on the topological 
+definition~\ref{def:parametric:convexity}, for this we characterise parametric
+convexity in terms of the graph of the point-to-set map.
+%
+\begin{defi}\label{def:graph:of:map}
+Let $\mathcal W:X\rightarrow \mathscr P(Y)$ be a continuous point-to-set map
+such that $\mathcal W(p)$ is convex for all $p\in X$, then 
+%
+\[
+  \mathscr G(\mathcal W) = \{(p,x) \in\mathbb R^{d+n}: x\in\mathcal W(p)\},
+\]
+%
+denotes the \emph{graph} of $\mathcal W$,
+%
+\[
+  \text{int}(\mathscr G(\mathcal W)) = \{(p,x) \in\mathbb R^{d+n}: \forall d\in\mathbb R^n\;\exists 
+  \epsilon>0 : x+\epsilon d\in \mathcal W(p)\}
+\]
+%
+its \emph{interior} and
+%
+\[
+  \partial \mathscr G(\mathcal W) = \mathscr G(\mathcal W)\setminus \textup{int}(\mathscr G(\mathcal W))
+\]
+%
+its \emph{boundary}. 
+%
+The \emph{orientation cone} for all $(p,x)\in\partial\mathscr G(\mathcal W)$
+is given by
+%
+\[
+  \mathcal N\mathcal W(p,x) = \{d\in\mathbb R^n: x+\epsilon d \not\in \mathcal W(p)\; \forall \epsilon>0\}.
+\]
+\end{defi}
+%
+\begin{rem}
+%
+Notice, that definition~\ref{def:graph:of:map} is given in terms of the \emph{set variable} $x$ rather than \emph{graph variable} $(p,x)$.
+%
+Furthermore, notice that the orientation cone contains all directions that 
+point out of the set, hence all linear combinations thereof.
+%
+\end{rem}
+%
+We state the central theorem to connect parametric convexity of a set valued 
+map $\mathcal W$ with properties of its graph $\mathscr G(\mathcal W)$.
+%
+\begin{thm}\label{thm:p:convexity:graph}
+The map $\mathcal W$ is parametrically convex iff for all $(p_1,x_1),(p_2,x_2)\in\partial\mathscr G(\mathcal W)$
+with $\mathcal N\mathcal W(p_1,x_1)\cap\mathcal N\mathcal W(p_2,x_2)\neq\emptyset$ and $p_1\neq p_2$ 
+%
+\begin{equation}\label{eq:graph:def:p:convexity}
+\lambda (p_1,x_1) + (1-\lambda) (p_2,x_2) \not\in\textup{int} (\mathscr G(\mathcal W))
+\end{equation}
+%
+holds for all $\lambda\in(0,1)$.
+%
+\end{thm}
+%
+\begin{proof}
+%
+Assume~\eqref{eq:graph:def:p:convexity} holds for $(p_1,x_1),(p_2,x_2)\in\partial\mathscr G(\mathcal W)$.
+%
+Then the Minkowski functional (see e.g.~\cite{Rudin:91}) yields $\mu_{\mathscr G(\mathcal W)}(\mathcal W(\lambda p_1 + (1-\lambda)p_2),
+\lambda x_1+(1-\lambda)x_2)\geq1$,
+i.e. all interpolation points lie either on the boundary or outside the set $\mathcal W(\lambda p_1+(1-\lambda)p_2)$
+therefore the set of all possible interpolation points 
+%
+\[
+\begin{split}
+  \lambda \mathcal W(p_1)\oplus (1-\lambda)\mathcal W(p_2) = \{x:x=\lambda x_1 + (1-\lambda) x_2 \wedge\\ x_1\in\mathcal 
+  W(p_1) \wedge x_2\in\mathcal W(p_2)\}
+\end{split}
+\]
+%
+contains the set $\mathcal W(\lambda p_1 + (1-\lambda)p_2)$.
+%
+Now assume $\mathcal W$ is parametrically convex but~\eqref{eq:graph:def:p:convexity} is not satisfied for 
+some $(p_1,x_1),(p_2,x_2)\in\partial\mathscr G(\mathcal W)$ with $\mathcal N\mathcal W(p_1,x_1)\cap\mathcal 
+N\mathcal W(p_2,x_2)\neq\emptyset$, i.e. $\lambda x_1 + (1-\lambda)x_2\in\text{int}(\mathcal W(\lambda p_1 + 
+(1-\lambda)p_2)$.
+%
+This implies that a full dimensional ball $B_\epsilon(x ) = \{y:\| 
+x-y\|<\epsilon\}$
+is contained in $\mathcal W(\lambda p_1 + (1-\lambda)p_2)$, i.e. $B_\epsilon(\lambda x_1 + (1-\lambda)x_2 )\subset
+\mathcal W(\lambda p_1 + (1-\lambda)p_2)$ for some $\epsilon>0$.
+%
+Since $\mathcal N\mathcal W(p_1,x_1)\cap\mathcal N\mathcal W(p_2,x_2)\neq\emptyset$, there exist directions 
+$d\in\mathcal N\mathcal W(p_1,x_1)\cap\mathcal N\mathcal W(p_2,x_2)$ which can not be represented as $d=\lambda d_1+
+(1-\lambda)d_2$ with $x_1 + \epsilon d_1\in\mathcal W(p_1)$ and $x_2  + \epsilon d_2\in\mathcal W(p_2)$, however since $B_\epsilon$ is full dimensional
+all directions exist, $x+\epsilon d\in\mathcal W(\lambda p_1 + (1-\lambda)p_2)$.
+%
+Hence, $\mathcal W$ can not be parametrically convex.
+\end{proof}
+%
+\begin{rem}
+Notice that condition~\eqref{eq:graph:def:p:convexity} is a non-convexity condition on the graph $\mathscr G(\mathcal W)$.
+%
+If $\mathscr G(\mathcal W)$ is strictly convex anywhere~\eqref{eq:graph:def:p:convexity} is violated and 
+$\mathcal W$ can not be parametrically convex.
+\end{rem}
+%
+\begin{cor}
+%
+Let $\mathcal W(p):=\{x\in\mathbb R^n: r(p,x)\leq0\}$ define a point-to-set
+map with a continuous function 
+$r: \mathbb R^d \times\mathbb R^n \rightarrow \mathbb R,(p,x)\mapsto r(p,x)$, 
+then $\mathcal W$ is parametrically
+convex iff the function $r$ is concave in $p\in\mathbb R^d$ and convex in $x\in
+\mathbb R^n$.
+%
+\end{cor}
+%
+\begin{proof}
+The convexity in $x\in\mathbb R^n$ is required to satisfy the requirement that $\mathcal W(p)$ is convex
+for all fixed values of $p\in\mathbb R^d$. 
+%
+Assume that for some region $\Omega\subset\mathbb R^d$ the function $r(\cdot,x)$ is non-concave (i.e. 
+strictly convex), any convex subset $\mathcal C\subseteq\Omega$ will hence be such that $\mathscr 
+G(\mathcal W)\vert_{\mathcal C}$ is a convex set.
+%
+In particular all lines between all $(p_1,x_1),(p_2,x_2)\in \partial\mathscr G(\mathcal W)\vert_{\mathcal C}$ will satisfy
+$\lambda (p_1,x_1) + (1-\lambda) (p_2,x_2) \in\textup{int} (\mathscr G(\mathcal W))\vert_{\mathcal C}$ since
+$\mathscr G(\mathcal W)\vert_{\mathcal C}$ is strictly convex in $p$.
+%
+This implies that $r(\cdot,x)$ can not be non-concave in any non-trivial set $\Omega\subseteq\mathbb R^d$ and still
+be parametrically convex.
+\end{proof}
+%
+\begin{cor}\label{thm:polytopic:set:not:p:convex}
+The polytopic parametric set valued map $\mathcal W(p):=\{x: a_i x + b_i p\leq c_i \forall i\leq m\}$ is not parametrically convex for 
+any non-trivial matrix $B$.
+\end{cor}
+%
+\begin{proof}
+The graph $\mathscr G(\mathcal W)$ is given by
+%
+\begin{equation*}
+	\mathscr G(\mathcal W) = \{(p,x):a_i x + b_i p\leq c_i \forall i\leq m\}
+\end{equation*}
+%
+and hence is a convex set and violates Theorem~\ref{thm:p:convexity:graph}.
+\end{proof}
+%
+\begin{cor}\label{thm:p:convexity:PWA:set:constant:num:verts}
+The non-degenerate piecewise affine polytopic parametric point-to-set valued map 
+%
+\begin{equation}\label{eq:definition:PWA:polytopic:set:general}
+  \mathcal W(p) := \left\{x: a_i x \leq \max_{k\leq l}\{b_{i,k} + C_{i,k}p\},i\leq m\right\}
+\end{equation}
+%
+is parametrically convex iff the number of vertices $v_\kappa(p)$ and rays $r_\eta(p)$ is constant.
+\end{cor}
+%
+\begin{proof}
+For clarity this proof is divided in 3 parts:
+\begin{enumerate}
+\item Notice that $h_i(p) = \max_{k\leq l} \{b_{i,k} + C_{i,k}p\}$ is a multi-parametric linear program (mpLP),
+its solution is a piecewise affine function $h_i(p) = b_{i,k^\ast_i} + C_{i,k^\ast_i}p$ where $k^\ast_i(p)$ is constant
+inside a polytopic complex, see e.g.~\cite{spjotvold:2005}.
+%
+That means that there exists a finite polyhedral partitioning $\mathbb R^d = \bigcup_{j\leq t} \mathcal P_j$ with convex polyhedra 
+$\mathcal P_j$ such that ${\bf{k}}^\ast\vert_{\mathcal P_j} = (k_1^\ast,\dots,k_m^\ast) = const$.
+%
+A standard degeneracy assumption is that in neighbouring partitions ${\bf{k}}^\ast\vert_{\mathcal P_{j_1}}$ and 
+${\bf{k}}^\ast\vert_{\mathcal P_{j_2}}$ differ in exactly one element.
+%
+This partitioning implies that the graph $\mathscr G(\mathcal W)$ is given as a finite union of polyhedra
+%
+\begin{equation*}
+  \mathscr G(\mathcal W) = \bigcup_{j\leq t} \left\{x: a_i x \leq b_{i,k_i^\ast} + C_{i,k_i^\ast}p,i\leq m
+  \right\}\bigr\vert_{\mathcal P_{j}}
+\end{equation*}
+%
+But this implies that if the number of vertices or rays changes inside any partition $\mathcal P_j$ then $\mathscr
+G(\mathcal W)\vert_{\mathcal P_j}$ is a strictly convex polyhedron and corollary~\ref{thm:polytopic:set:not:p:convex} applies.
+%
+\item Our attention hence is concentrated to the boundaries of the partitions $\mathcal P_j$.
+%
+These are the points $\mathcal P_{j_1} \cap \mathcal P_{j_2}$ where some mpLP changes its solution, i.e. 
+$\left(b_{i,k_i^\ast} + C_{i,k_{j_1}^\ast} p\right)\big\vert_{\mathcal P_{j_1}} = 
+\left(b_{i,k_{j_2}^\ast} + C_{i,k_{j_2}^\ast} p\right)\big\vert_{\mathcal P_{j_2}}$.
+%
+Notice that a vertex $v_\kappa(p)$ is given by \emph{active} and \emph{inactive} inequalities, i.e. $\mathcal A_\kappa(p)$ and
+$\mathcal I_\kappa(p) = \{1,\dots,m\}\setminus\mathcal A_\kappa(p)$ respectively.
+%
+\begin{equation*}\begin{split}
+  a_i v_\kappa(p) &= b_{i,k_i^\ast} + C_{i,k_i^\ast} p \quad\forall i\in\mathcal A_\kappa(p)\\
+  a_i v_\kappa(p) &< b_{i,k_i^\ast} + C_{i,k_i^\ast} p \quad\forall i\in\mathcal I_\kappa(p)
+\end{split}\end{equation*}
+%
+In order for the number of vertices to change, there must be a hyperplane $fp=g$, such that the number of vertices for $fp<g$ is 
+$N$ and for $fp>g$ is at least $N+1$.
+%
+It follows from the previous discussion that $\{p:fp=g\} = \textup{aff}\{\mathcal P_{j_1}\cap\mathcal P_{j_2}\}$ for some $j_1\neq j_2$.
+%
+For vertices $v_{\kappa_1}(p)$ and $v_{\kappa_2}(p)$ to merge the index sets $\mathcal A_{\kappa_1}(p)$ and 
+$\mathcal A_{\kappa_2}(p)$ have to differ in only one 
+element, i.e. $\mathcal A_{\kappa_1}(p) = \mathcal J\cup \{s\}$ and $\mathcal A_{\kappa_2}(p) = \mathcal J\cup\{u\}$ for $fp>g$.
+%
+Furthermore, for $p$ with $fp\leq g$ we have $v_{\kappa_1}(p)=v_{\kappa_2}(p)$, this implies $\mathcal A_{\kappa_1}(p) = 
+\mathcal A_{\kappa_2}(p)$.
+%
+Since only one alteration of the active index set is considered (due to non-degeneracy assumptions), the active set 
+$\mathcal A_{\kappa_1}(p) = \mathcal A_{\kappa_2}(p) = \mathcal J \cup \{s,u\}$.
+%
+Hence on the hyperplane $fp=g$ both, the maximising index ${\bf{k}}^\ast(p)$ and the active index sets $\mathcal A_{\kappa_1}(p)$ 
+and $\mathcal A_{\kappa_2}(p)$ change, which is means the problem is degenerate.
+%
+\item In order for the degenerate graph $\mathscr G(\mathcal W)$ to be parametrically convex the overdetermined 
+vertex $v_{\kappa_1}(p)=v_{\kappa_2}(p)$ have to be identical, in particular their dependence on $p$ has to be identical.
+%
+This can be expressed with the implicit function theorem:
+%
+\begin{equation*}\begin{split}
+  \frac{d}{dp}\left(  A_{\mathcal J\cup \{s\}} v_{\kappa_1}(p) - b_{\mathcal J\cup \{s\}} - C_{\mathcal J\cup \{s\},{\bf{k}}^\ast} p\right) &= 0\\
+  \frac{d}{dp}\left(  A_{\mathcal J\cup \{u\}} v_{\kappa_2}(p) - b_{\mathcal J\cup \{u\}} - C_{\mathcal J\cup \{u\},{\bf{k}}^\ast} p\right) &= 0
+\end{split}\end{equation*}
+%
+which leads to 
+%
+\begin{equation*}\begin{split}
+  A_{\mathcal J\cup \{s\}} \frac{dv_{\kappa}}{dp} &= C_{\mathcal J\cup \{s\},{\bf{k}}^\ast}\\
+  A_{\mathcal J\cup \{u\}} \frac{dv_{\kappa}}{dp} &= C_{\mathcal J\cup \{u\},{\bf{k}}^\ast}
+\end{split}\end{equation*}
+%
+since we can assume that the inequalities are non-redundant for some right hand side, we obtain that 
+%
+\begin{equation}\label{eq:derivative:condition:on:index:sets}
+  \frac{dv_\kappa}{dp} = A_{\mathcal J\cup \{s\}}^{-1}C_{\mathcal J\cup \{s\},{\bf{k}}^\ast} = 
+  A_{\mathcal J\cup \{u\}}^{-1}C_{\mathcal J\cup \{u\},{\bf{k}}^\ast}
+\end{equation}
+%
+has to hold for the degenerate graph to remain parametrically convex.
+%
+Notice that~\eqref{eq:derivative:condition:on:index:sets} is again a degenerate condition, since arbitrarily small perturbations
+will produce different behaviour.
+\end{enumerate}
+\end{proof}
+%
+\begin{rem}
+Corollary~\ref{thm:p:convexity:PWA:set:constant:num:verts} is essential for numerical examples, as it can be reformulated to:
+%
+The set valued map defined by~\eqref{eq:definition:PWA:polytopic:set:general} is non-degenerate and parametrically convex iff 
+it has a constant number of vertices throughout the parameter space~$X$.
+%
+Since the map is continuous it is sufficient to verify this at the vertices of the parameter space.
+%
+\end{rem}
+%
+In order to determine MRPI sets we need to be able to calculate the Pontryagin difference between sets, hence we introduce
+the following.
+%
+\begin{defi}[Parametric Pontryagin Difference]\label{def:parametric:pontryagin:difference}
+  Let $S\subseteq X$ and let $\mathcal W:X\to\mathscr P(X)$ be a continuous point-to-set map such that
+  $\mathcal W(p)$ is convex for all $p\in X$, then the \emph{parametric Pontryagin difference} 
+  $S\ominus \mathcal W(S)$ is 
+  \begin{equation}\label{eq:definition:parametric:pontryagin:difference}
+    S\ominus \mathcal W(S) = \left\{x\in X: \{x\} \oplus \mathcal W(x)\subseteq S\right\},
+  \end{equation}
+  where $\mathcal W(S)$ denotes the image of $S$ under the map $\mathcal W$. 
+\end{defi}
+%
+For the parametric Pontryagin difference of a convex set and a parametrically convex map we 
+have the following result.
+%
+\begin{thm}\label{thm:convexity:of:pontryagin:difference}
+  Let $S\subseteq X$ be a convex set and let $\mathcal W:X\rightarrow\mathscr P(X)$ be a parametrically convex point-to-set
+  map such that $\mathcal W(p)$ is convex for all $p\in X$, then $S\ominus \mathcal W(S)$ is convex.
+\end{thm}
+%
+\begin{proof}
+To prove the convexity of $ Z :=  S\ominus \mathcal W( S)$ we pick any $z_1,z_2\in Z$, then
+by definition of the parametric Pontryagin difference, we have
+%
+\begin{equation}
+  \{z_i\} \oplus \mathcal W(z_i) \subseteq S,\; i=1,2.
+\end{equation}
+%
+To see that $ Z$ is convex we show that line segments between
+all possible $z_1$ and $z_2$ are subsets of $ Z$, i.e.~for all $\lambda \in [0,1]$,
+\begin{equation}
+\begin{aligned}
+  \{ \lambda z_1 + (1-&\lambda)z_2
+  \}\oplus \mathcal W\left( \lambda z_1 + (1-\lambda)z_2\right)\\
+  \subseteq&\left\{ \lambda z_1 + (1-\lambda)z_2
+  \right\}\oplus \lambda \mathcal W(z_1) \oplus (1-\lambda)
+  \mathcal W(z_2)\\
+  \subseteq &\lambda\underbrace{(\{z_1\}\oplus \mathcal W(z_1))}_{\subseteq S}\oplus
+  (1-\lambda)\underbrace{(\{z_2\}\oplus \mathcal W(z_2))}_{\subseteq S}\\
+  \subseteq& Z
+\end{aligned}
+\end{equation}
+%
+where the last inclusion follows from the convexity of $\mathcal S$.
+\end{proof}
+%
+Theorem~\ref{thm:convexity:of:pontryagin:difference} only gives us the convexity of the parametric
+Pontryagin difference, in the following we will see that the parametric Pontryagin difference between
+a polyhedral set and a piecewise affine polytopic parametric set is polyhedral itself.
+
+\subsection{Maximal Robust Positive Invariant Sets}
+
+
+
+\subsection{Example I}
+
+\section{Recursive Multi-Parametric Quadratic Programming to Solve Min-Max Programs}
+
+\section{Solving Min-Max Programs}
+
+\section{Example II}
 
 % needed in second column of first page if using \IEEEpubid
 %\IEEEpubidadjcol
-
-\subsubsection{Subsubsection Heading Here}
-Subsubsection text here.
 
 
 % An example of a floating figure using the graphicx package.
@@ -604,7 +959,6 @@ The conclusion goes here.
 
 
 
-
 % if have a single appendix:
 %\appendix[Proof of the Zonklar Equations]
 % or
@@ -660,20 +1014,17 @@ The authors would like to thank...
 % http://www.ctan.org/tex-archive/biblio/bibtex/contrib/doc/
 % The IEEEtran BibTeX style support page is at:
 % http://www.michaelshell.org/tex/ieeetran/bibtex/
-%\bibliographystyle{IEEEtran}
+\bibliographystyle{IEEEtran}
 % argument is your BibTeX string definitions and bibliography database(s)
-%\bibliography{IEEEabrv,../bib/paper}
+\bibliography{IEEEabrv,MyLib}
+
 %
 % <OR> manually copy in the resultant .bbl file
 % set second argument of \begin to the number of references
 % (used to reserve space for the reference number labels box)
-\begin{thebibliography}{1}
+% \begin{thebibliography}{1}
 
-\bibitem{IEEEhowto:kopka}
-H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
-  0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
-
-\end{thebibliography}
+% \end{thebibliography}
 
 % biography section
 % 
@@ -686,22 +1037,18 @@ H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
 %\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{mshell}}]{Michael Shell}
 % or if you just want to reserve a space for a photo:
 
-\begin{IEEEbiography}{Michael Shell}
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{face.pdf}}]{Rainer Manuel Schaich}
 Biography text here.
 \end{IEEEbiography}
 
 % if you will not have a photo at all:
-\begin{IEEEbiographynophoto}{John Doe}
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{face.pdf}}]{Mark Cannon}
 Biography text here.
-\end{IEEEbiographynophoto}
+\end{IEEEbiography}
 
 % insert where needed to balance the two columns on the last page with
 % biographies
 %\newpage
-
-\begin{IEEEbiographynophoto}{Jane Doe}
-Biography text here.
-\end{IEEEbiographynophoto}
 
 % You can push biographies down or up by placing
 % a \vfill before or after them. The appropriate
