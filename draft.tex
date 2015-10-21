@@ -342,6 +342,8 @@
 % http://www.ctan.org/tex-archive/macros/latex/contrib/url/
 % Basically, \url{my_url_here}.
 
+\usepackage[hidelinks]{hyperref}
+
 
 \providecommand{\norm}[1]{\left\|#1\right\|}
 \providecommand{\abs}[1]{\left|#1\right|}
@@ -365,6 +367,16 @@
 
 \theoremstyle{definition}
 \newtheorem{defi}[thmcount]{Definition}
+
+\DeclareFontFamily{U}{mathx}{\hyphenchar\font45}
+\DeclareFontShape{U}{mathx}{m}{n}{
+      <5> <6> <7> <8> <9> <10> gen * mathx
+      <10.95> mathx10 <12> <14.4> <17.28> <20.74> <24.88> mathx12
+      }{}
+\DeclareSymbolFont{mathx}{U}{mathx}{m}{n}
+\DeclareFontSubstitution{U}{mathx}{m}{n}
+\DeclareMathSymbol{\temp}{\mathbin}{mathx}{'341}
+\newcommand{\bigominus}{\raisebox{10pt}{$\temp$}}
 
 
 % *** Do not adjust lengths that control margins, column widths, etc. ***
@@ -398,7 +410,7 @@
 % was not built to handle multiple paragraphs
 %
 
-\author{Rainer~M.~Schaich,~\IEEEmembership{Member,~IEEE,}
+\author{Rainer~M.~Schaich,~\IEEEmembership{Student Member,~IEEE,}
         Mark~Cannon
 \thanks{The authors are with the Department of Engineering Science, University of
 Oxford, Parks Road, Oxford, OX1~3PJ, e-mail: rainer.schaich@eng.ox.ac.uk, 
@@ -482,7 +494,7 @@ IEEEtran, journal, \LaTeX, paper, template.
 % creates the second title. It will be ignored for other modes.
 \IEEEpeerreviewmaketitle
 
-
+\def\genmat{\Xi} \def\genvec{\xi}
 
 \section{Introduction}
 % The very first letter is a 2 line initial drop letter followed
@@ -500,20 +512,92 @@ IEEEtran, journal, \LaTeX, paper, template.
 % 
 % Here we have the typical use of a "T" for an initial drop letter
 % and "HIS" in caps to complete the first word.
-\IEEEPARstart{T}{his} demo file is intended to serve as a ``starter file''
-for IEEE journal papers produced under \LaTeX\ using
-IEEEtran.cls version 1.8a and later.
+\IEEEPARstart{T}{hroughout} this paper we denote by $f\vert_{\mathcal C} = \{y:\exists x\in\mathcal C\;y=f(x)\}$
 % You must have at least 2 lines in the paragraph with the drop letter
 % (should never be an issue)
-I wish you the best of success.
 
-\hfill mds
- 
-\hfill September 17, 2014
 
 \section{Problem statement}
-
-\section{Parametrically Convex sets}
+%
+Throughout this paper we aim to solve the robust model predictive control problem
+%
+\begin{subequations}\label{seq:general:problem:statement}
+\begin{equation}\label{eq:min:max:objective}
+  J^\ast_m(x) = \min_u \max_{w,x^+} J(x,u,w) + 
+  J^\ast_{m-1}(x^+)
+\end{equation}
+%
+with $J(x,u,w) = \frac{1}{2}\left(x^T Qx + u^TRu - \gamma^2 w^T w\right)$,
+%
+subject to the system dynamics
+%
+\begin{equation}\label{eq:system:dynamics}
+  x^+ = Ax + Bu + Dw,
+\end{equation}
+%
+the input constraints
+%
+\begin{equation}\label{eq:general:input:constraints}
+  u\in U
+\end{equation}
+%
+\emph{state and input dependent} disturbance constraints
+%
+\begin{equation}\label{eq:disturbance:constraints}
+  w\in\mathcal W(x,u),
+\end{equation}
+%
+and state constraints
+%
+\begin{equation}\label{eq:general:state:constraints}
+  x\in\mathcal X
+\end{equation}
+\end{subequations}
+%
+We assume that $Q\geq0$ and $R>0$ are semi-positive and positive definite constant matrices respectively,
+the matrices $A,B,D$ are also assumed to be deterministic and known.
+%
+Since we require guarantees of stability and feasibility in presence of disturbances arbitrary state constraints
+like~\eqref{eq:general:state:constraints} can not be robustly satisfied~\cite{Bertsekas:1971}, instead specially designed
+ones are used.
+%
+Recursively defined sets are used to guarantee that the terminal state lies in the 
+\emph{maximal robust positive invariant} (MRPI) set~$\mathcal X^\infty\subseteq\mathcal X$ 
+(see e.g.~\cite{blanchini:2007}), i.e. the largest set satisfying
+%
+\begin{equation}\label{eq:definition:MRPI:set}
+  \mathcal X^\infty = \{x\in\mathcal X: \Psi x + v \in\mathcal X^\infty\;\forall v\in\mathcal V(x)\}.
+\end{equation}
+%
+The MRPI set~\eqref{eq:definition:MRPI:set} is defined for $\Psi=A+BK$ and $\mathcal V(x) = D\mathcal W(x,Kx)$,
+with a fixed feedback controller $u = Kx$.
+%
+Starting from the MRPI set~$\mathcal X_0=\mathcal X^\infty$ we recursively define
+%
+\begin{equation}\label{eq:stage:constraints:in:x:and:u}
+  \mathcal Z_i = \{(x,u)\in\mathcal X\times U: Ax + Bu + Dw \in\mathcal X_{i-1}\;\forall w\in\mathcal W(x,u)\}
+\end{equation}
+%
+and its projection
+%
+\begin{equation}
+  \mathcal X_i = \{x:\exists u\in U\; (x,u)\in\mathcal Z_i\}.
+\end{equation}
+%
+The state constraint~\eqref{eq:general:state:constraints} and input constraint~\eqref{eq:general:input:constraints}
+are then replaced by $(x,u)\in\mathcal Z_m$.
+%
+To initialise the cost-to-go we use $J_0^\ast(x) = \frac{1}{2}x^T P_0x$, which is designed in combination with the feedback 
+controller~$K$ as the optimal unconstrained solution to~\eqref{seq:general:problem:statement}, i.e. they satisfy
+$J_0^\ast(x) - J_0^\ast(x^+)\geq J(x,Kx,w)$, see e.g.~\cite{Boyd:94}.
+%
+The properties of the disturbance constraints~\eqref{eq:disturbance:constraints} will be discussed
+in section~\ref{sec:p:convex:sets}.
+%
+%
+%
+%
+\section{Parametrically Convex Sets}\label{sec:p:convex:sets}
 In this section we discuss \emph{parametric convexity}, an attribute of sets valued maps 
 (so called point-to-set maps, see e.g.~\cite{Hogan:1973}) we exploit later on to prove 
 convexity of a generalised Pontryagin difference in order to 
@@ -536,7 +620,7 @@ Notice that Definition~\ref{def:parametric:convexity} does not require convexity
 $p\in X$, we will however only treat maps~$\mathcal W$ for which $\mathcal W(p)$ is convex.
 
 
-\subsection{Abstract Properties}
+\subsection{Properties of Parametrically Convex Maps}
 %
 In this subsection we introduce an equivalent characterisation of parametric 
 convexity that will yield some insight on the topological 
@@ -839,9 +923,161 @@ where the last inclusion follows from the convexity of $\mathcal S$.
 Theorem~\ref{thm:convexity:of:pontryagin:difference} only gives us the convexity of the parametric
 Pontryagin difference, in the following we will see that the parametric Pontryagin difference between
 a polyhedral set and a piecewise affine polytopic parametric set is polyhedral itself.
-
+%
+%
+%
+%
+%
+%
 \subsection{Maximal Robust Positive Invariant Sets}
+%
+In this section we describe an iterative algorithm to compute the MRPI set~\eqref{eq:definition:MRPI:set}
+for a linear system~$x^+=\Psi x + v$ subject to disturbance
+$v\in\mathcal V(x)$ where $\mathcal V(x)$ is a piecewise affine parametrically convex point-to-set map defined 
+like~\eqref{eq:definition:PWA:polytopic:set:general}.
+%
+We assume (without loss of generality) that the set $\mathcal V(x)$ is pointwise compact and polytopic 
+for finite $x\in\mathcal X_0$ and can hence be represented as the 
+convex hull of its vertices $\mathcal V(x) = \conv\{v_i(x)\}$. 
+%
+Since ${\mathcal{V}}(x)$
+has a piecewise affine dependence on $x$ the vertices $v_i(x)$ are also piecewise affine in $x$.
+The set $\mathcal X^\infty$ as defined in~\eqref{eq:definition:MRPI:set:state:dependent} 
+is required to satisfy $\Psi x + v\in\mathcal X^\infty$ for all
+$x\in\mathcal X^\infty$ and $v\in\mathcal V(x)$. To compute the MRPI set we start from the given 
+state constraint set
+\[
+\mathcal X_0 = \{x:\;\genmat_{0,i}x\leq \genvec_{0,i}\,\forall i\in\mathcal I_0\}
+\]
+and
+recursively \emph{cut off} points that cannot satisfy the invariance condition~\eqref{eq:definition:MRPI:set:state:dependent}
+by iteratively introducing constraints that exclude all points for which the successor state can lie outside 
+$\mathcal X_0$. The first iteration enforces the constraint:
+%
+\[
+\begin{split}
+  &\genmat_{0,i}(\Psi x + v)\overset{!}{\leq}\genvec_{0,i}\;\forall v\in\conv\{v_i(x)\}\\
+  &\genmat_{0,i}\Psi x + \max_{v\in\mathcal V(x)} \genmat_{0,i} v \leq \genvec_{0,i}\\
+  &\genmat_{0,i}\Psi x + \underbrace{\max_{j} \genmat_{0,i} v_j(x)}_{=v_{0,i}^\ast(x)} \leq \genvec_{0,i}.
+\end{split}
+\]
+%
+for each $i\in \mathcal I_0$.
+Here $v_{0,i}^\ast(x)$ is not necessarily given by a unique maximiser, 
+but is the solution of a multi-parametric linear program and hence is given 
+by a vertex $v_i(x)$ of $\mathcal V(x)$ for each $x$ on that facet.
+Since each vertex is a piece-wise affine function of $x$, the maximum $v_{0,i}^\ast(x)$ is also piece-wise affine
+so the set $\mathcal X_1=\mathcal X_0 \cap \{x:\genmat_{0,i}\Psi x + v_{0,i}^\ast(x) \leq 
+\genvec_{0,i}\forall i\in\mathcal I_0\}$
+has representation $\mathcal X_1 = \{x:\genmat_{1,i}x\leq\genvec_{1,i}\,\forall i\in\mathcal I_1\}$.
+The next iterate is defined by
+\begin{align*}
+  \mathcal X_2 &= \mathcal X_1 \cap \\ &\{x:\genmat_{0,i}\Psi(\Psi x + v) + v_{0,i}^\ast(x)\leq\genvec_{0,i}\,
+  \forall i\in\mathcal I_0,v\in\mathcal V(x)\}\\
+  &= \mathcal X_1 \cap \{x: \genmat_{0,i}\Psi^2 x + v_{1,i}^\ast(x) + v_{0,i}^\ast(x)\leq\genvec_{0,i}\,\forall 
+  i\in\mathcal I_0\}
+\end{align*}
+%
+and at the $(k+1)$st iteration we have
+%
+\[
+  \mathcal X_{k+1} = \mathcal X_k\cap \{x:\genmat_{0,i}\Psi^k x + \sum_{l=1}^{k-1}v_{l,i}^\ast(x)
+  \leq\genvec_{0,i}\,\forall i\in\mathcal I_0\},
+\]
+%
+where 
+%
+\[
+  v_{l,i}^\ast(x)=\max_j \ \genmat_{0,i}\Psi^{l-1}v_j(x)
+   = \begin{array}[t]{rl} \displaystyle\max_{\tilde v} & \genmat_{0,i}\tilde v\\ \text{s.t.}& \tilde v\in 
+   \Psi^{l-1}\mathcal V(x) \end{array}
+\]
+% \begin{align*}
+%   v_{l,i}^\ast(x)&=\max_j \ \genmat_{0,i}\Psi^{l-1}v_j(x)
+%    = \begin{array}[t]{rl} \displaystyle\max_v & \genmat_{0,i}\Psi^{l-1}v \\ \text{s.t.}& v\in\mathcal V(x)
+%    \end{array} \\ 
+%    &= \begin{array}[t]{rl} \displaystyle\max_{\tilde v} & \genmat_{0,i}\tilde v\\ \text{s.t.}& \tilde v\in 
+%    \Psi^{l-1}\mathcal V(x) \end{array}
+% \end{align*}
+%
+\begin{rem}
+Determining the map $v_{l,i}(x)$ for all admissible $x\in \mathcal X_0$ in general poses a great classification
+challenge. 
+%
+Notice that in our calculations we can avoid determining the particular vertex $v_{l,i}(x)$ explicitly, it
+suffices to determine the vertex determining a supporting hyperplane of $\mathcal X_{k+1}$, i.e.~$v_{l,i}^\ast(x)$. 
+%
+This can be done by adding all possible inequalities and applying a inequality reduction algorithm.
+\end{rem}
+%
+In closed form the iterates can be expressed as
+%
+\begin{equation}\label{eq:set:iteration:state:dependent:constraints}
+\begin{split}
+  \mathcal X_{k+1} =& \mathcal X_k\cap\left(\Psi^{-1}\mathcal X_k \ominus \Psi^{k-1}\mathcal V(\mathcal X_k)\right)
+  =\mathcal X_k\cap D_k \\
+  =& \bigcap_{0\leq l\leq k+1}\left( \Psi^{-l} \mathcal X_0 \underset{1 \leq i\leq l-1}{\bigominus} 
+  \Psi^i \mathcal V(\mathcal X_{l-1})\right).
+\end{split}\end{equation}
+%
+Notice that we do not require $\Psi$ to be invertible, in~\eqref{eq:set:iteration:state:dependent:constraints} $\Psi^{-1}\mathcal X_k$
+merely denotes the preimage of $\mathcal X_k$ under the linear map $\Psi$.
+We will use~\eqref{eq:set:iteration:state:dependent:constraints} to prove the finite determinability of
+$\mathcal X^\infty$, namely that there exists a finite number $N$ such that $x\in\mathcal X_N$ implies
+$\Psi x + v \in\mathcal X_N$ for all $v\in\mathcal V(x)$ and hence $\mathcal X_N$ is robustly positively invariant.
+%
+\begin{thm}\label{thm:finite:MRPI:set:state:dependable}
+Let the state constraint set $\mathcal X_0$ be contained in a band: $\mathcal X_0\subseteq B=\{x:\Gamma x\leq{\bf{1}}\wedge 
+-\Gamma x\leq{\bf{1}}\}$, let the pair $(\Psi,\Gamma)$ be observable and let $\mathcal V(x)$ be defined 
+by~\eqref{eq:PWA:disturbance:set} in terms of a piecewise affine function $H(x)$. Then $\mathcal X_N\subseteq \mathcal 
+X_{N+1}$ for a finite $N$, and hence the MRPI set $\mathcal X^\infty =\mathcal X_N$ is a polytope.
+\end{thm}
+%
+\begin{proof}
+From~\eqref{eq:set:iteration:state:dependent:constraints} it is clear that $\mathcal X^\infty = \emptyset$ 
+if $\mathcal X_k =\emptyset$ for any $k\geq 0$. For the remainder of the proof we assume that the MRPI set 
+$\mathcal X^\infty$ is non-empty. For this we require that $\bigcup_{s\in\mathcal S}\mathcal V(s)$ is 
+bounded on any bounded set $\mathcal S\subset\mathbb R^n$.
 
+The proof has two main steps: First we prove that $\mathcal X_p$ is bounded for $p\leq n$
+where $n$ is the dimension of the state $x$. The second step is to prove that in~\eqref{eq:set:iteration:state:dependent:constraints}
+the set $D_k$ grows exponentially, i.e. that for any given bounded set $\mathcal C$ there exists
+finite $N$ such that $\mathcal C\subseteq D_{N}$. The proof is concluded by setting 
+$\mathcal C = \mathcal X_{N}$ and deducing that $\mathcal X^\infty = \mathcal X_N$. 
+
+For the first step, notice that observability of $(\Psi,\Gamma)$ is equivalent to the observability matrix 
+$\Omega$ having full rank, i.e.\ $\mathrm{rank}(\Omega) = \mathrm{rank}(\begin{bmatrix} \Gamma^T \ \cdots \ 
+(\Gamma\Psi^{n-1})^T\end{bmatrix}) = n$.
+But  this implies that the set 
+%
+\[
+\mathcal P_{n} = \{x: 
+\Omega x\leq{\bf{1}}\wedge-\Omega x\leq{\bf{1}}\} = \bigcap_{0\leq l\leq n-1} \Psi^{-l} B
+\]
+%
+is bounded, and since $\mathcal X_k\subseteq \mathcal P_k$ for all $k$, 
+the set $\mathcal X_{n}$ is also bounded. To show that $D_k$ grows exponentially we use the boundedness 
+of $\mathcal V(\mathcal X_{n})$. Let $K_1$ denote the smallest ball that contains $\mathcal V(\mathcal X_{n})$ and let
+$\rho$ denote the spectral radius of $\Psi$. Furthermore, let $K_2$
+be the biggest ball that is contained in $\mathcal X_{0}$. From~\eqref{eq:set:iteration:state:dependent:constraints}, 
+$D_k$ has the representation
+%
+\begin{equation}
+D_k = \underbrace{\Psi^{-k}\mathcal X_0}_{=\mathcal S_1} \ominus \underbrace{\biggl(\bigoplus_{1\leq i\leq k-1} 
+\Psi^i\mathcal V(\mathcal X_k)\biggr)}_{=\mathcal S_2}.
+\end{equation}
+%
+Since $\Psi$ is asymptotically stable we have $\rho<1$ and therefore $\rho^{-k}K_2\subseteq\Psi^{-k} K_2 
+\subseteq \Psi^{-k}\mathcal X_0 = \mathcal S_1$, implying exponential growth of $D_k$ provided $\mathcal S_2$ 
+is bounded. To bound $\mathcal S_2$ we note that for $k\geq n$ we have $\mathcal S_2\subseteq 
+\bigoplus_{1\leq i\leq k-1} \rho^i K_1 \subseteq \frac{1}{1-\rho} K_1$. Thus $D_k$ grows exponentially, whereas 
+$\mathcal X_k$ is contained in a ball of finite radius, and we conclude from~\eqref{eq:set:iteration:state:dependent:constraints} that 
+$\mathcal X_{k+1} = \mathcal X _k$ for all $k\geq N$ and hence $\mathcal X _N = \mathcal X^\infty$ for finite $N$.
+\end{proof}
+%
+We have seen that we can compute the maximal robust positively invariant set $\mathcal X^\infty$ for linear 
+systems with state dependent constraints. In the next section we will illustrate the concept with an 
+example.
 
 
 \subsection{Example I}
