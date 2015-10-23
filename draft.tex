@@ -154,9 +154,9 @@
 % You can find documentation about the pdfTeX application at:
 % http://www.tug.org/applications/pdftex
 
+\usepackage{lpic}
 
-
-
+\usepackage{xcolor}
 
 % *** MATH PACKAGES ***
 %
@@ -356,7 +356,7 @@
 \newcounter{thmcount}
 \renewcommand{\thethmcount}{\arabic{thmcount}}
 \renewcommand{\theequation}{\arabic{section}.\arabic{equation}}
-\renewcommand{\thefigure}{\arabic{section}.\Roman{figure}}
+\renewcommand{\thefigure}{\arabic{section}.\arabic{figure}}
 
 
 \newtheorem{thm}[thmcount]{Theorem}
@@ -513,8 +513,10 @@ IEEEtran, journal, \LaTeX, paper, template.
 % Here we have the typical use of a "T" for an initial drop letter
 % and "HIS" in caps to complete the first word.
 \IEEEPARstart{T}{hroughout} this paper we denote by $f\vert_{\mathcal C} = \{y:\exists x\in\mathcal C\;y=f(x)\}$
-% You must have at least 2 lines in the paragraph with the drop letter
-% (should never be an issue)
+the image of $\mathcal C$ under the map $f$, for polytopes defined by intersection of the halfspaces 
+$a_i x \leq b_i$ for $i\in\{1,\dots,m\}$ we denote the matrix~${\bf{a}}_{\mathcal I}$ and vector~
+${\bf{b}}_{\mathcal I}$ with the rows $a_i$ and $b_i$ for all indices in the index set $i\in\mathcal 
+I\subseteq\{1,\dots,m\}$.
 
 
 \section{Problem statement}
@@ -771,7 +773,7 @@ and hence is a convex set and violates Theorem~\ref{thm:p:convexity:graph}.
 The non-degenerate piecewise affine polytopic parametric point-to-set valued map 
 %
 \begin{equation}\label{eq:definition:PWA:polytopic:set:general}
-  \mathcal W(p) := \left\{x: a_i x \leq \max_{k\leq l}\{b_{i,k} + C_{i,k}p\},i\leq m\right\}
+  \mathcal W(p) := \left\{x: a_i x \leq \max_{k\leq l}\{b_{i,k} + c_{i,k}p\},i\leq m\right\}
 \end{equation}
 %
 is parametrically convex iff the number of vertices $v_\kappa(p)$ and rays $r_\eta(p)$ is constant.
@@ -780,8 +782,8 @@ is parametrically convex iff the number of vertices $v_\kappa(p)$ and rays $r_\e
 \begin{proof}
 For clarity this proof is divided in 3 parts:
 \begin{enumerate}
-\item Notice that $h_i(p) = \max_{k\leq l} \{b_{i,k} + C_{i,k}p\}$ is a multi-parametric linear program (mpLP),
-its solution is a piecewise affine function $h_i(p) = b_{i,k^\ast_i} + C_{i,k^\ast_i}p$ where $k^\ast_i(p)$ is constant
+\item Notice that $h_i(p) = \max_{k\leq l} \{b_{i,k} + c_{i,k}p\}$ is a multi-parametric linear program (mpLP),
+its solution is a piecewise affine function $h_i(p) = b_{i,k^\ast_i} + c_{i,k^\ast_i}p$ where $k^\ast_i(p)$ is constant
 inside a polytopic complex, see e.g.~\cite{spjotvold:2005}.
 %
 That means that there exists a finite polyhedral partitioning $\mathbb R^d = \bigcup_{j\leq t} \mathcal P_j$ with convex polyhedra 
@@ -793,7 +795,7 @@ ${\bf{k}}^\ast\vert_{\mathcal P_{j_2}}$ differ in exactly one element.
 This partitioning implies that the graph $\mathscr G(\mathcal W)$ is given as a finite union of polyhedra
 %
 \begin{equation*}
-  \mathscr G(\mathcal W) = \bigcup_{j\leq t} \left\{x: a_i x \leq b_{i,k_i^\ast} + C_{i,k_i^\ast}p,i\leq m
+  \mathscr G(\mathcal W) = \bigcup_{j\leq t} \left\{x: a_i x \leq b_{i,k_i^\ast} + c_{i,k_i^\ast}p,i\leq m
   \right\}\bigr\vert_{\mathcal P_{j}}
 \end{equation*}
 %
@@ -803,15 +805,15 @@ G(\mathcal W)\vert_{\mathcal P_j}$ is a strictly convex polyhedron and corollary
 \item Our attention hence is concentrated to the boundaries of the partitions $\mathcal P_j$.
 %
 These are the points $\mathcal P_{j_1} \cap \mathcal P_{j_2}$ where some mpLP changes its solution, i.e. 
-$\left(b_{i,k_i^\ast} + C_{i,k_{j_1}^\ast} p\right)\big\vert_{\mathcal P_{j_1}} = 
-\left(b_{i,k_{j_2}^\ast} + C_{i,k_{j_2}^\ast} p\right)\big\vert_{\mathcal P_{j_2}}$.
+$\left(b_{i,k_i^\ast} + c_{i,k_{j_1}^\ast} p\right)\big\vert_{\mathcal P_{j_1}} = 
+\left(b_{i,k_{j_2}^\ast} + c_{i,k_{j_2}^\ast} p\right)\big\vert_{\mathcal P_{j_2}}$.
 %
 Notice that a vertex $v_\kappa(p)$ is given by \emph{active} and \emph{inactive} inequalities, i.e. $\mathcal A_\kappa(p)$ and
 $\mathcal I_\kappa(p) = \{1,\dots,m\}\setminus\mathcal A_\kappa(p)$ respectively.
 %
 \begin{equation*}\begin{split}
-  a_i v_\kappa(p) &= b_{i,k_i^\ast} + C_{i,k_i^\ast} p \quad\forall i\in\mathcal A_\kappa(p)\\
-  a_i v_\kappa(p) &< b_{i,k_i^\ast} + C_{i,k_i^\ast} p \quad\forall i\in\mathcal I_\kappa(p)
+  a_i v_\kappa(p) &= b_{i,k_i^\ast} + c_{i,k_i^\ast} p \quad\forall i\in\mathcal A_\kappa(p)\\
+  a_i v_\kappa(p) &< b_{i,k_i^\ast} + c_{i,k_i^\ast} p \quad\forall i\in\mathcal I_\kappa(p)
 \end{split}\end{equation*}
 %
 In order for the number of vertices to change, there must be a hyperplane $fp=g$, such that the number of vertices for $fp<g$ is 
@@ -838,22 +840,24 @@ vertex $v_{\kappa_1}(p)=v_{\kappa_2}(p)$ have to be identical, in particular the
 This can be expressed with the implicit function theorem:
 %
 \begin{equation*}\begin{split}
-  \frac{d}{dp}\left(  A_{\mathcal J\cup \{s\}} v_{\kappa_1}(p) - b_{\mathcal J\cup \{s\}} - C_{\mathcal J\cup \{s\},{\bf{k}}^\ast} p\right) &= 0\\
-  \frac{d}{dp}\left(  A_{\mathcal J\cup \{u\}} v_{\kappa_2}(p) - b_{\mathcal J\cup \{u\}} - C_{\mathcal J\cup \{u\},{\bf{k}}^\ast} p\right) &= 0
+  \frac{d}{dp}\left(  {\bf{a}}_{\mathcal J\cup \{s\}} v_{\kappa_1}(p) - {\bf{b}}_{\mathcal J\cup \{s\}} - 
+  {\bf{c}}_{\mathcal J\cup \{s\},{\bf{k}}^\ast} p\right) &= 0\\
+  \frac{d}{dp}\left(  {\bf{a}}_{\mathcal J\cup \{u\}} v_{\kappa_2}(p) - {\bf{b}}_{\mathcal J\cup \{u\}} - 
+  {\bf{c}}_{\mathcal J\cup \{u\},{\bf{k}}^\ast} p\right) &= 0
 \end{split}\end{equation*}
 %
 which leads to 
 %
 \begin{equation*}\begin{split}
-  A_{\mathcal J\cup \{s\}} \frac{dv_{\kappa}}{dp} &= C_{\mathcal J\cup \{s\},{\bf{k}}^\ast}\\
-  A_{\mathcal J\cup \{u\}} \frac{dv_{\kappa}}{dp} &= C_{\mathcal J\cup \{u\},{\bf{k}}^\ast}
+  {\bf{a}}_{\mathcal J\cup \{s\}} \frac{dv_{\kappa}}{dp} &= {\bf{c}}_{\mathcal J\cup \{s\},{\bf{k}}^\ast}\\
+  {\bf{c}}_{\mathcal J\cup \{u\}} \frac{dv_{\kappa}}{dp} &= {\bf{c}}_{\mathcal J\cup \{u\},{\bf{k}}^\ast}
 \end{split}\end{equation*}
 %
 since we can assume that the inequalities are non-redundant for some right hand side, we obtain that 
 %
 \begin{equation}\label{eq:derivative:condition:on:index:sets}
-  \frac{dv_\kappa}{dp} = A_{\mathcal J\cup \{s\}}^{-1}C_{\mathcal J\cup \{s\},{\bf{k}}^\ast} = 
-  A_{\mathcal J\cup \{u\}}^{-1}C_{\mathcal J\cup \{u\},{\bf{k}}^\ast}
+  \frac{dv_\kappa}{dp} = {\bf{a}}_{\mathcal J\cup \{s\}}^{-1}{\bf{c}}_{\mathcal J\cup \{s\},{\bf{k}}^\ast} = 
+  {\bf{a}}_{\mathcal J\cup \{u\}}^{-1}{\bf{c}}_{\mathcal J\cup \{u\},{\bf{k}}^\ast}
 \end{equation}
 %
 has to hold for the degenerate graph to remain parametrically convex.
@@ -864,7 +868,7 @@ will produce different behaviour.
 \end{proof}
 %
 \begin{rem}
-Corollary~\ref{thm:p:convexity:PWA:set:constant:num:verts} is essential for numerical examples, as it can be reformulated to:
+Corollary~\ref{thm:p:convexity:PWA:set:constant:num:verts} is essential for numerical evaluation, as it can be reformulated to:
 %
 The set valued map defined by~\eqref{eq:definition:PWA:polytopic:set:general} is non-degenerate and parametrically convex iff 
 it has a constant number of vertices throughout the parameter space~$X$.
@@ -880,9 +884,11 @@ the following.
   Let $S\subseteq X$ and let $\mathcal W:X\to\mathscr P(X)$ be a continuous point-to-set map such that
   $\mathcal W(p)$ is convex for all $p\in X$, then the \emph{parametric Pontryagin difference} 
   $S\ominus \mathcal W(S)$ is 
+%
   \begin{equation}\label{eq:definition:parametric:pontryagin:difference}
     S\ominus \mathcal W(S) = \left\{x\in X: \{x\} \oplus \mathcal W(x)\subseteq S\right\},
   \end{equation}
+%
   where $\mathcal W(S)$ denotes the image of $S$ under the map $\mathcal W$. 
 \end{defi}
 %
@@ -932,27 +938,31 @@ a polyhedral set and a piecewise affine polytopic parametric set is polyhedral i
 \subsection{Maximal Robust Positive Invariant Sets}
 %
 In this section we describe an iterative algorithm to compute the MRPI set~\eqref{eq:definition:MRPI:set}
-for a linear system~$x^+=\Psi x + v$ subject to disturbance
-$v\in\mathcal V(x)$ where $\mathcal V(x)$ is a piecewise affine parametrically convex point-to-set map defined 
+for a linear system~$x^+=\Psi x + v$ subject to disturbance $v\in\mathcal V(x)$ where $\mathcal V(x)$ is 
+a piecewise affine parametrically convex point-to-set map defined 
 like~\eqref{eq:definition:PWA:polytopic:set:general}.
 %
 We assume (without loss of generality) that the set $\mathcal V(x)$ is pointwise compact and polytopic 
 for finite $x\in\mathcal X_0$ and can hence be represented as the 
 convex hull of its vertices $\mathcal V(x) = \conv\{v_i(x)\}$. 
 %
-Since ${\mathcal{V}}(x)$
-has a piecewise affine dependence on $x$ the vertices $v_i(x)$ are also piecewise affine in $x$.
-The set $\mathcal X^\infty$ as defined in~\eqref{eq:definition:MRPI:set:state:dependent} 
-is required to satisfy $\Psi x + v\in\mathcal X^\infty$ for all
-$x\in\mathcal X^\infty$ and $v\in\mathcal V(x)$. To compute the MRPI set we start from the given 
-state constraint set
+Since ${\mathcal{V}}(x)$ has a piecewise affine dependence on $x$ the vertices $v_i(x)$ are also piecewise 
+affine in $x$.
+%
+The set $\mathcal X^\infty$ as defined in~\eqref{eq:definition:MRPI:set} is required to satisfy $\Psi x + 
+v\in\mathcal X^\infty$ for all~$x\in\mathcal X^\infty$ and $v\in\mathcal V(x)$. 
+%
+To compute the MRPI set we start from the given state constraint set $\mathcal X_0=\mathcal X$
+%
 \[
 \mathcal X_0 = \{x:\;\genmat_{0,i}x\leq \genvec_{0,i}\,\forall i\in\mathcal I_0\}
 \]
-and
-recursively \emph{cut off} points that cannot satisfy the invariance condition~\eqref{eq:definition:MRPI:set:state:dependent}
+%
+and recursively \emph{cut off} points that cannot satisfy the invariance condition~\eqref{eq:definition:MRPI:set}
 by iteratively introducing constraints that exclude all points for which the successor state can lie outside 
-$\mathcal X_0$. The first iteration enforces the constraint:
+$\mathcal X_0$. 
+%
+The first iteration enforces the constraint:
 %
 \[
 \begin{split}
@@ -963,14 +973,17 @@ $\mathcal X_0$. The first iteration enforces the constraint:
 \]
 %
 for each $i\in \mathcal I_0$.
-Here $v_{0,i}^\ast(x)$ is not necessarily given by a unique maximiser, 
-but is the solution of a multi-parametric linear program and hence is given 
-by a vertex $v_i(x)$ of $\mathcal V(x)$ for each $x$ on that facet.
+%
+Here $v_{0,i}^\ast(x)$ is not necessarily given by a unique maximiser, but is the solution of a multi-parametric 
+linear program and hence is given by a vertex $v_i(x)$ of $\mathcal V(x)$ for all $x$ on that facet.
+%
 Since each vertex is a piece-wise affine function of $x$, the maximum $v_{0,i}^\ast(x)$ is also piece-wise affine
 so the set $\mathcal X_1=\mathcal X_0 \cap \{x:\genmat_{0,i}\Psi x + v_{0,i}^\ast(x) \leq 
 \genvec_{0,i}\forall i\in\mathcal I_0\}$
 has representation $\mathcal X_1 = \{x:\genmat_{1,i}x\leq\genvec_{1,i}\,\forall i\in\mathcal I_1\}$.
+%
 The next iterate is defined by
+%
 \begin{align*}
   \mathcal X_2 &= \mathcal X_1 \cap \\ &\{x:\genmat_{0,i}\Psi(\Psi x + v) + v_{0,i}^\ast(x)\leq\genvec_{0,i}\,
   \forall i\in\mathcal I_0,v\in\mathcal V(x)\}\\
@@ -992,16 +1005,9 @@ where
    = \begin{array}[t]{rl} \displaystyle\max_{\tilde v} & \genmat_{0,i}\tilde v\\ \text{s.t.}& \tilde v\in 
    \Psi^{l-1}\mathcal V(x) \end{array}
 \]
-% \begin{align*}
-%   v_{l,i}^\ast(x)&=\max_j \ \genmat_{0,i}\Psi^{l-1}v_j(x)
-%    = \begin{array}[t]{rl} \displaystyle\max_v & \genmat_{0,i}\Psi^{l-1}v \\ \text{s.t.}& v\in\mathcal V(x)
-%    \end{array} \\ 
-%    &= \begin{array}[t]{rl} \displaystyle\max_{\tilde v} & \genmat_{0,i}\tilde v\\ \text{s.t.}& \tilde v\in 
-%    \Psi^{l-1}\mathcal V(x) \end{array}
-% \end{align*}
 %
 \begin{rem}
-Determining the map $v_{l,i}(x)$ for all admissible $x\in \mathcal X_0$ in general poses a great classification
+Determining the map $v_{l,i}(x)$ for all admissible $x\in \mathcal X$ in general poses a great classification
 challenge. 
 %
 Notice that in our calculations we can avoid determining the particular vertex $v_{l,i}(x)$ explicitly, it
@@ -1020,31 +1026,41 @@ In closed form the iterates can be expressed as
   \Psi^i \mathcal V(\mathcal X_{l-1})\right).
 \end{split}\end{equation}
 %
-Notice that we do not require $\Psi$ to be invertible, in~\eqref{eq:set:iteration:state:dependent:constraints} $\Psi^{-1}\mathcal X_k$
-merely denotes the preimage of $\mathcal X_k$ under the linear map $\Psi$.
+Notice that we do not require $\Psi$ to be invertible, in~\eqref{eq:set:iteration:state:dependent:constraints} 
+$\Psi^{-1}\mathcal X_k$ merely denotes the preimage of $\mathcal X_k$ under the linear map $\Psi$.
+%
 We will use~\eqref{eq:set:iteration:state:dependent:constraints} to prove the finite determinability of
 $\mathcal X^\infty$, namely that there exists a finite number $N$ such that $x\in\mathcal X_N$ implies
 $\Psi x + v \in\mathcal X_N$ for all $v\in\mathcal V(x)$ and hence $\mathcal X_N$ is robustly positively invariant.
 %
 \begin{thm}\label{thm:finite:MRPI:set:state:dependable}
-Let the state constraint set $\mathcal X_0$ be contained in a band: $\mathcal X_0\subseteq B=\{x:\Gamma x\leq{\bf{1}}\wedge 
--\Gamma x\leq{\bf{1}}\}$, let the pair $(\Psi,\Gamma)$ be observable and let $\mathcal V(x)$ be defined 
-by~\eqref{eq:PWA:disturbance:set} in terms of a piecewise affine function $H(x)$. Then $\mathcal X_N\subseteq \mathcal 
-X_{N+1}$ for a finite $N$, and hence the MRPI set $\mathcal X^\infty =\mathcal X_N$ is a polytope.
+Let the state constraint set $\mathcal X$ be contained in a band: $\mathcal X\subseteq B=\{x:\Gamma x\leq{\bf{1}}\wedge 
+-\Gamma x\leq{\bf{1}}\}$, let the pair $(\Psi,\Gamma)$ be observable and let $\mathcal V(x)=D\mathcal W(x)$ with 
+$\mathcal W(x)$ defined by~\eqref{eq:definition:PWA:polytopic:set:general}. 
+%
+Then $\mathcal X_N\subseteq \mathcal X_{N+1}$ for a finite $N$, and hence the MRPI set $\mathcal X^\infty =\mathcal X_N$ 
+is a polytope.
 \end{thm}
+%
 %
 \begin{proof}
 From~\eqref{eq:set:iteration:state:dependent:constraints} it is clear that $\mathcal X^\infty = \emptyset$ 
-if $\mathcal X_k =\emptyset$ for any $k\geq 0$. For the remainder of the proof we assume that the MRPI set 
-$\mathcal X^\infty$ is non-empty. For this we require that $\bigcup_{s\in\mathcal S}\mathcal V(s)$ is 
-bounded on any bounded set $\mathcal S\subset\mathbb R^n$.
-
-The proof has two main steps: First we prove that $\mathcal X_p$ is bounded for $p\leq n$
-where $n$ is the dimension of the state $x$. The second step is to prove that in~\eqref{eq:set:iteration:state:dependent:constraints}
+if $\mathcal X_k =\emptyset$ for any $k\geq 0$.
+%
+For the remainder of the proof we assume that the MRPI set $\mathcal X^\infty$ is non-empty. 
+%
+For this we require that $\bigcup_{s\in\mathcal S}\mathcal V(s)$ is bounded on any bounded set 
+$\mathcal S\subset\mathbb R^n$.
+%
+The proof has two main steps: 
+%
+First we prove that $\mathcal X_p$ is bounded for $p\leq n$ where $n$ is the dimension of the state $x$. 
+%
+The second step is to prove that in~\eqref{eq:set:iteration:state:dependent:constraints}
 the set $D_k$ grows exponentially, i.e. that for any given bounded set $\mathcal C$ there exists
 finite $N$ such that $\mathcal C\subseteq D_{N}$. The proof is concluded by setting 
 $\mathcal C = \mathcal X_{N}$ and deducing that $\mathcal X^\infty = \mathcal X_N$. 
-
+%
 For the first step, notice that observability of $(\Psi,\Gamma)$ is equivalent to the observability matrix 
 $\Omega$ having full rank, i.e.\ $\mathrm{rank}(\Omega) = \mathrm{rank}(\begin{bmatrix} \Gamma^T \ \cdots \ 
 (\Gamma\Psi^{n-1})^T\end{bmatrix}) = n$.
@@ -1056,37 +1072,950 @@ But  this implies that the set
 \]
 %
 is bounded, and since $\mathcal X_k\subseteq \mathcal P_k$ for all $k$, 
-the set $\mathcal X_{n}$ is also bounded. To show that $D_k$ grows exponentially we use the boundedness 
-of $\mathcal V(\mathcal X_{n})$. Let $K_1$ denote the smallest ball that contains $\mathcal V(\mathcal X_{n})$ and let
-$\rho$ denote the spectral radius of $\Psi$. Furthermore, let $K_2$
-be the biggest ball that is contained in $\mathcal X_{0}$. From~\eqref{eq:set:iteration:state:dependent:constraints}, 
-$D_k$ has the representation
+the set $\mathcal X_{n}$ is also bounded.
+
+
+To see that $D_k$ grows exponentially we denote the spectral radius of $\Psi$ by $\rho$, since $\Psi$ is asymptotically
+stable we have $\rho<1$.
+%
+Let $r_1$ be the radius of the largest ball contained in $\mathcal X_0$ i.e. $\mathcal E(r_1)\subseteq\mathcal X_0$ 
+and let $r_2$ be the radius of smallest ball containing $\mathcal V(x)$ for all $x\in\mathcal X_0$.
+%
+Recall that $\mathcal X_k = \bigcap_{l\leq k} D_l$, where $D_k$ is defined by
 %
 \begin{equation}
-D_k = \underbrace{\Psi^{-k}\mathcal X_0}_{=\mathcal S_1} \ominus \underbrace{\biggl(\bigoplus_{1\leq i\leq k-1} 
-\Psi^i\mathcal V(\mathcal X_k)\biggr)}_{=\mathcal S_2}.
+  D_l = \underbrace{\Psi^{-l}\mathcal X_0}_{\mathcal S_1} \ominus 
+  \underbrace{\left(\bigoplus_{1\leq i\leq l-1} \Psi^{i}\mathcal V(\mathcal X_{l-1})\right)}_{\mathcal S_2}
 \end{equation}
 %
-Since $\Psi$ is asymptotically stable we have $\rho<1$ and therefore $\rho^{-k}K_2\subseteq\Psi^{-k} K_2 
-\subseteq \Psi^{-k}\mathcal X_0 = \mathcal S_1$, implying exponential growth of $D_k$ provided $\mathcal S_2$ 
-is bounded. To bound $\mathcal S_2$ we note that for $k\geq n$ we have $\mathcal S_2\subseteq 
-\bigoplus_{1\leq i\leq k-1} \rho^i K_1 \subseteq \frac{1}{1-\rho} K_1$. Thus $D_k$ grows exponentially, whereas 
-$\mathcal X_k$ is contained in a ball of finite radius, and we conclude from~\eqref{eq:set:iteration:state:dependent:constraints} that 
-$\mathcal X_{k+1} = \mathcal X _k$ for all $k\geq N$ and hence $\mathcal X _N = \mathcal X^\infty$ for finite $N$.
+We can easily lower bound $\mathcal S_1$ by using $r_1$: $\mathcal S_1 = \Psi^{-l}\mathcal X_0 
+\supseteq \Psi^{-l}\mathcal E(r_1) \supseteq \mathcal E(\rho^{-l} r_1)$.
+%
+Recall that $\mathcal X_l\subseteq\mathcal X_{l-1}$ and therefore $\mathcal X_l\subseteq\mathcal X_0$ for all $l\geq0$.
+%
+We use this fact to obtain the containment $\mathcal S_2 = \bigoplus_{1\leq i\leq l-1} 
+\Psi^{i}\mathcal V(\mathcal X_{l-1})\subseteq \bigoplus_{1\leq i\leq l-1} \Psi^{i}\mathcal V(\mathcal X_0)\subseteq
+\bigoplus_{1\leq i\leq l-1} \Psi^{i}\mathcal E(r_2)\subseteq\bigoplus_{1\leq i\leq l-1} \mathcal E(\rho^{i} r_2)\subseteq
+\mathcal E(\sum_{1\leq i\leq l-1}\rho^i r_2)\subseteq \mathcal E(\frac{1}{1-\rho} r_2)$.
+%
+In summary we can state that~$D_l$ consists of the exponentially expanding set~$\mathcal S_1$
+subtracted by the set~$\mathcal S_2$ which is bounded, therefore~$D_l$ itself expands exponentially,
+that is $D_l\supseteq\mathcal E(\rho^{-l} r_1 - \frac{1}{1-\rho} r_2)$.
+%
+We have proven that for $p\leq n$ the set iterate~$\mathcal X_p$ is bounded, let $r_3$ denote the smallest 
+ball that contains $\mathcal X_p$.
+%
+We can conclude that for $l$ such that $X_p\subseteq\mathcal E(r_3)\subseteq\mathcal 
+E(\rho^{-l} r_1 - \frac{1}{1-\rho} r_2)\subseteq D_l$ holds the set $D_l$ covers
+$X_p$, i.e. intersections with $D_l$ will not change $X_l$.
+%
+We can therefore give an upper bound on the number of iterations necessary for the algorithm
+to terminate, it is given by the smallest integer $M$ such that
+\begin{equation}\label{bnd:first:lower:bound:on:iteration:count}
+  M\geq \frac{1}{\log(\frac{1}{\rho})}\left(\log\left(r_3+\frac{1}{1-\rho}r_2\right)-\log r_1 \right)
+\end{equation}
+is satisfied.
 \end{proof}
 %
-We have seen that we can compute the maximal robust positively invariant set $\mathcal X^\infty$ for linear 
-systems with state dependent constraints. In the next section we will illustrate the concept with an 
-example.
+\begin{rem}
+Notice that the constants used in~\eqref{bnd:first:lower:bound:on:iteration:count} are not
+convenient to compute, we can however compute bounds on $r_1,\, r_2$ and $r_3$ using 
+singular values.
+%
+For this let $\bar\sigma(\Gamma)$ and $\underline\sigma(\Gamma)$ denote the maximal and the minimal
+singular value of~$\Gamma$ respectively.
+%
+We know that~$\bar\sigma(\Gamma)\norm{x}\geq\norm{\Gamma x}$ and therefore $\bar\sigma(\Gamma)\norm{x}
+\leq \sqrt{n}\Rightarrow \norm{\Gamma x}\leq\norm{\bf{1}}=\sqrt{n}$, that $r_1=\frac{\bar\sigma(\Gamma)}{\sqrt{n}}$
+follows form standard result for singular values, see e.g.~\cite{Golub:1996}.
+%
+We use a similar argument to obtain a bound on $r_3$ before deriving a bound on $r_2$:
+%
+It is easy to see that the radius of the largest ball containing $\mathcal X_p$ can be determined using the maximal
+norm of the vertices of $\mathcal P_n$, i.e. $r_3=\max_{i}\norm{x_i}$ where $x_i$ satisfies $\Omega_{\mathscr{A}_i} x_i={\bf{1}}$
+and $\Omega_{\bar{\mathscr A}_i}x_i<{\bf{1}}$.
+%
+From this we can deduce that
+%
+\begin{multline}
+  \sqrt{n}=\norm{\bf{1}}=\norm{\Omega_{\mathscr{A}_i}x_i}\geq\underline\sigma(\Omega_{\mathscr{A}_i})\norm{x_i}\\
+  =\underline\sigma(\Gamma_{\mathscr{A}_i}\cdot \text{diag}(I,\Psi,\dots,\Psi^{n-1}))\norm{x_i}\\
+  \geq\underline\sigma(\Gamma_{\mathscr{A}_i})\underline\sigma( \text{diag}(I,\Psi,\dots,\Psi^{n-1}))\norm{x_i}\\
+  \geq\underline\sigma(\Gamma_{\mathscr{A}_i})\underline\sigma(\Psi)^{n-1}\norm{x_i}\\
+  \geq\underline\sigma(\Gamma)\underline\sigma(\Psi)^{n-1}\norm{x_i},
+\end{multline}
+%
+which implies that we can get the upper bound $r_3\leq\frac{\sqrt{n}}{\underline\sigma(\Gamma)
+\underline\sigma(\Psi)^{n-1}}$.
+%
+In order to obtain an estimate on $r_2$ we follow a similar argumentation:
+%
+\begin{multline}
+  \bar\sigma({\bf{c}})\norm{x}+\norm{{\bf{b}}}
+  \geq\bar\sigma({\bf{c}}_{k^\ast})\norm{x}+\norm{{\bf{b}}_{k^\ast}}\\
+  =\max_k\{\bar\sigma({\bf{c}}_k)\norm{x}+\norm{{\bf{b}}_k}\}
+  \geq\norm{\max_k\{{\bf{c}}_{\mathscr{A}_i,k} x + {\bf{b}}_{{\mathscr{A}_i},k}\}}\\ 
+  =\norm{{\bf{a}}_{\mathscr{A}_i}v_i} \geq\underline\sigma({\bf{a}}_{\mathscr A_i})\norm{v_i}
+  \geq\underline\sigma({\bf{a}})\norm{v_i}.
+\end{multline}
+%
+Notice that with only the assumptions made in Lemma~\ref{thm:finite:MRPI:set:state:dependable}
+we have no way to bound~$\norm{x}$ in order to obtain an upper bound on~$r_2$,
+however, if we assume that~$\mathcal X_p$ is not empty we can use the bound on~$\mathcal X_p$, i.e.~$r_3$.
+%
+This is reasonable since we are interested in the asymptotic behaviour of the set rather than
+exact bounds on intermediate iterates, hence $r_2\leq\frac{\bar\sigma({\bf{c}})r_3+\norm{{\bf{b}}}}
+{\underline\sigma({\bf{a}})}$ can be used as an estimate for the asymptotic behaviour of $\mathcal V(x)$
+in the iteration.
+%
+All bounds and estimates on $r_1,\,r_2$ and $r_3$ can be calculated in advance to get an estimate
+on how many iterations the described algorithm could require.
+\end{rem}
+%
+%
+%
+%
+%
+\section{Example I}\label{sec:example:I}
+%
+%
+\begin{figure}
+\centering
+\begin{lpic}[scale=0.5]{levitatingBall}
+\lbl[tr]{25,3; $m g$}
+\lbl[br]{25,25; $c\frac{i^2}{y^2}$}
+\lbl[bl]{49,17; $y$}
+\lbl[bl]{56,55; $i$}
+\end{lpic}
+\vspace{-2mm}
+\caption{Levitating ball system.}
+\label{fig:levitating:ball}
+\vspace{-2mm}\end{figure}
+%
+%
+%
+This section discusses the calculation of the MRPI set for a linearised, simplified model of the magnetic 
+levitation system depicted in figure~\ref{fig:levitating:ball}. 
+%
+The system dynamics for the ball are given by $m \ddot y = m g - c\frac{i^2}{y^2}$, where $m,g,c,i$ and $y$ 
+denote the mass of the ball, the gravitational constant, a constant factor, the current and the distance 
+between the coil and the centre of the ball respectively.
+%
+For illustration purposes we neglect inductive dynamics, using the current $u=i$ as the control input and the position
+$y$ and its first derivative $\dot y$ as the states: $x = (y,\dot y)^T$. We find that any equilibrium has 
+$\dot{y}=0$ and $u=\sqrt{\frac{gm}{c}} y$ for any positive position $y>0$. 
+%
+Linearising the nonlinear differential equation $\dot x = f(x,u)$ around an equilibrium point $(\hat x, \hat
+u)$ gives the approximate linear model 
+%
+\begin{equation}
+   \Delta\dot{x} = \underbrace{\left(\begin{array}{cc}
+  0 & 1 \\ \frac{2c\hat u^2}{m\hat x_1^3} & 0
+  \end{array}\right)}_{\frac{\partial f}{\partial x}(\hat x,\hat
+      u)}\Delta x 
++ \underbrace{\left(\begin{array}{c}
+  0 \\ - \frac{2c\hat u}{m\hat x_1^2}
+  \end{array}\right)}_{\frac{\partial f}{\partial u}(\hat x,\hat
+      u)}\Delta u
+\end{equation}
+%
+where $\Delta u = u -\hat{u}$ and $\Delta x \approx x-\hat{x}$.
+%
+We derive the discrete time dynamics with sampling rate $T_s$ using the Euler formula $x^+=x+T_s f(x,u) 
+=:\tilde f(x,u)$ giving $\Delta x^+ = A \Delta x + B \Delta u$,
+%
+\[
+A = I+T_s\frac{\partial f}{\partial  x}(\hat
+  x,\hat u) , \quad
+B = T_s \frac{\partial f}{\partial u}(\hat x,\hat u)
+\]
+%
+Although this system has a control input, the algorithm for computing the MRPI set is applicable since 
+we consider the closed loop system under the linear feedback  $u=Kx$, where $K$ satisfies the aforementioned the robust 
+Lyapunov condition $V(x)-V((A+BK)x+v)\leq \gamma^2v^Tv$ with $V(x)=x^T P x\geq0$, i.e. $x^TPx - ((A+BK)x+v)^TP(
+(A+BK)x+v)\geq x^T(Q+K^TRK)x -\gamma^2 v^Tv$ for a minimum  $\gamma^2$, see e.g.~\cite{Boyd:94}.
+%
+A representation of additive disturbances acting on the linearised model due to linearisation errors, 
+i.e. a system representation $x^+=Ax + Bu + v$ with an additive disturbance $v$, can be obtained using the
+Mean Value Theorem (e.g.~\cite{Apostol:1974}).
+%
+%
+\begin{thm}[Mean Value Theorem]\label{thm:mean:value:theorem}
+Let $g :  X \rightarrow\mathbb R^m$ be continuously
+differentiable, $ X\subset\mathbb R^n$ be open,
+and $x \in X$, $h \in\mathbb R^n$ be such that 
+$x + th \in X$ for all $t\in [0 ,1]$. Then
+\begin{equation}
+  g(x+h) = g(x) + \left(\int_0^1 \frac{\partial g}{\partial x}(x+th)dt\right)\cdot h.
+\end{equation}
+\end{thm}
+%
+%
+Using the Mean Value Theorem and the linearisation around $(\hat{x},\hat{u})$, and defining 
+$\tilde{x} = x - \hat{x}$, $\tilde{u} = u - \hat{u}$, we obtain the successor state $x^+ = 
+\tilde{f}(\hat{x} + \tilde{x},\hat{u} + \tilde{u})$ as
+%
+\begin{multline*}
+x^+= \tilde f(\hat x, \hat u) 
++ \int_0^1\frac{\partial\tilde f}{\partial x}(\hat x + t\tilde x,
+\hat u + t\tilde u) dt \cdot \tilde x  \\
++ \int_0^1\frac{\partial\tilde f}{\partial u}(\hat x + t\tilde x,\hat u+
+t\tilde{u}) dt\cdot \tilde{u}
+\end{multline*}
+%
+and hence
+%
+\begin{multline*}
+\tilde x^+ = A\tilde{x} + B \tilde{u} +\Bigl(
+\int_0^1\frac{\partial\tilde f}{\partial x}(\hat x + t\tilde x,\hat u
+             + t\tilde{u})dt - A \Bigr)\tilde x 
+\\ 
++\Bigl(\int_0^1\frac{\partial\tilde f}{\partial u}(\hat x +
+  t\tilde x,\hat u + t\tilde{u})dt - B\Bigr)\tilde{u}
+\end{multline*}
+%
+This implies the dynamics
+%
+\[
+\tilde x^+ = A\tilde x+B\tilde{u} + H^x\tilde{x} + H^u \tilde{u}, 
+\]
+%
+where $H^x$ and $H^u$ can be determined by integration. 
+%
+If $f(x,u)$ is continuously differentiable for all $x\in X$ and $u\in U$, where
+$X$, $U$ are compact sets, then we can approximate the values of $H^x \tilde{x}+ H^u \tilde{u}$ 
+by a finite convex combination of extremal values, i.e. $H^x \tilde{x}+H^u \tilde{u}\in\conv_k
+\{H^x_k \tilde{x} + H^u_k \tilde{u}\}$.
+%
+Thus we can introduce the element\-wise disturbance bound 
+%
+\begin{multline}\label{eq:definition:element:wise:constraints:on:nonlinearities}
+\mathcal V(\tilde{x},\tilde{u})=\biggl\{v:\min_k\{
+H^x_{k,i}\tilde{x}+H^u_{k,i}\tilde{u}\}\leq v_i\,\wedge 
+\\ 
+v_i \leq \max_k\{H^x_{k,i}\tilde{x}+H^u_{k,i}\tilde{u}\}, \, i =1,\dots,n\biggr\}.
+\end{multline}
+%
+Notice that~\eqref{eq:definition:element:wise:constraints:on:nonlinearities} is of the form~\eqref{eq:definition:PWA:polytopic:set:general}
+and the theory introduced earlier applies.
+%
+The additively perturbed linear system $\tilde x^+ = A\tilde x + B\tilde u + v$ accounts for all nonlinearities 
+within $X\times U$ if $v\in\mathcal V(\tilde x,\tilde u)$. 
+%
+For general nonlinear systems finding the extremal values of $(H^x,H^u)$ is non-trivial.
+%
+To obtain values for $(H^x_k,H^u_k)$ we sample $X\times U$ and evaluate the integral 
+expressions defining $(H^x_k,H^u_k)$ pointwise.
+%
+This leads to an inner approximation of the linearisation error set, however we can make it as tight as necessary
+by increasing the number of samples.
+%
+For this we use the numerical values for the example of the levitating ball: $T_s=30\,\text{ms}$, $C=1$, 
+$m=100\,\text{g}$, $\hat x_1 = 50\,\text{mm}$ and $\mathcal X=\{x:\abs{x_1- \hat x_1}\leq 1\,\text{mm}
+\wedge \abs{x_2}\leq 105\,\text{mm}/\text{s}\}$, $\mathcal U=\{u:\abs{ u-\hat u}\leq10\,\text{mA}\}$.
+%
+Using a total of 25 samples for the computation of $(H^x,H^u)$ we obtain the invariant set shown 
+in figure~\ref{fig:MRPI:set:levitating:ball}.
+%
+The algorithm for computing the MRPI set terminates after 3 iterations.
+%
+%
+\begin{figure}
+\centering
+\begin{lpic}{invariantSetStateDependant(.65,)}
+{\tiny
+\lbl[r]{9,94; $0.1$}
+\lbl[r]{9,86; $0.08$}
+\lbl[r]{9,78; $0.06$}
+\lbl[r]{9,70; $0.04$}
+\lbl[r]{9,63; $0.02$}
+\lbl[r]{9,55; $0$}
+\lbl[r]{9,47; $-0.02$}
+\lbl[r]{9,39; $-0.04$}
+\lbl[r]{9,32; $-0.06$}
+\lbl[r]{9,24; $-0.08$}
+\lbl[r]{9,16; $-0.1$}
+\lbl[t]{11,9; $-6$}
+\lbl[t]{30,9; $-4$}
+\lbl[t]{48,9; $-2$}
+\lbl[t]{67.5,9; $0$}
+\lbl[t]{86,9; $2$}
+\lbl[t]{104,9; $4$}
+\lbl[t]{123,9; $6$}
+\lbl{120,3; $\times10^{-3}$}
+}
+{\small
+\lbl{68,3; $\tilde x_1$}
+\lbl{0,55,90; $\tilde x_2$}
+}
+\end{lpic}
+\caption{The maximal robust positively invariant set for the levitating ball.}
+\label{fig:MRPI:set:levitating:ball}
+\vspace{-2mm}\end{figure}
+%
+%
+%
+%
+\section{Recursive Multi-Parametric Quadratic Programming to Solve Min-Max Programs}\label{sec:recursive:mpQP:via:line:search}
 
 
-\subsection{Example I}
+In this section we discuss how multi-parametric quadratic programs (mpQP) can be solved efficiently with an active-set 
+solver (see e.g.~\cite{Fletcher:1987}).
+%
+The active set of constraints will be determined by a line-search, we will also deal with \emph{degenerate
+constraints}, which can arise during the line-search.
+%
+\subsection{Solving Recursive Equality Constraint mpQPs}\label{ssec:recursive:mpQP}
+%
+Assume we want to solve the mpQP
+%
+\begin{equation}
+  J(\phi) = \left\{\begin{array}{rcl}
+  \min_\theta& &\frac{1}{2} \theta^T R \theta + r^T\theta + V(\theta) \\
+  \text{s.t.}& &C\theta\leq e+ T\phi
+  \end{array}\right.
+\end{equation}
+%
+with the positive definite weight $R>0$ and the real parameter $\theta$. 
+%
+We furthermore assume that the constraints are such that the origin is an interior point for a vanishing parameter
+$\phi=0$, i.e. $0\in\{\theta:C\theta< e\}$.
+%
+Using
+%
+\begin{equation}
+  V(\theta) = \left\{\begin{split}
+    \max_x & \;\frac{1}{2} x^T Q x + q^Tx\\
+    \text{s.t.} &\; Ax  \leq b +S\theta
+  \end{split}\right.
+\end{equation}
+%
+with $Q<0$ and the same assumption on the constraint set as for the minimisation.
+%
+We want to use an active-set solver to obtain the solution for $\phi=\phi^\ast$.
+%
+For this assume that for some $\phi=\phi_0$ we know the active constraints~$\mathcal A$ and~$\hat{\mathcal A}$,
+i.e. the inequalities satisfied with equality $C_{\mathcal A}\theta_0=e_{\mathcal A} + T_{\mathcal A}\phi_0$
+and $A_{\hat{\mathcal A}}x_0=b_{\hat{\mathcal A}}+S_{\hat{\mathcal A}}\theta_0$.
+%
+The set of inactive constraints $\mathcal I$ and $\hat{\mathcal I}$ are such that $C_{\mathcal I}\theta_0<
+e_{\mathcal I} + T_{\mathcal I}\phi_0$ and $A_{\hat{\mathcal I}}x_0<b_{\hat{\mathcal I}}+S_{\hat{\mathcal I}}
+\theta_0$, the variables~$\theta_0$ and $x_0$ denote the optimal solution to the minimisation and the maximisation
+respectively.
+%
+In order to obtain the optimal solution to the multi-parametric quadratic programs for known
+active constraints we consider the primal equality constrained mpQP 
+%
+\begin{equation}\label{app:mpQP:primal}
+  V_{\hat{\mathcal A}}(\theta_0) = \left\{\begin{split}
+    \max_x & \;\frac{1}{2} x^T Q x + q^Tx\\
+    \text{s.t.} &\; A_{\hat{\mathcal A}}x  = b_{\hat{\mathcal A}} +S_{\hat{\mathcal A}}\theta_0
+  \end{split}\right.
+\end{equation}
+%
+we get the Lagrangian
+%
+\begin{equation}\begin{split}
+  L_{\hat{\mathcal A}}(x,\lambda,\theta_0)  &= \frac{1}{2} x^T Q x +q^Tx + \lambda^T\left(A_{\hat{\mathcal A}}x - 
+  b_{\hat{\mathcal A}} - S_{\hat{\mathcal A}}\theta_0\right)\\
+  &=\frac{1}{2} x^T Q x + \left(q + A_{\hat{\mathcal A}}^T\lambda\right)^Tx 
+  -\lambda^T \left(b_{\hat{\mathcal A}} + S_{\hat{\mathcal A}}\theta_0\right)
+\end{split}\end{equation}
+%
+minimising over $x$ we obtain the unconstrained dual mpQP
+%
+\begin{equation}\label{app:mpQP:dual}
+  \min_\lambda -\frac{1}{2}\lambda^T A_{\hat{\mathcal A}} Q^{-1}A_{\hat{\mathcal A}}^T \lambda 
+  -(b_{\hat{\mathcal A}} + S_{\hat{\mathcal A}}\theta_0 + A_{\hat{\mathcal A}} Q^{-1}q)^T\lambda
+  -\frac{1}{2}q^TQ^{-1}q
+\end{equation}
+%
+To solve~\eqref{app:mpQP:primal} we solve the first order optimality conditions
+%
+\begin{equation}\label{app:kkt:conditions}
+  \begin{array}{ccccccc}
+    Q x &+& A^T_{\hat{\mathcal A}}\lambda & = & -q && \\
+    A_{\hat{\mathcal A}} x & & & = & b_{\hat{\mathcal A}}& +& S_{\hat{\mathcal A}}\theta_0
+  \end{array}
+\end{equation}
+%
+It can be shown (see~\cite{Schaich:NMPC:2015}) that the solution of~\eqref{app:kkt:conditions} has the structure
+%
+\begin{thm}\label{lem:mpQP:solution}
+The solution of~\eqref{app:kkt:conditions} has the representation
+\begin{equation}\label{app:mpQP:solution}
+  \begin{split}
+    y &= M_\theta \theta_0 + m\\
+    \lambda &= N_\theta \theta_0 + N_\beta \beta + n
+  \end{split}
+\end{equation}
+where $N_\beta\neq 0$ only if $A_{\hat{\mathcal A}}$ is not right invertible, in which case 
+$A_{\hat{\mathcal A}}^TN_\beta=0$ and the columns of $N_\beta$ span ker$(A_{\hat{\mathcal A}}^T)$.
+\end{thm}
+%
+The matrices $M_\theta$, $N_\theta$, $N_\beta$ and vectors $m$, $n$ are constant and the variable~$\beta$ 
+is used to parametrise the solution in the null space of~\eqref{app:kkt:conditions}. 
+%
+We say (\ref{app:mpQP:primal}) is \emph{degenerate} if $N_\beta\neq 0$.
+%
+\begin{proof}
+If $A_{\hat{\mathcal A}}$ is not right invertible, then we must have rank$(A_{\hat{\mathcal A}})=n_y<n_\lambda$ or
+rank$(A_{\hat{\mathcal A}})<\min\{n_y,n_\lambda\}$.
+%
+For the case that rank$(A_{\hat{\mathcal A}})=n_y$ (i.e.\ $A_{\hat{\mathcal A}}$ has full rank and $n_y<n_\lambda$), 
+using the QR-decomposition (see e.g.~\cite{Golub:1996}) of $A_{\hat{\mathcal A}}=(Q_1,Q_2)\cdot(R^T,0)^T$ the solution 
+is given by $(m^T,n^T)^T = \Sigma (-q^T,b_{\hat{\mathcal A}}^T)^T$, $(M_\theta^T,N_\theta^T)^T = 
+\Sigma (0,S^T_{\hat{\mathcal A}})^T$ and $N_\beta=Q_2$, where 
+%
+\begin{subequations}\label{seq:sigma}
+\begin{equation}\label{eq:sigma:normal}
+  \Sigma = \left(\begin{array}{cc}
+  0 & R^{-1}Q_1^T \\
+  Q_1 R^{-T} & -Q_1R^{-T}WR^{-1}Q_1^T
+  \end{array}\right) .
+\end{equation}
+%
+On the other hand if rank$(A_{\hat{\mathcal A}})<\min\{n_y,n_\lambda\}$ (so that $A_{\hat{\mathcal A}}$ is rank deficient), then
+%
+\begin{equation}\label{eq:sigma:degen}
+  \Sigma = \left(\begin{array}{cc}
+  W^{-1}-W^{-1}R^T\Delta RW^{-1} & W^{-1}R^{T}\Delta Q_1^{T}\\
+  Q_1\Delta R W^{-1} & -Q_1\Delta Q_1^T
+  \end{array}\right)
+\end{equation}
+\end{subequations}
+%
+with $\Delta = (RW^{-1}R^T)^{-1}$. This concludes the proof.
+%
+\end{proof}
+%
+Since the degeneracy variable $\beta$ does not appear in the primal optimiser it does not 
+affect the value of~\eqref{app:mpQP:primal}.
+%
+However, by substituting~\eqref{app:mpQP:solution} into~\eqref{app:mpQP:dual} we find
+%
+\begin{multline}
+  -\frac{1}{2}\underbrace{(N_\theta \theta_0 + N_\beta \beta + n)^T A_{\hat{\mathcal A}} Q^{-1}A^T_{\hat{\mathcal A}} 
+  (N_\theta \theta_0 + N_\beta \beta + n)}_{\neq f(\beta)} \\-\underbrace{( 
+  b_{\hat{\mathcal A}} + S_{\hat{\mathcal A}}\theta_0 + A_{\hat{\mathcal A}} Q^{-1} q)^T(N_\theta \theta_0 + N_\beta \beta + 
+  n)}_{f(\theta_0)+f_c + (b^T_{\hat{\mathcal A}}+\theta^T_0S^T_{\hat{\mathcal A}})N_\beta 
+  \beta}
+\end{multline}
+%
+And therefore we have that if
+%
+\begin{equation}
+  (b^T_{\hat{\mathcal A}}+\theta^T_0 S^T_{\hat{\mathcal A}})N_\beta \neq 0
+\end{equation}
+%
+the dual problem is unbounded and can be made arbitrarily large by the choice of $\beta$. 
+%
+Assume $\theta_0$ is chosen to satisfy 
+%
+\begin{equation}\label{app:mpQP:compatability:assumption}
+  N_\beta^Tb = -N_\beta^TS\theta_0,
+\end{equation} 
+%
+then the dual mpQP has a unique solution and the choice of $\beta$ does not affect either the primal nor the 
+dual cost and can be used for any purpose. 
+%
+For general mpQP condition~\eqref{app:mpQP:compatability:assumption} is a restriction on the set
+of parameters for which~\eqref{app:mpQP:primal} has a solution of the form~\eqref{app:mpQP:solution}.
+%
+In our setup we deal with multi stage min-max programs, so that the parameter is the optimiser 
+of a previous optimisation problem and~\eqref{app:mpQP:compatability:assumption} can be ensured. 
+%
+The constraint introduced for that purpose is called \emph{compatibility constraint}. 
 
-\section{Recursive Multi-Parametric Quadratic Programming to Solve Min-Max Programs}
 
-\section{Solving Min-Max Programs}
+The optimal cost is then given by
+%
+\begin{equation}\label{app:mpQP:cost:to:go}\begin{split}
+  V_{\hat{\mathcal A}}(\theta_0) = &\frac{1}{2}\theta^T_0 M_\theta^T Q M_\theta \theta_0 + \left(m^TQM_\theta + q^TM\right) \theta_0\\ 
+  &+\left( \frac{1}{2} m^T Q m + q^T m\right)\\
+  =&\frac{1}{2} \theta^T_0 Q_\theta \theta_0 + q^T_\theta \theta_0 + d_\theta,
+\end{split}\end{equation}
+%
+i.e. a quadratic function in the parameter.
+%
+Next we want to solve
+%
+\begin{equation}\label{mpQP:second:stage}
+  J_{\mathcal A,\hat{\mathcal A}}(\phi_0) = \left\{\begin{array}{rl}
+  \min_\theta & \frac{1}{2}\theta^TR\theta + r^T\theta + V_{\hat{\mathcal A}}(\theta)\\
+  \text{s.t.} & C_{\mathcal A}\theta = e_{\mathcal A} + T_{\mathcal A} \phi
+  \end{array}\right.
+\end{equation}
+%
+where the constraints include the compatibility constraints~\eqref{app:mpQP:compatability:assumption} if necessary. 
+%
+Since we know, that the optimal cost-to-go $V(\theta)$ has the structure~\eqref{app:mpQP:cost:to:go},
+the first order constraints of~\eqref{mpQP:second:stage} reduce to
+%
+\begin{equation}\label{mpQP:second:stage:conditions}
+  \begin{array}{ccccccc}
+    (R + Q_\theta)\theta &+& C^T_{{\mathcal A}}\eta & = & -q_\theta-r && \\
+    C_{{\mathcal A}} \theta & & & = & e_{{\mathcal A}}& +& T_{{\mathcal A}}\phi_0
+  \end{array}
+\end{equation}
+%
+which yields the solution
+%
+\begin{equation}
+  \begin{split}
+  \theta_0 &= K_\phi \phi_0 + k\\
+  \eta_0 &= O_\phi \phi_0 + O_{\hat\beta} \hat\beta + o
+  \end{split}
+\end{equation}
+%
+with the dual variable~$\eta_0$, as long as $R+Q_\theta>0$.
 
-\section{Example II}
+Notice that~\eqref{app:mpQP:compatability:assumption} is only nontrivial if~$A_{\hat{\mathcal A}}$ is degenerate.
+%
+Since~\eqref{app:mpQP:compatability:assumption} defines a constraint in~\eqref{mpQP:second:stage} it will have a dual
+variable~$\zeta$, in order to guarantee continuity of~$\lambda$ we define $\beta=\zeta$.
+%
+This implies that if $A_{\hat{\mathcal A}}$ is rank deficient the optimal dual variable $\lambda$
+depends continuously on~$\phi$.
+%
+\subsection{Line Search to Update Active Set}\label{ssec:line:search}
+%
+In order to compute the solution for the parameter~$\phi = \phi^\ast$ we perform a line-search in order
+to determine the set of active constraints at $\phi = \phi^\ast$.
+%
+For this we notice that we have an affine formulation of all optima with respect to~$\phi$, i.e.
+%
+\begin{equation}\label{mpQP:affine:parameterisation}
+  \begin{array}{rcl} 
+  \theta(\phi) &=&K_\phi \phi + k\\
+  \eta(\phi,\hat \beta) &=& O_\phi \phi + O_{\hat\beta}\hat\beta + o\\
+  x(\phi) &=& M_\theta K_\phi \phi + (M_\theta k+ m)\\
+  \lambda(\phi, \hat\beta) &=& (N_\theta K_\phi + N_\beta O^\zeta_\phi)\phi + 
+  N_\beta O^\zeta_{\hat\beta}\hat\beta\\ & &+ (N_\theta k + N_\beta o^\zeta + n) .
+  \end{array}
+\end{equation}
+%
+The dependency on $\hat\beta$ remains if the initial stage~\eqref{mpQP:second:stage} is degenerate.
+%
+We can use~\eqref{mpQP:affine:parameterisation} to determine the set of active constraints along the line
+%
+\begin{equation}
+  \phi(\alpha) = \phi_0 + \alpha(\phi^\ast-\phi_0)
+\end{equation}
+%
+that means that the first change in the set of active constraints is the one associated with smallest
+value~$\alpha^\ast$ to produce an equality in
+%
+\begin{equation}\label{mpQP:conditions:for:the:line:search}
+  \begin{split}
+  \eta(\phi(\alpha),0)&\geq0\\
+  \lambda(\phi(\alpha),0)&\leq0\\
+  C_{\mathcal I}\theta(\phi(\alpha))&\leq e_{\mathcal I} + T_{\mathcal I}\phi(\alpha)\\
+  A_{\hat{\mathcal I}}x(\phi(\alpha))&\leq b_{\hat{\mathcal I}}+S_{\hat{\mathcal I}}\theta(\phi(\alpha)).
+  \end{split}
+\end{equation}
+%
+After updating the active set $\mathcal A$ and $\hat{\mathcal A}$ accordingly the optimisation sequence~\eqref{app:mpQP:primal}
+and~\eqref{mpQP:second:stage} are re-solved and the line search can be performed with updated affine 
+parametrisations~\eqref{mpQP:affine:parameterisation} starting the line at~$\phi_0=\phi(\alpha^\ast)$.
+
+
+Notice that in~\eqref{mpQP:conditions:for:the:line:search} we set $\hat \beta=0$, this is justified in
+most cases because the existence of a non-trivial dependence on~$\hat\beta$ implies that $\theta$ is uniquely
+defined by the constraints (assuming the constraints are non-redundant), so that $\phi$ is fixed by constraints.
+%
+\subsection{Degeneracy in Initial Stage}\label{ssec:degeneracy}
+%
+When the dependence on~$\hat\beta$ is non-trivial two or more constraints on the first minimisation~\eqref{mpQP:second:stage}
+are linearly dependent,
+% 
+i.e. there exists an $i^\ast\in\mathcal A$ such that the solution
+to the first optimisation is unchanged if $i^\ast$ is removed from the set of active constraints while all
+constraints are still satisfied, that is $J_{\mathcal A\setminus \{i^\ast\},\hat{\mathcal A}}(\phi)=J_{\mathcal A,\hat{\mathcal A}}(\phi)$
+while $C_{i^\ast}\theta(\phi)=e_{i^\ast}+T_{i^\ast}\phi$ and $C_{\mathcal I}\theta<e_{\mathcal I}+T_{\mathcal I}\phi$.
+%
+In order to determine the constraint~$i^\ast$ that can be removed from the active set we look at the dual
+problem and its dependence on~$\hat\beta$.
+%
+\begin{multline}
+  J_{\mathcal A,\hat{\mathcal A}}^d(\phi) = \max_\eta -\frac{1}{2} (c_\theta+C^T_{\mathcal A}\eta)^T(R+Q_\theta)^{-1}
+  (c_\theta+C^T_{\mathcal A}\eta)\\
+  -(e_{\mathcal A}+T_{\mathcal A}\phi)^T \eta+ d_\theta.
+\end{multline}
+%
+From first order conditions~\eqref{mpQP:second:stage:conditions} we know that 
+$\eta = O_\phi\phi+O_{\hat\beta}\hat\beta+o$ with~$C^T_{\mathcal A}O_{\hat\beta}=0$, hence we have
+%
+\begin{equation}\label{mpQP:linesearch:degenerate:constraints:beta}
+  J_{\mathcal A,\hat{\mathcal A}}^d(\phi) = \left\{\begin{array}{rcl}
+  \max_{\hat\beta}& &\mathcal C(\phi) -(e_{\mathcal A}+T_{\mathcal A} \phi)^TO_{\hat\beta}\hat\beta\\
+  \text{s.t.}& &O_\phi\phi+O_{\hat\beta}\hat\beta+o\geq0
+  \end{array}\right.
+\end{equation}
+where $\mathcal C(\phi)$ is a constant which depends only on $\phi$. 
+%
+Maximisation~\eqref{mpQP:linesearch:degenerate:constraints:beta} is a regular linear program in~$\hat\beta$.
+
+
+A standard non-degeneracy assumption for active-set solvers is that only one constraint is affected at each line-search
+iteration, this means that when constraints become degenerate the null-space~$\ker C_{\mathcal A}$ is
+one-dimensional, furthermore no additional constraints may be activated since~$\phi$ is already fixed by
+the constraints.
+%
+This implies that~\eqref{mpQP:linesearch:degenerate:constraints:beta} is a scalar linear program, since
+$O_{\hat\beta}$ parametrises the null-space of $\ker C_{\mathcal A}$.
+%
+We conclude that no more than two constraints are candidates to be deactivated in order to remove the degeneracy
+of the constraints, namely the ones corresponding to the maximal and minimal $\hat\beta=
+-\frac{O_\phi\phi+o}{O_{\hat\beta}}$.
+%
+After deactivating the constraint corresponding to the maximiser of~\eqref{mpQP:linesearch:degenerate:constraints:beta},
+the line-search can be continued without redundancy.
+
+
+Notice that here we only deal with a single stage problem, that is we have a recursion of one
+maximisation and one minimisation, however all methods discussed here translate one-to one-to the
+case where more min-max programs are concatenated recursively, as in multi stage min-max control.
+%
+%
+%
+%
+\section{Solving Min-Max Programs}\label{sec:solving:min:max:programs}
+
+In this section we apply the results derived in the previous section to the considered min-max robust
+control problem~\eqref{seq:general:problem:statement}. 
+%
+For the case that the set of active constraints is known, we define a recursion that provides a 
+closed solution for~\eqref{seq:general:problem:statement}.
+%
+We first express~\eqref{seq:general:problem:statement} in the form
+%
+\begin{subequations}\label{eq:the:problem:reformulated}%
+\begin{equation}
+  J_{m}^\ast(x) = \min_u \max_{w,x^+} \tfrac{1}{2}\bigl(\norm{x}_Q^2+\norm{u}_R^2-\gamma^2
+    \norm{w}^2\bigr) + J_{m-1}^\ast(x^+)
+\end{equation}
+%
+subject to
+%
+\begin{gather}
+  x^+ = A x + B u + D w
+\\
+\label{eq:dist:cons}
+  G w \leq  H(x,u)
+\\
+\label{eq:state:constraints}
+  {\bf{\Xi}}^x_m x + {\bf{\Xi}}^u_m u \leq {\bf{\xi}}_m
+\\
+  \hat C_m x^+ = - {\bf{1}}
+\\
+  C_m^x x + C_m^u u  = {\bf{1}}
+\end{gather}
+\end{subequations}
+%
+with~$J_0^\ast(x^+) = \frac{1}{2}\|x^+\|_{P_0}^2$, $m=1,\dots,N$ and $H(x,u)=\max_k\{{\bf{H}}_k^x x + {\bf{H}}_k^u u+ {\bf{h}}_k\}$. 
+%
+We split the sequence of  min-max problems into a sequence of multi-parametric 
+quadratic programs. Starting with the maximisation at stage $m=1$ and using a backward sweep approach
+(see e.g.~\cite{Bryson:1975}, this yields
+%
+\[
+  \hat J_m^\ast(x,u) = \left\{\begin{split}
+    \max_{w,x^+}\ & {-\frac{\gamma^2}{2}}\norm{w}^2 + J_{m-1}^\ast(x^+)\\
+    \text{s.t. }\  & \begin{array}[t]{rcl}
+    Gw & \leq & H(x,u)\\
+    x^+ & = & Ax + Bu + Dw\\
+    \hat C_m x^+ &=& -{\bf{1}}
+    \end{array}
+    \end{split}\right.
+\]
+%
+and
+%
+\[
+  J_m^\ast(x) = \left\{\begin{split}
+    \min_{u}\ & \frac{1}{2}\left(\norm{x}^2_Q + \norm{u}_R^2\right) + \hat J_m^\ast(x,u)\\
+    \text{s.t.}\ & \begin{array}[t]{ccccl}
+    {\bf{\Xi}}^x_m x &+& {\bf{\Xi}}^u_m u &\leq &{\bf{\xi}}_m\\
+    C_m^x x &+ & C^u_m u & = & {\bf{1}}
+    \end{array}
+    \end{split}
+    \right.
+\]
+%
+Suppose the active set is given, i.e.~it is known which inequality constraints hold with equality. 
+%
+For notational convenience we denote active inequalities with $(\cdot)^\prime$ in this section rather than 
+$(\cdot)_{\mathcal A_m}$, e.g.  $({\bf{\Xi}}^x_m)^\prime x + ({\bf{\Xi}}^u_m)^\prime u = {\bf{\xi}}_m^\prime$. 
+%
+Given that $J^\ast_0(x^+) = \frac{1}{2}\|x^+\|_{P_0}^2$, compatibility constraints are not necessary at 
+stage $m=1$ and the maximisation problem is given by:
+%
+\[
+  \hat J_1^\ast(x,u) = \left\{\begin{split}
+  \max_{w,x^+} \ & {-\frac{\gamma^2}{2}}\norm{w}^2 + J_{0}^\ast(x^+)\\
+  \text{s.t. }\ & 
+  \underbrace{\left(\begin{array}{cc}
+  G^\prime & 0 \\ -D & I
+  \end{array}\right)}_{\bar H}
+  \left(\begin{array}{c}w\\ x^+\end{array}\right)
+  \\&= \underbrace{\left(\begin{array}{cc}W_1^x & W_1^u \\ A & B\end{array}\right)}_{
+  \bar S
+  }
+  \left(\begin{array}{c}x \\ u \end{array}\right) + \underbrace{\left(\begin{array}{c}
+  w_1^c \\ 0\end{array}\right)}_{\bar f}
+  \end{split}\right.
+\]
+%
+with $W_m^x = ({\bf{H}}_{{\bf{k}}_m^\ast}^x)^\prime, W_m^u = ({\bf{H}}_{{\bf{k}}_m^\ast}^u)^\prime $ 
+and $w_m^c = ({\bf{h}}_{{\bf{k}}_m^\ast})^\prime$ denoting the active affine terms of the right hand side 
+of~\eqref{eq:dist:cons} at stage~$m$.
+%
+Using the results discussed in the previous section we obtain
+%
+\[
+      \left(\begin{array}{c}
+      w^\ast \\
+      x^{+,\ast} \\
+      \eta^\ast \\
+      \lambda^\ast
+      \end{array}\right) = \left(\begin{array}{c}M^w_z\\ M^{x^+}_z \\ N^{\eta}_z \\ N^{\lambda}_z
+      \end{array}\right)\underbrace{\left(\begin{array}{c}x\\ u\end{array}\right)}_z + 
+      \left(\begin{array}{c}0\\ 0 \\ N^{\eta}_{\hat\beta} \\ N^{\lambda}_{\hat\beta}
+      \end{array}\right)\hat\beta + \left(\begin{array}{c}m^w\\ m^{x^+} \\ n^{\eta} \\ n^{\lambda}
+      \end{array}\right)
+\]
+%
+where $\eta^\ast$ denotes the dual variable to the active inequality constraints and hence must
+be non-negative, i.e.~$\eta^\ast\geq0$. 
+%
+Notice that to avoid overloaded notation we have omitted the stage indices.
+%
+The cost-to-go for the minimisation problem at stage $m=1$ is
+%
+\[
+  \hat J_1^\ast(z) = \frac{1}{2}z^T
+    \hat Q_1 z + c_1 z + d_1
+\]
+%
+and the compatibility constraint is given by
+%
+\begin{equation}\label{prototype:compatibility:conditions}
+  N_{\hat\beta}^T(\bar S z + \bar f) = 0,
+\end{equation}
+%
+i.e. $C_1^x$ and $C_1^u$ enforce a row wise normalised version of~\eqref{prototype:compatibility:conditions}.
+%
+Hence the minimisation problem at $m=1$ becomes
+%
+\[
+  J_1^\ast(x) = \left\{\begin{split}
+  \min_{u} \ & \frac{1}{2}\left(\norm{x}^2_Q + \norm{u}_R^2\right) + \hat J_{1}^\ast(x,u)\\
+    \text{s.t.} \ & 
+    \underbrace{\left(\begin{array}{c}
+    ({\bf{\Xi}}_1^u)^\prime \\ C_1^u
+    \end{array}\right)}_{\bar C}
+    u
+    = \underbrace{\left(\begin{array}{c}-({\bf{\Xi}}^x_1)^\prime \\ -C_1^x\end{array}\right)}_{
+    \bar T
+    }x + 
+    \underbrace{\left(\begin{array}{c}{\bf{\xi}}_1^\prime\\  {\bf{1}} \end{array}\right)}_{\bar e}
+    \end{split}\right.
+\]
+%
+and its solution is given by
+%
+\[
+  \left(\begin{array}{c}
+  u^\ast \\
+  \nu^\ast \\
+  \hat\zeta^\ast
+  \end{array}\right) = \left(\begin{array}{c}K^u_x\\ L^{\nu}_x \\ L^{\hat\zeta}_x
+  \end{array}\right)x + 
+  \left(\begin{array}{c}0\\ L^{\nu}_\beta \\ L^{\hat\zeta}_{\beta}
+  \end{array}\right)\beta + \left(\begin{array}{c}k^u\\ l^{\nu} \\ l^{\hat\zeta}
+  \end{array}\right).
+\]
+%
+For completeness the $m=2$ maximisation and its solution are given as
+%
+\begin{gather*}
+  \hat J_2^\ast(x,u) = \left\{\begin{split}
+  \max_{w,x^+} \ & {-\frac{\gamma^2}{2}}\norm{w}^2 + J_{1}^\ast(x^+)\\
+  \text{s.t. }\ & 
+  \underbrace{\left(\begin{array}{cc}
+  G^\prime & 0 \\ -D & I \\
+  0 & \hat C_2
+  \end{array}\right)}_{\bar A}
+  \left(\begin{array}{c}w\\ x^+\end{array}\right)
+  \\&= \underbrace{\left(\begin{array}{cc}W_m^x & W_m^u \\ A & B \\ 0 & 0\end{array}\right)}_{
+  \bar S
+  }
+  \left(\begin{array}{c}x \\ u \end{array}\right) + \underbrace{\left(\begin{array}{c}
+  w_m^c \\ 0 \\ {\bf{1}}\end{array}\right)}_{\bar b}
+  \end{split}\right.
+\\
+  \left(\begin{array}{c}
+  w^\ast \\
+  x^{+,\ast} \\
+  \eta^\ast \\
+  \lambda^\ast\\
+  \zeta^\ast
+  \end{array}\right) = \left(\begin{array}{c}M^w_z\\ M^{x^+}_z \\ N^{\eta}_z \\ N^{\lambda}_z \\ N^{\zeta}_z
+  \end{array}\right)z + 
+  \left(\begin{array}{c}0\\ 0 \\ N^{\eta}_{\hat\beta} \\ N^{\lambda}_{\hat\beta} \\ N^\zeta_{\hat\beta}
+  \end{array}\right)\hat\beta + \left(\begin{array}{c}m^w\\ m^{x^+} \\ n^{\eta} \\ n^{\lambda}\\ n^\zeta
+  \end{array}\right)
+\end{gather*}
+%
+where $\hat C_2 x = {\bf{1}}$ is a normalised version of $L^T_\beta(\bar T x + \bar e) = 0$.
+All subsequent minimisations and maximisations can be solved analogously provided the active set is
+known.
+%
+\subsection{Line Search with Piecewise Affine Disturbance Set}
+%
+In order to solve the multi-stage problem for a given system state~$x^\ast$ we perform a line search
+form a known active-set~${\bar{\mathcal A}} = \{\mathcal A_N,\hat {\mathcal A}_N,\dots,\hat{\mathcal A}_1\}$
+as described in section~\ref{ssec:line:search}.
+%
+To determine the active right hand side of~\eqref{eq:dist:cons}, i.e. ${\bf{k}}^\ast_m$, we use a similar line 
+search based approach.
+%
+In the sequel of this section we assume that the origin is an interior point of the disturbance set for vanishing
+states and inputs, i.e.~$0<H(0,0)$ which implies $b_{{\bf{k}}^\ast}>0$ at the origin, this is important in order to guarantee
+the non-degeneracy of the problem, at the origin $x=0$ no constraints are active.
+%
+We use the affine representation of the optimal state and input at stage $k$ with respect to the initial 
+state~$x_N$ denoted by $x_m = \Psi_m^x x_N + \psi_m^x$ and $u_k = \Psi_m^u x_N + \psi_m^u$ respectively.
+%
+Performing a line search along $x_N$ we can reduce $H(x_m(\alpha),u_m(\alpha))$ to 
+%
+\[
+\begin{split}
+  H_i(x_m(\alpha),u_m(\alpha)) &= \begin{aligned}[t] \max_j\{ & \left(H^x_{i,j} \Psi^x_m
+          +H^u_{i,j}\Psi^u_m\right)x_N(\alpha)\\
+        & + \left(H^x_{i,j} \psi^x_m +H^u_{i,j}\psi^u_m + h_{i,j}\right) \}
+        \end{aligned}\\
+  &=\max_j f_j\alpha + g_j
+  \end{split}
+\]
+%
+which we can rewrite as
+%
+\begin{equation}\label{eq:definition:as:mpLP}
+  H_i(x_m(\alpha),u_m(\alpha)) = \left\{\begin{array}{rcl} \min_{(t,\alpha)}& &t\\
+  \text{s.t.}& &f_j\alpha+g_j \leq t\; \forall j.\\
+  & &0\leq\alpha\leq1
+  \end{array}\right.
+\end{equation}
+%
+Thus the elementwise determination of the active affine representation is a multi-parametric linear program
+(see e.g.~\cite{Gal:1995}) that has to be solved in every active set update in order to provide the active solution.
+%
+This can be done by computing the vertices of $\mathcal H = \{(t,\alpha):0\leq\alpha\leq1\wedge f_j\alpha+g_j
+\leq t\;\forall j\}$ and ordering the vertices such that $0=\alpha_1\leq\alpha_2\leq\dots$ the solution that 
+has to be considered in the line search is then given by the one corresponding to $\alpha_2$.
+%
+The active indices of the right hand side~${\bf{k}}^\ast_m$ can be included in the list of active indices~$\bar{\mathcal A}=\{
+\mathcal A_N,(\hat{\mathcal A}_N,{\bf{k}}^\ast_N),\dots,\mathcal A_1,(\hat{\mathcal A}_1,{\bf{k}}^\ast_1)\}$.
+%
+Notice that although $\bar{\mathcal A}$ needs to be updated by performing the line search discussed in 
+section~\ref{ssec:line:search} and solving the scalar mpLP~\eqref{eq:definition:as:mpLP}, the recursion solving
+equality constrained mpQPs discussed in section~\eqref{ssec:recursive:mpQP} does not need to be performed when
+some~${\bf{k}}^\ast_m$ changes for an inactive constraint, i.e. only when $W_m^x$, $W_m^u$ and $w_m^c$ change the
+recursion has to be solved again.
+%
+Since the solution to the min-max problem is obtained recursively an update of $\hat{\mathcal A}_m$ only
+affects the solution to mpQPs at higher stages, i.e. $J_m^\ast$ and all $\hat J_i^\ast$, $J_i^\ast$ have to be
+solved for $m< i\leq N$. 
+%
+This allows us to reduce the computational workload carried out online. 
+%
+In the next section the complexity of the presented algorithm is discussed.
+%
+%
+%
+\section{Complexity}\label{sec:complexity}
+%
+For a given active set~$\bar{\mathcal A}$ at most $2N$ mpQPs must be solved, and this is done by decomposing the
+problem as stated in section~\ref{sec:solving:min:max:programs}. 
+%
+For each mpQP the main computational effort is to determine $\Sigma$ in~\eqref{seq:sigma}. 
+%
+In the case of~\eqref{eq:sigma:normal} this requires a QR
+decomposition with $2(mn^2-n^3/3)$ floating point operations (flops, see e.g.~\cite{Golub:1996}), 
+where $m$ is the number of active constraints and $n$ the number of
+optimisation variables, plus inversion of a triangular matrix with $(m^3-m)/6$ flops and several matrix
+multiplications with $mpn$ flops (for the multiplication of a $m\times n$ matrix with a $n\times p$
+matrix). 
+%
+The computationally more expensive case of~\eqref{eq:sigma:degen} requires a QR decomposition,
+inversion of a definite matrix $W$ using Cholesky decomposition with $n^3/3$ flops, inversion of a triangular
+matrix, several matrix multiplications and additions with $mn$ flops, and inversion of a definite matrix
+$\Delta$. 
+%
+In the worst case this adds up to at most $11n^3+n^2-n/3$ flops to obtain $\Sigma$. 
+%
+The solution to
+the problem is then the result of a matrix multiplication, and, in order to be able to solve the subsequent
+mpQP, the matrix $W_\theta$ and the vector $c_\theta$ also need to be computed. Hence the overall flop count
+in the worst case adds up to $11n^3+n^2+2/3n+2n^2 n_\theta$, where $n_\theta$ denotes the dimension of the
+parameter~$\theta$. 
+%
+In the worst case the
+recursion for the entire horizon therefore requires $N(2 n_x+5 n_x^2+101 n_x^3+8 n_x^2 (n_u+n_x))$ flops.
+
+The number of active set changes needed to obtain the active set corresponding to the current plant state
+is necessarily finite, since this number cannot exceed the total number of possible active sets. 
+%
+However upper bounds on this number are unrealistically large (except in pathological cases) and hence of 
+little use in bounding the number of times that the recursion of Section~\ref{sec:recursive:mpQP:via:line:search} 
+needs to be solved. 
+%
+Instead we give the typical execution time for an example system with an implementation in MATLAB  in 
+section~\ref{sec:example:II}.
+%
+
+
+\section{Example II}\label{sec:example:II}
+
+Using the levitating ball system introduced in section~\ref{sec:example:I} we calculate stage wise state constraints
+and solve the recursive min-max problem.
+%
+We perform a cold started line search from $x_a=(0,0)$ to the outer bound of the constraint set at $x_e=(1,-30)$, 
+the resulting trajectories at the boundaries of individual active sets are plotted in Figure~\ref{fig:plot}.
+%
+The weights chosen for this experiment are~$Q=\text{diag}(2,1)$, $R=1$ and $\gamma^2=1175$.
+%
+The simulation was implemented in MATLAB using only non-optimised built-in functions for the main computational
+purposes. 
+%
+In the simulation illustrated in Fig.~\ref{fig:plot} a total of $10$ iterations were required,
+of which $7$ correspond to changes of the dominating right hand side of $\mathcal W(x,u)$, for which no
+recomputation of the solution is necessary.
+%
+For $x_e$ on the boundary of the feasible set the solution time is less than $0.5\, \text{s}$ in total 
+(using a MacBook Pro with a $2.3\,\text{GHz}$ quad-core processor).
+%
+Figure~\ref{fig:computation:times} illustrates the dependency of the computation times on the horizon length~$N$.
+
+\begin{figure}
+\centering
+\includegraphics[width=\columnwidth]{myplot}
+\caption{Projected stage constraints $\mathcal X_i, i=1,\dots,N$ in red. Trajectories
+at the active set changes and on the boundary in blue.}
+\label{fig:plot}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=\columnwidth]{ComputationTimes.pdf}
+\caption{The \textcolor[rgb]{0,0,1}{blue points} show the overall computation time from a cold start 
+at~$x_a=(0,0)$ to the boundary of the feasible set. The \textcolor[rgb]{0,.6,0}{green points} show the slowest recursion
+performed which approximately is linear.}
+\label{fig:computation:times}
+\end{figure}
+
 
 % needed in second column of first page if using \IEEEpubid
 %\IEEEpubidadjcol
@@ -1211,13 +2140,6 @@ The conclusion goes here.
 
 
 \appendices
-\section{Proof of the First Zonklar Equation}
-Appendix one text goes here.
-
-% you can choose not to have a title for an appendix
-% if you want by leaving the argument blank
-\section{}
-Appendix two text goes here.
 
 
 % use section* for acknowledgment
