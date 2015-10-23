@@ -593,8 +593,16 @@ To initialise the cost-to-go we use $J_0^\ast(x) = \frac{1}{2}x^T P_0x$, which i
 controller~$K$ as the optimal unconstrained solution to~\eqref{seq:general:problem:statement}, i.e. they satisfy
 $J_0^\ast(x) - J_0^\ast(x^+)\geq J(x,Kx,w)$, see e.g.~\cite{Boyd:94}.
 %
-The properties of the disturbance constraints~\eqref{eq:disturbance:constraints} will be discussed
-in section~\ref{sec:p:convex:sets}.
+Both input and state constraint sets are assumed polyhedral $U=\{u:F_iu\leq1\forall i\in\mathcal I_U\}$ and $\mathcal X = 
+\{x:\genmat_i x\leq \genvec_i\forall i\in\mathcal I_{\mathcal X}\}$.
+%
+For the disturbance set~\eqref{eq:disturbance:constraints} we assume that there exists a piecewise affine representation
+%
+\begin{equation}\label{eq:definition:disturbance:set:explicit}
+  \mathcal W(x,u) = \{w:G_i w\leq\max_{k}\{H_{i,k}^x x + H_{i,k}^u + h_{i,k}\}\forall i\in\mathcal I_{\mathcal W}\}.
+\end{equation}
+%
+The properties of such sets will be discussed in section~\ref{sec:p:convex:sets}.
 %
 %
 %
@@ -1036,7 +1044,7 @@ $\Psi x + v \in\mathcal X_N$ for all $v\in\mathcal V(x)$ and hence $\mathcal X_N
 \begin{thm}\label{thm:finite:MRPI:set:state:dependable}
 Let the state constraint set $\mathcal X$ be contained in a band: $\mathcal X\subseteq B=\{x:\Gamma x\leq{\bf{1}}\wedge 
 -\Gamma x\leq{\bf{1}}\}$, let the pair $(\Psi,\Gamma)$ be observable and let $\mathcal V(x)=D\mathcal W(x)$ with 
-$\mathcal W(x)$ defined by~\eqref{eq:definition:PWA:polytopic:set:general}. 
+$\mathcal W(x)$ defined by~\eqref{eq:definition:disturbance:set:explicit}. 
 %
 Then $\mathcal X_N\subseteq \mathcal X_{N+1}$ for a finite $N$, and hence the MRPI set $\mathcal X^\infty =\mathcal X_N$ 
 is a polytope.
@@ -1151,21 +1159,23 @@ which implies that we can get the upper bound $r_3\leq\frac{\sqrt{n}}{\underline
 In order to obtain an estimate on $r_2$ we follow a similar argumentation:
 %
 \begin{multline}
-  \bar\sigma({\bf{c}})\norm{x}+\norm{{\bf{b}}}
-  \geq\bar\sigma({\bf{c}}_{k^\ast})\norm{x}+\norm{{\bf{b}}_{k^\ast}}\\
-  =\max_k\{\bar\sigma({\bf{c}}_k)\norm{x}+\norm{{\bf{b}}_k}\}
-  \geq\norm{\max_k\{{\bf{c}}_{\mathscr{A}_i,k} x + {\bf{b}}_{{\mathscr{A}_i},k}\}}\\ 
-  =\norm{{\bf{a}}_{\mathscr{A}_i}v_i} \geq\underline\sigma({\bf{a}}_{\mathscr A_i})\norm{v_i}
-  \geq\underline\sigma({\bf{a}})\norm{v_i}.
+  \bar\sigma(\bar{\bf{H}})\norm{x}+\norm{{\bf{h}}}
+  \geq\bar\sigma(\bar{\bf{H}}_{k^\ast})\norm{x}+\norm{{\bf{h}}_{k^\ast}}\\
+  =\max_k\{\bar\sigma(\bar{\bf{H}}_k)\norm{x}+\norm{{\bf{h}}_k}\}
+  \geq\norm{\max_k\{\bar{\bf{H}}_{\mathscr{A}_i,k} x + {\bf{h}}_{{\mathscr{A}_i},k}\}}\\ 
+  =\norm{{\bf{G}}_{\mathscr{A}_i}v_i} \geq\underline\sigma({\bf{G}}_{\mathscr A_i})\norm{v_i}
+  \geq\underline\sigma({\bf{G}})\norm{v_i}.
 \end{multline}
+%
+with $\bar{\bf{H}} = ({\bf{H}}^x + {\bf{H}}^u K)$.
 %
 Notice that with only the assumptions made in Lemma~\ref{thm:finite:MRPI:set:state:dependable}
 we have no way to bound~$\norm{x}$ in order to obtain an upper bound on~$r_2$,
 however, if we assume that~$\mathcal X_p$ is not empty we can use the bound on~$\mathcal X_p$, i.e.~$r_3$.
 %
 This is reasonable since we are interested in the asymptotic behaviour of the set rather than
-exact bounds on intermediate iterates, hence $r_2\leq\frac{\bar\sigma({\bf{c}})r_3+\norm{{\bf{b}}}}
-{\underline\sigma({\bf{a}})}$ can be used as an estimate for the asymptotic behaviour of $\mathcal V(x)$
+exact bounds on intermediate iterates, hence $r_2\leq\frac{\bar\sigma(\bar{\bf{H}})r_3+\norm{{\bf{h}}}}
+{\underline\sigma({\bf{G}})}$ can be used as an estimate for the asymptotic behaviour of $\mathcal V(x)$
 in the iteration.
 %
 All bounds and estimates on $r_1,\,r_2$ and $r_3$ can be calculated in advance to get an estimate
