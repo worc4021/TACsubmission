@@ -1359,8 +1359,8 @@ The algorithm for computing the MRPI set terminates after 3 iterations.
 \section{Recursive Multi-Parametric Quadratic Programming to Solve Min-Max Programs}\label{sec:recursive:mpQP:via:line:search}
 
 
-In this section we discuss how multi-parametric quadratic programs (mpQP) can be solved efficiently with an active-set 
-solver (see e.g.~\cite{Fletcher:1987}).
+In this section we discuss how multi-parametric quadratic programs (mpQP, see e.g.~\cite{Tondel:2003,Bemporad:2002} 
+for elaborate discussions) can be solved efficiently with an active-set solver (see e.g.~\cite{Fletcher:1987}).
 %
 The active set of constraints will be determined by a line-search, we will also deal with \emph{degenerate
 constraints}, which can arise during the line-search.
@@ -1439,7 +1439,7 @@ To solve~\eqref{app:mpQP:primal} we solve the first order optimality conditions
   \end{array}
 \end{equation}
 %
-It can be shown (see~\cite{Schaich:NMPC:2015}) that the solution of~\eqref{app:kkt:conditions} has the structure
+which we can solve explicitly.
 %
 \begin{thm}\label{lem:mpQP:solution}
 The solution of~\eqref{app:kkt:conditions} has the representation
@@ -1717,7 +1717,7 @@ with~$J_0^\ast(x^+) = \frac{1}{2}\|x^+\|_{P_0}^2$, $m=1,\dots,N$ and $H(x,u)=\ma
 %
 We split the sequence of  min-max problems into a sequence of multi-parametric 
 quadratic programs. Starting with the maximisation at stage $m=1$ and using a backward sweep approach
-(see e.g.~\cite{Bryson:1975}, this yields
+(see e.g.~\cite{Bryson:1975}), this yields
 %
 \[
   \hat J_m^\ast(x,u) = \left\{\begin{split}
