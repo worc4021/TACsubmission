@@ -512,7 +512,24 @@ IEEEtran, journal, \LaTeX, paper, template.
 % 
 % Here we have the typical use of a "T" for an initial drop letter
 % and "HIS" in caps to complete the first word.
-\IEEEPARstart{T}{hroughout} this paper we denote by $f\vert_{\mathcal C} = \{y:\exists x\in\mathcal C\;y=f(x)\}$
+
+Robust model predictive control (RMPC) methods compute control laws for uncertain systems that optimise a 
+performance criterion for all possible realisations of the uncertainties.
+%
+One major challenge in RMPC is to guarantee feasibility of the problem for all possible uncertainties in 
+presence of state constraints.
+%
+This can be achieved by introducing specifically designed constraints in such a way that at the
+end of the control horizon the system state is contained in a set that is feasible and invariant for all
+possible realisations of uncertainty and for a given feedback controller, in particular the largest such set, 
+the so called \emph{maximal robust positive invariant} (MRPI) set.
+%
+Although this concept was introduced shortly after Witsenhausen proposed the use of a game theoretic approach
+to robust model predictive control in~\cite{Witsenhausen:1968} by several authors~\cite{Bertsekas:1971,Glover:1971},
+it took over two decades before the first MRPI sets could be algorithmically determined.
+
+
+Throughout this paper we denote by $f\vert_{\mathcal C} = \{y:\exists x\in\mathcal C\;y=f(x)\}$
 the image of $\mathcal C$ under the map $f$, for polytopes defined by intersection of the halfspaces 
 $a_i x \leq b_i$ for $i\in\{1,\dots,m\}$ we denote the matrix~${\bf{a}}_{\mathcal I}$ and vector~
 ${\bf{b}}_{\mathcal I}$ with the rows $a_i$ and $b_i$ for all indices in the index set $i\in\mathcal 
