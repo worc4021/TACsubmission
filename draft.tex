@@ -526,8 +526,17 @@ the so called \emph{maximal robust positive invariant} (MRPI) set.
 %
 Although this concept was introduced shortly after Witsenhausen proposed the use of a game theoretic approach
 to robust model predictive control in~\cite{Witsenhausen:1968} by several authors~\cite{Bertsekas:1971,Glover:1971},
-it took over two decades before the first MRPI sets could be algorithmically determined.
+it took over two decades before the first MRPI sets could be algorithmically determined explicitly.
+%
+The main contribution of this paper is to discuss the use of parametrised sets to model uncertainties, as a parameter
+we use the state and the input allowing us to model linearisation errors and multiplicative uncertainties in an 
+additive way.
+%
+We develop the abstract and computational tools necessary to characterise and determine these sets, we introduce the 
+concept of \emph{parametric convexity} which is essential in order to obtain convex MRPI and controllable sets.
 
+
+The algorithmic solution of RMPC problems suffered a similar history as the MRPI sets did, 
 
 Throughout this paper we denote by $f\vert_{\mathcal C} = \{y:\exists x\in\mathcal C\;y=f(x)\}$
 the image of $\mathcal C$ under the map $f$, for polytopes defined by intersection of the halfspaces 
