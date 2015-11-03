@@ -516,6 +516,18 @@ IEEEtran, journal, \LaTeX, paper, template.
 Robust model predictive control (RMPC) methods compute control laws for uncertain systems that optimise a 
 performance criterion for all possible realisations of the uncertainties.
 %
+Introduced by~\cite{Witsenhausen:1968} the RMPC problem is formulated as a sequence of games, the
+adversary maximises the effect the disturbance has on the objective and the controller solves the optimal
+control problem for the worst-case system.
+%
+We discuss the \emph{closed-loop setup}, i.e. at each stage along the horizon the adversary tries to perturb the system
+in a way that produces the maximal stage cost and cost-to-go, the controller computes the minimiser for each stage
+reacting at each stage to the disturbance.
+%
+Algorithmically the closed-loop setup covers the \emph{open-loop setup}, where the disturbance is allowed to perturb the 
+entire trajectory before the controller is allowed to react, since this can be understood as a horizon one closed loop
+problem for a higher order system.
+%
 One major challenge in RMPC is to guarantee feasibility of the problem for all possible uncertainties in 
 presence of state constraints.
 %
@@ -524,28 +536,77 @@ end of the control horizon the system state is contained in a set that is feasib
 possible realisations of uncertainty and for a given feedback controller, in particular the largest such set, 
 the so called \emph{maximal robust positive invariant} (MRPI) set.
 %
-Although this concept was introduced shortly after Witsenhausen proposed the use of a game theoretic approach
-to robust model predictive control in~\cite{Witsenhausen:1968} by several authors~\cite{Bertsekas:1971,Glover:1971},
-it took over two decades before the first MRPI sets could be algorithmically determined explicitly.
+Although this concept was introduced by several authors~\cite{Bertsekas:1971,Glover:1971} shortly after robust 
+model predictive control was proposed and analytical properties of MRPI sets were analysed, algorithms for numerically 
+computing MRPI sets were introduced over two decades later~\cite{Blanchini:1994,DeSantis:1994,Kolmanovsky:1998}.
 %
-The main contribution of this paper is to discuss the use of parametrised sets to model uncertainties, as a parameter
-we use the state and the input allowing us to model linearisation errors and multiplicative uncertainties in an 
+Earlier algorithms either failed to guarantee finite determinability of the MRPI set, see e.g.~\cite{Blanchini:1990}, 
+or were not guaranteed to produce the maximal RPI set, e.g.~\cite{Blanchini:1991}.
+
+
+The main contribution of this paper is to discuss the use of parametrised sets to model uncertainties, 
+which were recently introduced in~\cite{Schaich:CDC:2015,Schaich:NMPC:2015}, as a parameter we use the 
+state and the input allowing us to model linearisation errors and multiplicative uncertainties in an 
 additive way.
 %
-We develop the abstract and computational tools necessary to characterise and determine these sets, we introduce the 
-concept of \emph{parametric convexity} which is essential in order to obtain convex MRPI and controllable sets.
+We develop the abstract and computational tools necessary to characterise and determine these sets, 
+we discuss the concept of \emph{parametric convexity} which is essential in order to obtain convex 
+MRPI and controllable sets.
 
+To solve RMPC problems a few different methods are available, for the case of unknown additive disturbances, 
+the authors of~\cite{Scokaert:1998} propose a scenario-based approach to solve a sequence of min-max problems online, 
+however the computational complexity of this approach grows exponentially with the length of the horizon. 
+%
+A parametrised algorithm was proposed in~\cite{Rakovic:2012} which reduces the RMPC problem to a single linear 
+program to be solved online, but although this is a closed loop strategy the parametrisation is in general 
+suboptimal. 
+%
+Explicit RMPC algorithms optimise the worst case predicted performance for each admissible model state offline and
+use results from multi-parametric programming to parametrise the optimal control law as a piecewise affine function of the
+state, e.g.~\cite{Bemporad:2003,Diehl:2004}.
+%
+However, this requires extensive offline computation and becomes inefficient for a high-dimensional state space.
+%
+In this paper we use an active-set type approach as the one presented in~\cite{Buerger:ACC,Schaich:NMPC:2015}, 
+similar to the explicit RMPC algorithms we use multi-parametric programming to obtain solutions efficiently
+in a given active-set, however, we avoid an exploration of the state space but rather solve for the current 
+state only.
+%
+Instead we use a line search to update the set of active constraints, this allows us to generate
+the solution of the RMPC problem online in an efficient manner.
 
-The algorithmic solution of RMPC problems suffered a similar history as the MRPI sets did, 
+The paper is structured as follows, in section~\ref{sec:problem:statement} we present the RMPC problem we consider
+and define the constraint sets for the state and input dependent disturbance sets.
+%
+This kind of parametrised set is then considered in section~\ref{sec:p:convex:sets}, in particular we discuss
+parametric convexity and its characterisation necessary in subsection~\ref{ssec:properties:of:p:convex:maps} 
+for the computation of MRPI sets which is presented in subsection~\ref{ssec:MRPI:sets}.
+%
+To illustrate how state and input dependent disturbances can be used to account for nonlinearities and 
+calculate the MRPI set we present an example in section~\ref{sec:example:I}.
+%
+The solver we present here relies entirely on a recursive use of multi-parametric programming techniques, 
+which are presented in section~\ref{ssec:recursive:mpQP} for a given active-set, the active set is then
+updated using a line search which is described in subsection~\ref{ssec:line:search}, since this can lead
+to degeneracy in the optimisation we describe how we deal with degenerate problems in subsection~\ref{ssec:degeneracy}.
+%
+In section~\ref{sec:solving:min:max:programs} we translate the general formulation of section~\ref{sec:recursive:mpQP:via:line:search}
+to the problem presented in section~\ref{sec:problem:statement} and section~\ref{sec:complexity}
+deals with the complexity of the proposed algorithm.
+%
+We revisit the example system presented in section~\ref{sec:example:I} to illustrate the presented RMPC
+algorithm in section~\ref{sec:example:II}.
+%
+Section~\ref{sec:conclusion} concludes the presented algorithm.
 
 Throughout this paper we denote by $f\vert_{\mathcal C} = \{y:\exists x\in\mathcal C\;y=f(x)\}$
-the image of $\mathcal C$ under the map $f$, for polytopes defined by intersection of the halfspaces 
+the image of $\mathcal C$ under the map $f$, for polytopes defined by intersection of the half spaces 
 $a_i x \leq b_i$ for $i\in\{1,\dots,m\}$ we denote the matrix~${\bf{a}}_{\mathcal I}$ and vector~
 ${\bf{b}}_{\mathcal I}$ with the rows $a_i$ and $b_i$ for all indices in the index set $i\in\mathcal 
 I\subseteq\{1,\dots,m\}$.
 
 
-\section{Problem statement}
+\section{Problem statement}\label{sec:problem:statement}
 %
 Throughout this paper we aim to solve the robust model predictive control problem
 %
@@ -656,7 +717,7 @@ Notice that Definition~\ref{def:parametric:convexity} does not require convexity
 $p\in X$, we will however only treat maps~$\mathcal W$ for which $\mathcal W(p)$ is convex.
 
 
-\subsection{Properties of Parametrically Convex Maps}
+\subsection{Properties of Parametrically Convex Maps}\label{ssec:properties:of:p:convex:maps}
 %
 In this subsection we introduce an equivalent characterisation of parametric 
 convexity that will yield some insight on the topological 
@@ -969,7 +1030,7 @@ a polyhedral set and a piecewise affine polytopic parametric set is polyhedral i
 %
 %
 %
-\subsection{Maximal Robust Positive Invariant Sets}
+\subsection{Maximal Robust Positive Invariant Sets}\label{ssec:MRPI:sets}
 %
 In this section we describe an iterative algorithm to compute the MRPI set~\eqref{eq:definition:MRPI:set}
 for a linear system~$x^+=\Psi x + v$ subject to disturbance $v\in\mathcal V(x)$ where $\mathcal V(x)$ is 
@@ -2154,7 +2215,7 @@ performed which approximately is linear.}
 
 
 
-\section{Conclusion}
+\section{Conclusion}\label{sec:conclusion}
 The conclusion goes here.
 
 
