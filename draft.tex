@@ -514,11 +514,11 @@ IEEEtran, journal, \LaTeX, paper, template.
 % and "HIS" in caps to complete the first word.
 
 Robust model predictive control (RMPC) methods compute control laws for uncertain systems that optimise a 
-performance criterion for all possible realisations of the uncertainties.
+performance criterion for all possible realisations of model uncertainty.
 %
-Introduced by~\cite{Witsenhausen:1968} the RMPC problem is formulated as a sequence of games, the
-adversary maximises the effect the disturbance has on the objective and the controller solves the optimal
-control problem for the worst-case system.
+Introduced by~\cite{Witsenhausen:1968} the min-max RMPC problem is formulated as a sequence of games in which an
+adversary maximises the effect model of uncertainty on a performance objective and the controller solves the optimal
+control problem for the resulting worst-case system.
 %
 We discuss the \emph{closed-loop setup}, i.e. at each stage along the horizon the adversary tries to perturb the system
 in a way that produces the maximal stage cost and cost-to-go, the controller computes the minimiser for each stage
@@ -540,7 +540,8 @@ Although this concept was introduced by several authors~\cite{Bertsekas:1971,Glo
 model predictive control was proposed and analytical properties of MRPI sets were analysed, algorithms for numerically 
 computing MRPI sets were introduced over two decades later~\cite{Blanchini:1994,DeSantis:1994,Kolmanovsky:1998}.
 %
-Earlier algorithms either failed to guarantee finite determinability of the MRPI set, see e.g.~\cite{Blanchini:1990}, 
+Earlier algorithms either failed to guarantee finite determinability
+of the MRPI set, see e.g.~\cite{Blanchini:1990}, 
 or were not guaranteed to produce the maximal RPI set, e.g.~\cite{Blanchini:1991}.
 
 
