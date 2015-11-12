@@ -415,7 +415,8 @@
 \thanks{The authors are with the Department of Engineering Science, University of
 Oxford, Parks Road, Oxford, OX1~3PJ, e-mail: rainer.schaich@eng.ox.ac.uk, 
 mark.cannon@eng.ox.ac.uk}% <-this % stops a space
-\thanks{Manuscript received April 19, 2005; revised September 17, 2014.}}
+%\thanks{Manuscript received April 19, 2005; revised September 17, 2014.}
+}
 
 % note the % following the last \IEEEmembership and also \thanks - 
 % these prevent an unwanted space from occurring between the last author name
@@ -513,98 +514,87 @@ IEEEtran, journal, \LaTeX, paper, template.
 % Here we have the typical use of a "T" for an initial drop letter
 % and "HIS" in caps to complete the first word.
 
-Robust model predictive control (RMPC) methods compute control laws for uncertain systems that optimise a 
-performance criterion for all possible realisations of model uncertainty.
+Robust model predictive control (RMPC) is a control strategy for uncertain systems that optimises a 
+performance objective for all possible realisations of model uncertainty.
 %
-Introduced by~\cite{Witsenhausen:1968} the min-max RMPC problem is formulated as a sequence of games in which an
-adversary maximises the effect model of uncertainty on a performance objective and the controller solves the optimal
+First introduced in~\cite{Witsenhausen:1968}, the min-max RMPC problem is formulated as a sequence of games in which an adversary maximises the effect of model disturbances on a performance objective, and the controller solves the optimal
 control problem for the resulting worst-case system.
 %
-We discuss the \emph{closed-loop setup}, i.e. at each stage along the horizon the adversary tries to perturb the system
-in a way that produces the maximal stage cost and cost-to-go, the controller computes the minimiser for each stage
-reacting at each stage to the disturbance.
+We discuss the \emph{closed-loop setup} where, at each stage of a prediction horizon, the disturbance input maximizes the sum of the stage cost and the cost-to-go, and the control input minimises this cost so that the controller reacts to the worst-case disturbance at each stage.
 %
-Algorithmically the closed-loop setup covers the \emph{open-loop setup}, where the disturbance is allowed to perturb the 
-entire trajectory before the controller is allowed to react, since this can be understood as a horizon one closed loop
-problem for a higher order system.
+The closed-loop setup includes, as a special case, the \emph{open-loop setup} in which the disturbance is allowed to perturb the 
+entire trajectory before the controller is allowed to react, since this can be understood as a closed loop setup (with a horizon length of one) applied to a lifted system.
 %
-One major challenge in RMPC is to guarantee feasibility of the problem for all possible uncertainties in 
+
+A major challenge in RMPC is to guarantee feasibility of the control problem for all possible uncertainties in 
 presence of state constraints.
 %
-This can be achieved by introducing specifically designed constraints in such a way that at the
-end of the control horizon the system state is contained in a set that is feasible and invariant for all
-possible realisations of uncertainty and for a given feedback controller, in particular the largest such set, 
-the so called \emph{maximal robust positive invariant} (MRPI) set.
+This can be achieved by introducing additional constraints into the problem that force the state at the end of the horizon to lie in a set that is feasible and invariant for all possible realisations of uncertainty under a given feedback law; the largest such set, 
+the so-called \emph{maximal robust positively invariant} (MRPI) set, is often used for this purpose.
 %
-Although this concept was introduced by several authors~\cite{Bertsekas:1971,Glover:1971} shortly after robust 
-model predictive control was proposed and analytical properties of MRPI sets were analysed, algorithms for numerically 
-computing MRPI sets were introduced over two decades later~\cite{Blanchini:1994,DeSantis:1994,Kolmanovsky:1998}.
+The concept of MRPI sets and their analytical properties were introduced in the literature (e.g.~\cite{Bertsekas:1971,Glover:1971}) shortly after robust model predictive control was originally proposed. However algorithms for numerically 
+computing MRPI sets were not developed until more than two decades later~\cite{Blanchini:1994,DeSantis:1994,Kolmanovsky:1998};
+earlier algorithms either failed to ensure finite determinability
+of the MRPI set (see e.g.~\cite{Blanchini:1990}), 
+or were not guaranteed to produce the maximal RPI set (e.g.~\cite{Blanchini:1991}).
 %
-Earlier algorithms either failed to guarantee finite determinability
-of the MRPI set, see e.g.~\cite{Blanchini:1990}, 
-or were not guaranteed to produce the maximal RPI set, e.g.~\cite{Blanchini:1991}.
 
-
-The main contribution of this paper is to discuss the use of parametrised sets to model uncertainties, 
-which were recently introduced in~\cite{Schaich:CDC:2015,Schaich:NMPC:2015}, as a parameter we use the 
-state and the input allowing us to model linearisation errors and multiplicative uncertainties in an 
-additive way.
+This paper considers the use of parametrised sets for model uncertainties, which were recently introduced in~\cite{Schaich:CDC:2015,Schaich:NMPC:2015}. As parameters we consider the state and the control input; this allows linearisation errors and multiplicative uncertainties to be modelled as additive disturbances.
 %
-We develop the abstract and computational tools necessary to characterise and determine these sets, 
-we discuss the concept of \emph{parametric convexity} which is essential in order to obtain convex 
-MRPI and controllable sets.
+The paper's contribution is to develop
+%extends~\cite{Schaich:CDC:2015} by developing 
+the analytical and computational tools that are needed to characterise and determine invariant and controllable sets for systems with parametrised uncertainty sets, and to implement them in a closed loop RMPC strategy. To this end, we provide necessary and sufficient conditions for the property, introduced in~\cite{Schaich:CDC:2015}, of \emph{parametric convexity}, which is essential in order to obtain convex MRPI and controllable sets, and we derive a bound on the number of iterations needed to compute the MRPI set. The current paper also develops and extends the min-max RMPC approach introduced in~\cite{Schaich:NMPC:2015} by considering the case of degenerate constraints.
 
-To solve RMPC problems a few different methods are available, for the case of unknown additive disturbances, 
-the authors of~\cite{Scokaert:1998} propose a scenario-based approach to solve a sequence of min-max problems online, 
-however the computational complexity of this approach grows exponentially with the length of the horizon. 
+To solve RMPC problems a few different methods are available. For the case of unknown additive disturbances, 
+a scenario-based approach is proposed in~\cite{Scokaert:1998} for the online solution of min-max RMPC problems. However, the computational complexity of this approach grows exponentially with the length of the horizon. 
 %
-A parametrised algorithm was proposed in~\cite{Rakovic:2012} which reduces the RMPC problem to a single linear 
+A parametrisation of predicted feedback laws proposed in~\cite{Rakovic:2012} reduces the RMPC problem to a single linear 
 program to be solved online, but although this is a closed loop strategy the parametrisation is in general 
 suboptimal. 
 %
-Explicit RMPC algorithms optimise the worst case predicted performance for each admissible model state offline and
+Explicit RMPC algorithms (e.g.~\cite{Bemporad:2003,Diehl:2004}) optimise the worst case predicted performance for each admissible model state offline and
 use results from multi-parametric programming to parametrise the optimal control law as a piecewise affine function of the
-state, e.g.~\cite{Bemporad:2003,Diehl:2004}.
+state.
 %
-However, this requires extensive offline computation and becomes inefficient for a high-dimensional state space.
+However, this requires extensive offline computation and becomes impractical for a high-dimensional state space.
 %
-In this paper we use an active-set type approach as the one presented in~\cite{Buerger:ACC,Schaich:NMPC:2015}, 
-similar to the explicit RMPC algorithms we use multi-parametric programming to obtain solutions efficiently
-in a given active-set, however, we avoid an exploration of the state space but rather solve for the current 
-state only.
+In this paper we use an active-set approach based on that presented in~\cite{Buerger:ACC,Buerger:IJRNC,Schaich:NMPC:2015}.
+In a similar manner to explicit RMPC algorithms, we use multi-parametric programming to obtain solutions efficiently
+for a given active-set, however, we avoid an exploration of the entire feasible set of states but rather solve online for the current state only.
 %
-Instead we use a line search to update the set of active constraints, this allows us to generate
+Our approach uses a line search to update the set of active constraints, thus generating
 the solution of the RMPC problem online in an efficient manner.
 
-The paper is structured as follows, in section~\ref{sec:problem:statement} we present the RMPC problem we consider
-and define the constraint sets for the state and input dependent disturbance sets.
+The paper is structured as follows, in section~\ref{sec:problem:statement} we present the RMPC problem under consideration
+and define the constraint sets for the model uncertainty in terms of state and input dependent disturbance sets.
 %
-This kind of parametrised set is then considered in section~\ref{sec:p:convex:sets}, in particular we discuss
-parametric convexity and its characterisation necessary in subsection~\ref{ssec:properties:of:p:convex:maps} 
-for the computation of MRPI sets which is presented in subsection~\ref{ssec:MRPI:sets}.
+The properties of parametrised sets are then considered in section~\ref{sec:p:convex:sets}, in particular we discuss
+parametric convexity and its characterisation in section~\ref{ssec:properties:of:p:convex:maps}, and its use in the computation of MRPI sets, which is presented in section~\ref{ssec:MRPI:sets}.
 %
 To illustrate how state and input dependent disturbances can be used to account for nonlinearities and 
 calculate the MRPI set we present an example in section~\ref{sec:example:I}.
 %
 The solver we present here relies entirely on a recursive use of multi-parametric programming techniques, 
 which are presented in section~\ref{ssec:recursive:mpQP} for a given active-set, the active set is then
-updated using a line search which is described in subsection~\ref{ssec:line:search}, since this can lead
-to degeneracy in the optimisation we describe how we deal with degenerate problems in subsection~\ref{ssec:degeneracy}.
+updated using a line search which is described in subsection~\ref{ssec:line:search}. In order to account for the 
+degeneracy that can occur in the optimisation, we consider the case of degenerate problems in subsection~\ref{ssec:degeneracy}.
 %
 In section~\ref{sec:solving:min:max:programs} we translate the general formulation of section~\ref{sec:recursive:mpQP:via:line:search}
-to the problem presented in section~\ref{sec:problem:statement} and section~\ref{sec:complexity}
+to the problem presented in section~\ref{sec:problem:statement}, and section~\ref{sec:complexity}
 deals with the complexity of the proposed algorithm.
 %
-We revisit the example system presented in section~\ref{sec:example:I} to illustrate the presented RMPC
+We revisit the example system presented in section~\ref{sec:example:I} to illustrate the proposed RMPC
 algorithm in section~\ref{sec:example:II}.
 %
-Section~\ref{sec:conclusion} concludes the presented algorithm.
+Section~\ref{sec:conclusion} provides brief conclusions.
 
-Throughout this paper we denote by $f\vert_{\mathcal C} = \{y:\exists x\in\mathcal C\;y=f(x)\}$
-the image of $\mathcal C$ under the map $f$, for polytopes defined by intersection of the half spaces 
-$a_i x \leq b_i$ for $i\in\{1,\dots,m\}$ we denote the matrix~${\bf{a}}_{\mathcal I}$ and vector~
-${\bf{b}}_{\mathcal I}$ with the rows $a_i$ and $b_i$ for all indices in the index set $i\in\mathcal 
-I\subseteq\{1,\dots,m\}$.
+\emph{Notation:} Throughout this paper we denote 
+the image of a set $\mathcal C\subseteq X$ under the map $f:X\mapsto Y$ as $f\vert_{\mathcal C} = \{y\in Y:\exists x\in\mathcal C,\;y=f(x)\}$. 
+%
+Given a collection of row-vectors $a_i$ and scalars $b_i$ for $i\in\{1,\ldots,m\}$, we denote as ${\bf{a}}_{\mathcal I}$ and
+${\bf{b}}_{\mathcal I}$ the matrix and vector, respectively, with rows $a_i$ and $b_i$ for all indices $i$ in the index set $\mathcal I\subseteq\{1,\dots,m\}$.
+
+%To represent the facets of a polytope defined by intersection of the half spaces $\{x : a_i x \leq b_i\}$ for $i\in\{1,\dots,m\}$, we denote as ${\bf{a}}_{\mathcal I}$ and ${\bf{b}}_{\mathcal I}$ the matrix and vector, respectively, with rows $a_i$ and $b_i$ for all indices in the index set $i\in\mathcal I\subseteq\{1,\dots,m\}$.
 
 
 \section{Problem statement}\label{sec:problem:statement}
@@ -1458,7 +1448,7 @@ The algorithm for computing the MRPI set terminates after 3 iterations.
 
 
 In this section we discuss how multi-parametric quadratic programs (mpQP, see e.g.~\cite{Tondel:2003,Bemporad:2002} 
-for elaborate discussions) can be solved efficiently with an active-set solver (see e.g.~\cite{Fletcher:1987}).
+for elaborate discussions) can be solved efficiently with an active-set solver (see e.g.~\cite{Fletcher:2000}).
 %
 The active set of constraints will be determined by a line-search, we will also deal with \emph{degenerate
 constraints}, which can arise during the line-search.
