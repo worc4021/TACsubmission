@@ -526,6 +526,14 @@ The closed-loop setup includes, as a special case, the \emph{open-loop setup} in
 entire trajectory before the controller is allowed to react, since this can be understood as a closed loop setup (with a horizon length of one) applied to a lifted system.
 %
 
+This paper considers the use of parametrised sets to bound model uncertainty. By allowing the bounds on model uncertainty to depend explicitly on the model state and control input we obtain a generalised framework for RMPC in which linearisation errors and multiplicative uncertainties can be modelled as additive disturbances.
+%
+General parametrised disturbance bounding sets were used in~\cite{Rakovic03,Rakovic06}; however, here we focus exclusively on problem formulations that lead to convex-concave min-max control problems.
+% 
+The paper's main contributions are to develop
+%extends~\cite{Schaich:CDC:2015} by developing 
+the analytical and computational tools that are needed to characterise and determine convex invariant and controllable sets for systems with parametrised uncertainty sets, and to employ these sets in a closed loop RMPC strategy. To this end, we provide necessary and sufficient conditions for the property, introduced in~\cite{Schaich:CDC:2015}, of \emph{parametric convexity}. We show that this condition is both necessary and sufficient to ensure that the corresponding robustly invariant and controllable sets are convex.
+
 A major challenge in RMPC is to guarantee feasibility of the control problem for all possible uncertainties in 
 presence of state constraints.
 %
@@ -533,34 +541,32 @@ This can be achieved by introducing additional constraints into the problem that
 the so-called \emph{maximal robust positively invariant} (MRPI) set, is often used for this purpose.
 %
 The concept of MRPI sets and their analytical properties were introduced in the literature (e.g.~\cite{Bertsekas:1971,Glover:1971}) shortly after robust model predictive control was originally proposed. However algorithms for numerically 
-computing MRPI sets were not developed until more than two decades later~\cite{Blanchini:1994,DeSantis:1994,Kolmanovsky:1998};
-earlier algorithms either failed to ensure finite determinability
-of the MRPI set (see e.g.~\cite{Blanchini:1990}), 
-or were not guaranteed to produce the maximal RPI set (e.g.~\cite{Blanchini:1991}).
+computing MRPI sets were not developed until more than two decades later~\cite{Blanchini:1994,DeSantis:1994,Kolmanovsky:1998}.
+% earlier algorithms either failed to ensure finite determinability
+% of the MRPI set (see e.g.~\cite{Blanchini:1990}), 
+% or were not guaranteed to produce the maximal RPI set (e.g.~\cite{Blanchini:1991}).
 %
+This paper builds on the work of~\cite{Kolmanovsky:1998,Rakovic06} by proposing an iterative procedure for computing the MRPI set for the case of parametrically convex state and input dependent disturbance sets. We show that, under mild assumptions, this procedure determines the MRPI set in a finite number of iterations, and we provide a bound on the number of iterations required.
 
-This paper considers the use of parametrised sets for model uncertainties, which were recently introduced in~\cite{Schaich:CDC:2015,Schaich:NMPC:2015}. As parameters we consider the state and the control input; this allows linearisation errors and multiplicative uncertainties to be modelled as additive disturbances.
+The current paper also develops an online implementation of closed loop min-max RMPC that allows the bounds on model uncertainty to depend on the model state and control input.
 %
-The paper's contribution is to develop
-%extends~\cite{Schaich:CDC:2015} by developing 
-the analytical and computational tools that are needed to characterise and determine invariant and controllable sets for systems with parametrised uncertainty sets, and to implement them in a closed loop RMPC strategy. To this end, we provide necessary and sufficient conditions for the property, introduced in~\cite{Schaich:CDC:2015}, of \emph{parametric convexity}, which is essential in order to obtain convex MRPI and controllable sets, and we derive a bound on the number of iterations needed to compute the MRPI set. The current paper also develops and extends the min-max RMPC approach introduced in~\cite{Schaich:NMPC:2015} by considering the case of degenerate constraints.
-
-To solve RMPC problems a few different methods are available. For the case of unknown additive disturbances, 
+Several methods are available to solve RMPC problems with fixed disturbance bounds. For the case of unknown additive disturbances, 
 a scenario-based approach is proposed in~\cite{Scokaert:1998} for the online solution of min-max RMPC problems. However, the computational complexity of this approach grows exponentially with the length of the horizon. 
 %
 A parametrisation of predicted feedback laws proposed in~\cite{Rakovic:2012} reduces the RMPC problem to a single linear 
-program to be solved online, but although this is a closed loop strategy the parametrisation is in general 
+program to be solved online, but although this is a closed loop strategy, the parametrisation is in general 
 suboptimal. 
 %
-Explicit RMPC algorithms (e.g.~\cite{Bemporad:2003,Diehl:2004}) optimise the worst case predicted performance for each admissible model state offline and
+The Explicit RMPC algorithms~\cite{Bemporad:2003,Diehl:2004} optimise the worst case predicted performance for each admissible model state offline and
 use results from multi-parametric programming to parametrise the optimal control law as a piecewise affine function of the
 state.
 %
 However, this requires extensive offline computation and becomes impractical for a high-dimensional state space.
 %
-In this paper we use an active-set approach based on that presented in~\cite{Buerger:ACC,Buerger:IJRNC,Schaich:NMPC:2015}.
+In this paper we use an active set approach based on that presented in~\cite{Buerger:ACC,Buerger:IJRNC} for the case of additive disturbances confined to a fixed set and we extend the approach for parametrised sets that was introduced in~\cite{Schaich:NMPC:2015} by considering the case of degenerate constraints.
+%
 In a similar manner to explicit RMPC algorithms, we use multi-parametric programming to obtain solutions efficiently
-for a given active-set, however, we avoid an exploration of the entire feasible set of states but rather solve online for the current state only.
+for a given active set, however, we avoid an exploration of the entire feasible set of states but rather solve online for the current state only.
 %
 Our approach uses a line search to update the set of active constraints, thus generating
 the solution of the RMPC problem online in an efficient manner.
@@ -575,7 +581,7 @@ To illustrate how state and input dependent disturbances can be used to account 
 calculate the MRPI set we present an example in section~\ref{sec:example:I}.
 %
 The solver we present here relies entirely on a recursive use of multi-parametric programming techniques, 
-which are presented in section~\ref{ssec:recursive:mpQP} for a given active-set, the active set is then
+which are presented in section~\ref{ssec:recursive:mpQP} for a given active set, the active set is then
 updated using a line search which is described in subsection~\ref{ssec:line:search}. In order to account for the 
 degeneracy that can occur in the optimisation, we consider the case of degenerate problems in subsection~\ref{ssec:degeneracy}.
 %
@@ -1448,7 +1454,7 @@ The algorithm for computing the MRPI set terminates after 3 iterations.
 
 
 In this section we discuss how multi-parametric quadratic programs (mpQP, see e.g.~\cite{Tondel:2003,Bemporad:2002} 
-for elaborate discussions) can be solved efficiently with an active-set solver (see e.g.~\cite{Fletcher:2000}).
+for elaborate discussions) can be solved efficiently with an active set solver (see e.g.~\cite{Fletcher:2000}).
 %
 The active set of constraints will be determined by a line-search, we will also deal with \emph{degenerate
 constraints}, which can arise during the line-search.
@@ -1480,7 +1486,7 @@ Using
 %
 with $Q<0$ and the same assumption on the constraint set as for the minimisation.
 %
-We want to use an active-set solver to obtain the solution for $\phi=\phi^\ast$.
+We want to use an active set solver to obtain the solution for $\phi=\phi^\ast$.
 %
 For this assume that for some $\phi=\phi_0$ we know the active constraints~$\mathcal A$ and~$\hat{\mathcal A}$,
 i.e. the inequalities satisfied with equality $C_{\mathcal A}\theta_0=e_{\mathcal A} + T_{\mathcal A}\phi_0$
@@ -1745,7 +1751,7 @@ where $\mathcal C(\phi)$ is a constant which depends only on $\phi$.
 Maximisation~\eqref{mpQP:linesearch:degenerate:constraints:beta} is a regular linear program in~$\hat\beta$.
 
 
-A standard non-degeneracy assumption for active-set solvers is that only one constraint is affected at each line-search
+A standard non-degeneracy assumption for active set solvers is that only one constraint is affected at each line-search
 iteration, this means that when constraints become degenerate the null-space~$\ker C_{\mathcal A}$ is
 one-dimensional, furthermore no additional constraints may be activated since~$\phi$ is already fixed by
 the constraints.
@@ -1963,7 +1969,7 @@ known.
 \subsection{Line Search with Piecewise Affine Disturbance Set}
 %
 In order to solve the multi-stage problem for a given system state~$x^\ast$ we perform a line search
-form a known active-set~${\bar{\mathcal A}} = \{\mathcal A_N,\hat {\mathcal A}_N,\dots,\hat{\mathcal A}_1\}$
+form a known active set~${\bar{\mathcal A}} = \{\mathcal A_N,\hat {\mathcal A}_N,\dots,\hat{\mathcal A}_1\}$
 as described in section~\ref{ssec:line:search}.
 %
 To determine the active right hand side of~\eqref{eq:dist:cons}, i.e. ${\bf{k}}^\ast_m$, we use a similar line 
