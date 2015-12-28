@@ -378,6 +378,8 @@
 \DeclareMathSymbol{\temp}{\mathbin}{mathx}{'341}
 \newcommand{\bigominus}{\raisebox{10pt}{$\temp$}}
 
+\newcommand{\todo}[1]{\textcolor{blue}{#1}}
+\newcommand{\highlight}[1]{\textcolor{red}{#1}}
 
 % *** Do not adjust lengths that control margins, column widths, etc. ***
 % *** Do not use packages that alter fonts (such as pslatex).         ***
@@ -594,11 +596,16 @@ algorithm in section~\ref{sec:example:II}.
 %
 Section~\ref{sec:conclusion} provides brief conclusions.
 
-\emph{Notation:} Throughout this paper we denote 
+\emph{Notation:} Throughout this paper 
+%
+we denote sequences of integers $\mathbb N_m = \{1,\ldots,m\}$ for $m\geq 1$ and $\mathbb N_{[n,m]} = \{n,\ldots,m\}$ for $n\leq m$.
+%
+Given a collection of row-vectors $a_i$ and scalars $b_i$ for $i\in\mathbb N_m$, we denote as ${\bf{a}}_{\mathcal I}$ and ${\bf{b}}_{\mathcal I}$ the matrix and vector, respectively, with rows $a_i$ and $b_i$ for all indices $i$ in the index set $\mathcal I\subseteq \mathbb N_m$.
+%
+We denote 
 the image of a set $\mathcal C\subseteq X$ under the map $f:X\mapsto Y$ as $f\vert_{\mathcal C} = \{y\in Y:\exists x\in\mathcal C,\;y=f(x)\}$. 
 %
-Given a collection of row-vectors $a_i$ and scalars $b_i$ for $i\in\{1,\ldots,m\}$, we denote as ${\bf{a}}_{\mathcal I}$ and
-${\bf{b}}_{\mathcal I}$ the matrix and vector, respectively, with rows $a_i$ and $b_i$ for all indices $i$ in the index set $\mathcal I\subseteq\{1,\dots,m\}$.
+For $x\in\mathbb R^n$ the Euclidean norm is denoted $\|x\|=\sqrt{x^T x}$, and we define the weighted norm $\|x\|_P=\sqrt{x^T P x}$ for a positive definite matrix $P\in\mathbb R^{n\times n}$, and for any $\epsilon > 0$ we define the ball $B_\epsilon(x) = \{y\in\mathbb R^n : \|x-y\| \leq \epsilon\}$.
 
 %To represent the facets of a polytope defined by intersection of the half spaces $\{x : a_i x \leq b_i\}$ for $i\in\{1,\dots,m\}$, we denote as ${\bf{a}}_{\mathcal I}$ and ${\bf{b}}_{\mathcal I}$ the matrix and vector, respectively, with rows $a_i$ and $b_i$ for all indices in the index set $i\in\mathcal I\subseteq\{1,\dots,m\}$.
 
@@ -613,7 +620,7 @@ Throughout this paper we aim to solve the robust model predictive control proble
   J^\ast_{m-1}(x^+)
 \end{equation}
 %
-with $J(x,u,w) = \frac{1}{2}\left(x^T Qx + u^TRu - \gamma^2 w^T w\right)$,
+with $J(x,u,w) = \frac{1}{2}(\|x\|_Q^2 + \|u\|_R^2 - \gamma^2 \|w\|^2)$,
 %
 subject to the system dynamics
 %
@@ -640,25 +647,25 @@ and state constraints
 \end{equation}
 \end{subequations}
 %
-We assume that $Q\geq0$ and $R>0$ are semi-positive and positive definite constant matrices respectively,
-the matrices $A,B,D$ are also assumed to be deterministic and known.
+We assume that $Q$ and $R$ are, respectively, semi-positive definite and positive definite constant matrices, the matrices $A,B,D$ are also assumed to be deterministic and known.
 %
-Since we require guarantees of stability and feasibility in presence of disturbances arbitrary state constraints
-like~\eqref{eq:general:state:constraints} can not be robustly satisfied~\cite{Bertsekas:1971}, instead specially designed
-ones are used.
+\todo{Since we require guarantees of stability and feasibility in presence of disturbances arbitrary state constraints
+like~\eqref{eq:general:state:constraints} cannot be robustly satisfied~\cite{Bertsekas:1971}, instead specially designed
+ones are used.}
 %
 Recursively defined sets are used to guarantee that the terminal state lies in the 
-\emph{maximal robust positive invariant} (MRPI) set~$\mathcal X^\infty\subseteq\mathcal X$ 
+\emph{maximal robust positively invariant} (MRPI) set~$\mathcal X^\infty\subseteq\mathcal X$ 
 (see e.g.~\cite{blanchini:2007}), i.e. the largest set satisfying
 %
 \begin{equation}\label{eq:definition:MRPI:set}
-  \mathcal X^\infty = \{x\in\mathcal X: \Psi x + v \in\mathcal X^\infty\;\forall v\in\mathcal V(x)\}.
+\mathcal X^\infty = \{x\in\mathcal X: \Psi x + v \in\mathcal X^\infty\;\forall v\in\mathcal V(x)\}.
 \end{equation}
 %
 The MRPI set~\eqref{eq:definition:MRPI:set} is defined for $\Psi=A+BK$ and $\mathcal V(x) = D\mathcal W(x,Kx)$,
 with a fixed feedback controller $u = Kx$.
 %
-Starting from the MRPI set~$\mathcal X_0=\mathcal X^\infty$ we recursively define
+Starting from the MRPI set~$\mathcal X_0=\mathcal X^\infty$ we define, for $i\in\mathbb N_\infty$,
+%$i=1,2,\ldots$,  
 %
 \begin{equation}\label{eq:stage:constraints:in:x:and:u}
   \mathcal Z_i = \{(x,u)\in\mathcal X\times U: Ax + Bu + Dw \in\mathcal X_{i-1}\;\forall w\in\mathcal W(x,u)\}
@@ -667,23 +674,23 @@ Starting from the MRPI set~$\mathcal X_0=\mathcal X^\infty$ we recursively defin
 and its projection
 %
 \begin{equation}
-  \mathcal X_i = \{x:\exists u\in U\; (x,u)\in\mathcal Z_i\}.
+  \mathcal X_i = \{x:\exists u\in U, \; (x,u)\in\mathcal Z_i\}.
 \end{equation}
 %
 The state constraint~\eqref{eq:general:state:constraints} and input constraint~\eqref{eq:general:input:constraints}
 are then replaced by $(x,u)\in\mathcal Z_m$.
 %
 To initialise the cost-to-go we use $J_0^\ast(x) = \frac{1}{2}x^T P_0x$, which is designed in combination with the feedback 
-controller~$K$ as the optimal unconstrained solution to~\eqref{seq:general:problem:statement}, i.e. they satisfy
-$J_0^\ast(x) - J_0^\ast(x^+)\geq J(x,Kx,w)$, see e.g.~\cite{Boyd:94}.
+controller~$K$ as the optimal unconstrained solution to~\eqref{seq:general:problem:statement}, i.e.\ they satisfy
+$J_0^\ast(x) - J_0^\ast(x^+)\geq J(x,Kx,w)$ for all $w$; see e.g.~\cite{Boyd:94} for details of how to compute $P_0$ using semidefinite programming.
 %
-Both input and state constraint sets are assumed polyhedral $U=\{u:F_iu\leq1\forall i\in\mathcal I_U\}$ and $\mathcal X = 
-\{x:\genmat_i x\leq \genvec_i\forall i\in\mathcal I_{\mathcal X}\}$.
+Both input and state constraint sets are assumed polyhedral $U=\{u:F_iu\leq1\; \forall i\in\mathbb N_{n_u}\}$ and $\mathcal X = 
+\{x:\genmat_i x\leq \genvec_i\; \forall i\in\mathbb N_{n_x}\}$.
 %
 For the disturbance set~\eqref{eq:disturbance:constraints} we assume that there exists a piecewise affine representation
 %
 \begin{equation}\label{eq:definition:disturbance:set:explicit}
-  \mathcal W(x,u) = \{w:G_i w\leq\max_{k}\{H_{i,k}^x x + H_{i,k}^u + h_{i,k}\}\forall i\in\mathcal I_{\mathcal W}\}.
+  \mathcal W(x,u) = \bigl\{w:G_i w\leq\max_{k}\{H_{i,k}^x x + H_{i,k}^u + h_{i,k}\}\; \forall i\in\mathbb N_{n_w}\bigr\}.
 \end{equation}
 %
 The properties of such sets will be discussed in section~\ref{sec:p:convex:sets}.
@@ -692,81 +699,79 @@ The properties of such sets will be discussed in section~\ref{sec:p:convex:sets}
 %
 %
 \section{Parametrically Convex Sets}\label{sec:p:convex:sets}
-In this section we discuss \emph{parametric convexity}, an attribute of sets valued maps 
-(so called point-to-set maps, see e.g.~\cite{Hogan:1973}) we exploit later on to prove 
-convexity of a generalised Pontryagin difference in order to 
+This section defines and discusses the property of \emph{parametric convexity} in the context of set valued maps (so called point-to-set maps, see e.g.~\cite{Hogan:1973}). We use this property 
+%here and in Section~\ref{sec:example:I} 
+to demonstrate the convexity of a generalised Pontryagin difference and thus determine the conditions under which $\mathcal{X}^\infty$ and $\mathcal{X}_i$ are convex polyhedra. 
+%
+Throughout this section we refer to sets $X\subseteq\mathbb R^d$ and $Y\subseteq\mathbb R^n$, and we denote the power set of $Y$ as $\mathscr P(Y)$.
 %
 \begin{defi}[Parametric Convexity]\label{def:parametric:convexity}
-  Let $X\subseteq\mathbb R^d, Y\subseteq\mathbb R^n$, let $\mathscr P(Y)$ 
-  denote the power set of $Y$, 
-  and $\mathcal W:X\rightarrow \mathscr P(Y)$, $X\ni p\mapsto \mathcal W(p)
-  \subset Y$ be a continuous point-to-set map. The map $\mathcal W$ is called 
-  \emph{parametrically convex} if it satisfies
+%Let $X\subseteq\mathbb R^d, Y\subseteq\mathbb R^n$, let $\mathscr P(Y)$ denote the power set of $Y$, and
+Let $\mathcal W:X\rightarrow \mathscr P(Y)$, where $X\ni p\mapsto \mathcal W(p) \subset Y$, be a continuous point-to-set map. The map $\mathcal W$ is called \emph{parametrically convex} if it satisfies
 %
   \begin{equation}\label{eq:def:parametrically:convex}
   \mathcal W(\lambda p_1 + (1-\lambda)p_2)\subseteq\lambda \mathcal W(p_1) \oplus (1-\lambda) \mathcal W(p_2)
   \end{equation}
 %
-  for all $p_1,p_2\in X$ and $\lambda\in[0,1]$.
+  for all $p_1,p_2\in X$ and $\lambda\in (0,1)$.
 \end{defi}
 %
-Notice that Definition~\ref{def:parametric:convexity} does not require convexity of~$\mathcal W(p)$ for all
-$p\in X$, we will however only treat maps~$\mathcal W$ for which $\mathcal W(p)$ is convex.
-
+Notice that Definition~\ref{def:parametric:convexity} does not require convexity of~$\mathcal W(p)$. However, we will only consider maps~$\mathcal W$ for which $\mathcal W(p)$ is convex for all $p\in X$.
 
 \subsection{Properties of Parametrically Convex Maps}\label{ssec:properties:of:p:convex:maps}
 %
-In this subsection we introduce an equivalent characterisation of parametric 
-convexity that will yield some insight on the topological 
-definition~\ref{def:parametric:convexity}, for this we characterise parametric
-convexity in terms of the graph of the point-to-set map.
+We begin by introducing an equivalent characterisation of parametric convexity that provides an insight into the geometrical properties of 
+point-to-set maps satisfying~(\ref{eq:def:parametrically:convex}).
+%Definition~\ref{def:parametric:convexity}. 
+This is based on a description of parametric convexity in terms of conditions on the graph of a point-to-set map.
 %
 \begin{defi}\label{def:graph:of:map}
 Let $\mathcal W:X\rightarrow \mathscr P(Y)$ be a continuous point-to-set map
 such that $\mathcal W(p)$ is convex for all $p\in X$, then 
 %
 \[
-  \mathscr G(\mathcal W) = \{(p,x) \in\mathbb R^{d+n}: x\in\mathcal W(p)\},
+  \mathscr G(\mathcal W) = \{(p,x) \in\mathbb R^{d+n}: x\in\mathcal W(p)\}
 \]
 %
 denotes the \emph{graph} of $\mathcal W$,
 %
 \[
-  \text{int}(\mathscr G(\mathcal W)) = \{(p,x) \in\mathbb R^{d+n}: \forall d\in\mathbb R^n\;\exists 
-  \epsilon>0 : x+\epsilon d\in \mathcal W(p)\}
+  \text{int}(\mathscr G(\mathcal W)) = \{(p,x) \in\mathbb R^{d+n}: \forall \xi\in\mathbb R^n\;\exists 
+  \epsilon>0 : x+\epsilon \xi\in \mathcal W(p)\}
 \]
 %
-its \emph{interior} and
+is its \emph{interior}, and
 %
 \[
   \partial \mathscr G(\mathcal W) = \mathscr G(\mathcal W)\setminus \textup{int}(\mathscr G(\mathcal W))
 \]
 %
-its \emph{boundary}. 
+denotes its \emph{boundary};
 %
-The \emph{orientation cone} for all $(p,x)\in\partial\mathscr G(\mathcal W)$
-is given by
+furthermore for any $(p,x)\in\partial\mathscr G(\mathcal W)$ the \emph{orientation cone} is defined as 
 %
 \[
-  \mathcal N\mathcal W(p,x) = \{d\in\mathbb R^n: x+\epsilon d \not\in \mathcal W(p)\; \forall \epsilon>0\}.
+  \mathcal N\mathcal W(p,x) = \{\xi\in\mathbb R^n: x+\epsilon \xi \not\in \mathcal W(p)\; \forall \epsilon>0\} .
 \]
+%for all $(p,x)\in\partial\mathscr G(\mathcal W)$.
+
 \end{defi}
 %
 \begin{rem}
 %
-Notice, that definition~\ref{def:graph:of:map} is given in terms of the \emph{set variable} $x$ rather than \emph{graph variable} $(p,x)$.
+Note that the orientation cone is defined in the space of the
+\emph{set variable} $x$ rather than \emph{graph variable} $(p,x)$.
 %
-Furthermore, notice that the orientation cone contains all directions that 
-point out of the set, hence all linear combinations thereof.
+Furthermore, the orientation cone contains all directions that 
+point out of the set $\mathcal W(p)$ and hence all linear combinations thereof.
 %
 \end{rem}
 %
-We state the central theorem to connect parametric convexity of a set valued 
-map $\mathcal W$ with properties of its graph $\mathscr G(\mathcal W)$.
+The central idea connecting parametric convexity of a set valued map $\mathcal W$ with properties of its graph $\mathscr G(\mathcal W)$ is stated next.
 %
 \begin{thm}\label{thm:p:convexity:graph}
-The map $\mathcal W$ is parametrically convex iff for all $(p_1,x_1),(p_2,x_2)\in\partial\mathscr G(\mathcal W)$
-with $\mathcal N\mathcal W(p_1,x_1)\cap\mathcal N\mathcal W(p_2,x_2)\neq\emptyset$ and $p_1\neq p_2$ 
+The map $\mathcal W$ is parametrically convex iff for all $(p_1,x_1), (p_2,x_2)\in\partial\mathscr G(\mathcal W)$
+with $p_1\neq p_2$ and $\mathcal N\mathcal W(p_1,x_1)\cap\mathcal N\mathcal W(p_2,x_2)\neq\emptyset$,
 %
 \begin{equation}\label{eq:graph:def:p:convexity}
 \lambda (p_1,x_1) + (1-\lambda) (p_2,x_2) \not\in\textup{int} (\mathscr G(\mathcal W))
@@ -780,82 +785,106 @@ holds for all $\lambda\in(0,1)$.
 %
 Assume~\eqref{eq:graph:def:p:convexity} holds for $(p_1,x_1),(p_2,x_2)\in\partial\mathscr G(\mathcal W)$.
 %
-Then the Minkowski functional (see e.g.~\cite{Rudin:91}) yields $\mu_{\mathscr G(\mathcal W)}(\mathcal W(\lambda p_1 + (1-\lambda)p_2),
-\lambda x_1+(1-\lambda)x_2)\geq1$,
-i.e. all interpolation points lie either on the boundary or outside the set $\mathcal W(\lambda p_1+(1-\lambda)p_2)$
-therefore the set of all possible interpolation points 
+Then the extension of the definition of the Minkowski functional (see e.g.~\cite{Rudin:91}) to the graph $\mathscr G(\mathcal W)$,
+\[
+\mu_{\mathscr G(\mathcal W)} \bigl(
+\mathcal W(p), x \bigr)
+:= \min_\mu \{\mu \geq 0 : x \in \mu \mathcal W(p)\},
+\]
+%Then the Minkowski functional (see e.g.~\cite{Rudin:91}) yields $\mu_{\mathscr G(\mathcal W)}(\lambda p_1 + (1-\lambda)p_2,\lambda x_1+(1-\lambda)x_2)\geq1$,
+yields $\mu_{\mathscr G(\mathcal W)}\left(\mathcal W(\lambda p_1 + (1-\lambda)p_2),\lambda x_1+(1-\lambda)x_2\right)\geq1$ for all $\lambda\in(0,1)$. Therefore $\lambda x_1 + (1-\lambda) x_2$
+lies either outside the set $\mathcal W(\lambda p_1+(1-\lambda)p_2)$ or on its boundary for all $\lambda\in(0,1)$, and hence the set of all possible interpolation points 
 %
 \[
 \begin{split}
-  \lambda \mathcal W(p_1)\oplus (1-\lambda)\mathcal W(p_2) = \{x:x=\lambda x_1 + (1-\lambda) x_2 \wedge\\ x_1\in\mathcal 
+  \lambda \mathcal W(p_1)\oplus (1-\lambda)\mathcal W(p_2) = \{&x:x=\lambda x_1 + (1-\lambda) x_2 \wedge\\ &x_1\in\mathcal 
   W(p_1) \wedge x_2\in\mathcal W(p_2)\}
 \end{split}
 \]
 %
-contains the set $\mathcal W(\lambda p_1 + (1-\lambda)p_2)$.
+contains the set $\mathcal W(\lambda p_1 + (1-\lambda)p_2)$ for all $\lambda\in(0,1)$.
 %
-Now assume $\mathcal W$ is parametrically convex but~\eqref{eq:graph:def:p:convexity} is not satisfied for 
+
+Now suppose that $\mathcal W$ is parametrically convex and that~\eqref{eq:graph:def:p:convexity} is not satisfied for 
 some $(p_1,x_1),(p_2,x_2)\in\partial\mathscr G(\mathcal W)$ with $\mathcal N\mathcal W(p_1,x_1)\cap\mathcal 
-N\mathcal W(p_2,x_2)\neq\emptyset$, i.e. $\lambda x_1 + (1-\lambda)x_2\in\text{int}(\mathcal W(\lambda p_1 + 
-(1-\lambda)p_2)$.
+N\mathcal W(p_2,x_2)\neq\emptyset$, 
+%i.e.~that for some $\lambda \in (0,1)$
+% \[
+% \lambda x_1 + (1-\lambda)x_2\in\text{int}(\mathcal W(\lambda p_1 + 
+% (1-\lambda)p_2) ,
+% \]
 %
-This implies that a full dimensional ball $B_\epsilon(x ) = \{y:\| 
-x-y\|<\epsilon\}$
-is contained in $\mathcal W(\lambda p_1 + (1-\lambda)p_2)$, i.e. $B_\epsilon(\lambda x_1 + (1-\lambda)x_2 )\subset
-\mathcal W(\lambda p_1 + (1-\lambda)p_2)$ for some $\epsilon>0$.
+i.e.~that there exists $\epsilon>0$ such that the ball
+%full dimensional ball 
+%$B_\epsilon(x ) = \{y:\| x-y\|<\epsilon\}$
+$B_\epsilon(\lambda x_1 + (1-\lambda)x_2 )$
+is contained in $\mathcal W(\lambda p_1 + (1-\lambda)p_2)$ for some $\lambda \in (0,1)$.
+%i.e. $B_\epsilon(\lambda x_1 + (1-\lambda)x_2 )\subset \mathcal W(\lambda p_1 + (1-\lambda)p_2)$ for some $\epsilon>0$.
 %
-Since $\mathcal N\mathcal W(p_1,x_1)\cap\mathcal N\mathcal W(p_2,x_2)\neq\emptyset$, there exist directions 
-$d\in\mathcal N\mathcal W(p_1,x_1)\cap\mathcal N\mathcal W(p_2,x_2)$ which can not be represented as $d=\lambda d_1+
-(1-\lambda)d_2$ with $x_1 + \epsilon d_1\in\mathcal W(p_1)$ and $x_2  + \epsilon d_2\in\mathcal W(p_2)$, however since $B_\epsilon$ is full dimensional
-all directions exist, $x+\epsilon d\in\mathcal W(\lambda p_1 + (1-\lambda)p_2)$.
+But this implies that $\lambda x_1 + (1-\lambda) x_2 + \epsilon\xi \in \mathcal W(\lambda p_1+(1-\lambda)p_2)$  for all $\xi\in\mathbb R^n$ such that $\|\xi\| = 1$, whereas
+$\mathcal N\mathcal W(p_1,x_1)\cap\mathcal N\mathcal W(p_2,x_2)\neq\emptyset$ implies that there exist directions 
+$\xi\in\mathcal N\mathcal W(p_1,x_1)\cap\mathcal N\mathcal W(p_2,x_2)$ which cannot be represented as
+% a convex combination, 
+$\xi=\lambda \xi_1+
+(1-\lambda)\xi_2$
+with
+%, of $\xi_1$ and $\xi_2$ such that 
+$x_1 + \epsilon \xi_1\in\mathcal W(p_1)$ and $x_2  + \epsilon \xi_2\in\mathcal W(p_2)$.
+%however since $B_\epsilon$ is full dimensional
+%all directions exist, $x+\epsilon \xi\in\mathcal W(\lambda p_1 + (1-\lambda)p_2)$.
 %
-Hence, $\mathcal W$ can not be parametrically convex.
+It follows that $\mathcal W$ cannot be parametrically convex in this case.
 \end{proof}
 %
 \begin{rem}
-Notice that condition~\eqref{eq:graph:def:p:convexity} is a non-convexity condition on the graph $\mathscr G(\mathcal W)$.
+Condition~\eqref{eq:graph:def:p:convexity} requires that the graph $\mathscr G(\mathcal W)$ is non-convex.
 %
-If $\mathscr G(\mathcal W)$ is strictly convex anywhere~\eqref{eq:graph:def:p:convexity} is violated and 
-$\mathcal W$ can not be parametrically convex.
+Indeed if $\mathscr G(\mathcal W)$ is strictly convex at any $(p,x)\in\partial \mathscr G (\mathcal W)$, then~\eqref{eq:graph:def:p:convexity} is violated and 
+$\mathcal W$ cannot be parametrically convex.
 \end{rem}
 %
 \begin{cor}
 %
 Let $\mathcal W(p):=\{x\in\mathbb R^n: r(p,x)\leq0\}$ define a point-to-set
-map with a continuous function 
-$r: \mathbb R^d \times\mathbb R^n \rightarrow \mathbb R,(p,x)\mapsto r(p,x)$, 
+map where 
+$r: \mathbb R^d \times\mathbb R^n \rightarrow \mathbb R$, $(p,x)\mapsto r(p,x)$ is a continuous function which is convex in $x \in\mathbb R^n$, 
+%$r: \mathbb R^d \times\mathbb R^n \ni (p,x) \mapsto r(p,x) \in \mathbb R$ is  a continuous function, 
 then $\mathcal W$ is parametrically
-convex iff the function $r$ is concave in $p\in\mathbb R^d$ and convex in $x\in
-\mathbb R^n$.
+convex iff the function $r$ is concave in $p\in\mathbb R^d$.
 %
 \end{cor}
 %
 \begin{proof}
-The convexity in $x\in\mathbb R^n$ is required to satisfy the requirement that $\mathcal W(p)$ is convex
-for all fixed values of $p\in\mathbb R^d$. 
+Convexity of $r(p,x)$ in $x\in\mathbb R^n$ is assumed so that $\mathcal W(p)$ is a convex set for all fixed values of $p\in\mathbb R^d$.
 %
-Assume that for some region $\Omega\subset\mathbb R^d$ the function $r(\cdot,x)$ is non-concave (i.e. 
-strictly convex), any convex subset $\mathcal C\subseteq\Omega$ will hence be such that $\mathscr 
+Suppose that, for given $x\in\mathbb R^n$, $r(p,x)$ is non-concave (i.e. 
+strictly convex) in $p$, for all $p$ in some region $\Omega\subset\mathbb R^d$. 
+%Suppose that for some region $\Omega\subset\mathbb R^d$ the function $r(\cdot,x)$ is non-concave (i.e. strictly convex), 
+Then any convex subset $\mathcal C\subseteq\Omega$ will be such that $\mathscr 
 G(\mathcal W)\vert_{\mathcal C}$ is a convex set.
 %
-In particular all lines between all $(p_1,x_1),(p_2,x_2)\in \partial\mathscr G(\mathcal W)\vert_{\mathcal C}$ will satisfy
-$\lambda (p_1,x_1) + (1-\lambda) (p_2,x_2) \in\textup{int} (\mathscr G(\mathcal W))\vert_{\mathcal C}$ since
+Furthermore, for any $(p_1,x_1),(p_2,x_2)\in \partial\mathscr G(\mathcal W)\vert_{\mathcal C}$ we have
+$\lambda (p_1,x_1) + (1-\lambda) (p_2,x_2) \in\mathrm{int} (\mathscr G(\mathcal W))\vert_{\mathcal C}$ for all $\lambda\in(0,1)$ since
 $\mathscr G(\mathcal W)\vert_{\mathcal C}$ is strictly convex in $p$.
 %
-This implies that $r(\cdot,x)$ can not be non-concave in any non-trivial set $\Omega\subseteq\mathbb R^d$ and still
-be parametrically convex.
+Hence~\eqref{eq:graph:def:p:convexity} is violated in this case, implying that $r(\cdot,x)$ cannot be non-concave on any non-trivial set $\Omega\subseteq\mathbb R^d$ if $\mathcal W$ is parametrically convex. 
+%
+Conversely, if $r(p,x)$ is concave in $p$ for all $p\in\mathbb R^d$, then the conditions of Theorem~\ref{thm:p:convexity:graph} necessarily hold.
+%then~\eqref{eq:graph:def:p:convexity} necessarily holds.
 \end{proof}
 %
 \begin{cor}\label{thm:polytopic:set:not:p:convex}
-The polytopic parametric set valued map $\mathcal W(p):=\{x: a_i x + b_i p\leq c_i \forall i\leq m\}$ is not parametrically convex for 
-any non-trivial matrix $B$.
+The polytopic parametric set valued map $\mathcal W(p):=\{x: a_i x + b_i p\leq c_i \; \forall i\in\mathbb N_m\}$
+%i\leq m\}$ 
+is not parametrically convex for 
+any non-trivial matrix $B^T = [\begin{matrix} b_1^T & \cdots & b_m^T\end{matrix}]$.
 \end{cor}
 %
 \begin{proof}
 The graph $\mathscr G(\mathcal W)$ is given by
 %
 \begin{equation*}
-	\mathscr G(\mathcal W) = \{(p,x):a_i x + b_i p\leq c_i \forall i\leq m\}
+	\mathscr G(\mathcal W) = \{(p,x):a_i x + b_i p\leq c_i \; \forall i\in\mathbb N_m\}
 \end{equation*}
 %
 and hence is a convex set and violates Theorem~\ref{thm:p:convexity:graph}.
@@ -865,87 +894,92 @@ and hence is a convex set and violates Theorem~\ref{thm:p:convexity:graph}.
 The non-degenerate piecewise affine polytopic parametric point-to-set valued map 
 %
 \begin{equation}\label{eq:definition:PWA:polytopic:set:general}
-  \mathcal W(p) := \left\{x: a_i x \leq \max_{k\leq l}\{b_{i,k} + c_{i,k}p\},i\leq m\right\}
+  \mathcal W(p) := \left\{x: a_i x \leq \max_{k\in\mathbb N_l}\{b_{i,k} + c_{i,k}p\} \; \forall i\in\mathbb N_m \right\}
 \end{equation}
 %
-is parametrically convex iff the number of vertices $v_\kappa(p)$ and rays $r_\eta(p)$ is constant.
+is parametrically convex iff the number of vertices, $v_\kappa(p)$, and rays, $r_\eta(p)$, of $\mathcal W(p)$ is independent of $p$.
 \end{cor}
 %
 \begin{proof}
 For clarity this proof is divided in 3 parts:
 \begin{enumerate}
-\item Notice that $h_i(p) = \max_{k\leq l} \{b_{i,k} + c_{i,k}p\}$ is a multi-parametric linear program (mpLP),
-its solution is a piecewise affine function $h_i(p) = b_{i,k^\ast_i} + c_{i,k^\ast_i}p$ where $k^\ast_i(p)$ is constant
-inside a polytopic complex, see e.g.~\cite{spjotvold:2005}.
+\item Note that $h_i(p) = \max_{k\in\mathbb N_l} \{b_{i,k} + c_{i,k}p\}$ is a multi-parametric linear program (mpLP),
+the solution of which is a piecewise affine function $h_i(p) = b_{i,k^\ast_i} + c_{i,k^\ast_i}p$, where $k^\ast_i(p)$ is piecewise constant on a polytopic complex (see e.g.~\cite{spjotvold:2005}).
 %
-That means that there exists a finite polyhedral partitioning $\mathbb R^d = \bigcup_{j\leq t} \mathcal P_j$ with convex polyhedra 
-$\mathcal P_j$ such that ${\bf{k}}^\ast\vert_{\mathcal P_j} = (k_1^\ast,\dots,k_m^\ast) = const$.
+This means that there exists a finite partition 
+of $\mathbb R^d$ 
+% = \bigcup_{j\leq t} \mathcal P_j$
+into convex polyhedra 
+$\mathcal P_j$ such that $\bigcup_{j\in\mathbb N_t} \mathcal P_j = \mathbb R^d$ and 
+${\bf{k}}^\ast(p) = (k_1^\ast(p),\dots,k_m^\ast(p))$ is constant for all $p \in \mathcal P_j$.
 %
-A standard degeneracy assumption is that in neighbouring partitions ${\bf{k}}^\ast\vert_{\mathcal P_{j_1}}$ and 
-${\bf{k}}^\ast\vert_{\mathcal P_{j_2}}$ differ in exactly one element.
+% A standard degeneracy assumption is that in neighbouring partitions ${\bf{k}}^\ast\vert_{\mathcal P_{j_1}}$ and 
+% ${\bf{k}}^\ast\vert_{\mathcal P_{j_2}}$ differ by exactly one element.
 %
-This partitioning implies that the graph $\mathscr G(\mathcal W)$ is given as a finite union of polyhedra
+Hence the graph $\mathscr G(\mathcal W)$ is given by a finite union of polyhedra
 %
 \begin{equation*}
-  \mathscr G(\mathcal W) = \bigcup_{j\leq t} \left\{x: a_i x \leq b_{i,k_i^\ast} + c_{i,k_i^\ast}p,i\leq m
-  \right\}\bigr\vert_{\mathcal P_{j}}
+  \mathscr G(\mathcal W) = \bigcup_{j\in\mathbb N_t} \left\{x: a_i x \leq b_{i,k_i^\ast} + c_{i,k_i^\ast}p \; \forall i \in\mathbb N_m \right\}\bigr\vert_{\mathcal P_{j}}
 \end{equation*}
 %
-But this implies that if the number of vertices or rays changes inside any partition $\mathcal P_j$ then $\mathscr
-G(\mathcal W)\vert_{\mathcal P_j}$ is a strictly convex polyhedron and corollary~\ref{thm:polytopic:set:not:p:convex} applies.
+and it follows that if the number of vertices or rays changes within any partition $\mathcal P_j$ then $\mathscr
+G(\mathcal W)\vert_{\mathcal P_j}$ is a strictly convex polyhedron and Corollary~\ref{thm:polytopic:set:not:p:convex} applies.
 %
-\item Our attention hence is concentrated to the boundaries of the partitions $\mathcal P_j$.
-%
-These are the points $\mathcal P_{j_1} \cap \mathcal P_{j_2}$ where some mpLP changes its solution, i.e. 
+\item Our attention is therefore concentrated on the boundaries of partitions $\mathcal P_j$, at points $p\in\mathcal P_{j_1} \cap \mathcal P_{j_2}$ where 
+%some mpLP changes its solution, i.e. 
 $\left(b_{i,k_i^\ast} + c_{i,k_{j_1}^\ast} p\right)\big\vert_{\mathcal P_{j_1}} = 
 \left(b_{i,k_{j_2}^\ast} + c_{i,k_{j_2}^\ast} p\right)\big\vert_{\mathcal P_{j_2}}$.
 %
-Notice that a vertex $v_\kappa(p)$ is given by \emph{active} and \emph{inactive} inequalities, i.e. $\mathcal A_\kappa(p)$ and
-$\mathcal I_\kappa(p) = \{1,\dots,m\}\setminus\mathcal A_\kappa(p)$ respectively.
+Notice that a vertex $v_\kappa(p)$ is defined by \emph{active} and \emph{inactive} inequalities, namely $\mathcal A_\kappa(p)$ and
+$\mathcal I_\kappa(p) = \mathbb N_m
+%\{1,\dots,m\}
+\setminus\mathcal A_\kappa(p)$ respectively, where
 %
 \begin{equation*}\begin{split}
   a_i v_\kappa(p) &= b_{i,k_i^\ast} + c_{i,k_i^\ast} p \quad\forall i\in\mathcal A_\kappa(p)\\
-  a_i v_\kappa(p) &< b_{i,k_i^\ast} + c_{i,k_i^\ast} p \quad\forall i\in\mathcal I_\kappa(p)
+  a_i v_\kappa(p) &< b_{i,k_i^\ast} + c_{i,k_i^\ast} p \quad\forall i\in\mathcal I_\kappa(p) .
 \end{split}\end{equation*}
 %
-In order for the number of vertices to change, there must be a hyperplane $fp=g$, such that the number of vertices for $fp<g$ is 
+%
+A standard degeneracy assumption is that in neighbouring partitions ${\bf{k}}^\ast\vert_{\mathcal P_{j_1}}$
+and ${\bf{k}}^\ast\vert_{\mathcal P_{j_2}}$ differ by exactly one element.
+%
+Hence, in order for the number of vertices to change, there must be a hyperplane $fp=g$, such that the number of vertices for $fp \leq g$ is 
 $N$ and for $fp>g$ is at least $N+1$.
 %
 It follows from the previous discussion that $\{p:fp=g\} = \textup{aff}\{\mathcal P_{j_1}\cap\mathcal P_{j_2}\}$ for some $j_1\neq j_2$.
 %
-For vertices $v_{\kappa_1}(p)$ and $v_{\kappa_2}(p)$ to merge the index sets $\mathcal A_{\kappa_1}(p)$ and 
-$\mathcal A_{\kappa_2}(p)$ have to differ in only one 
-element, i.e. $\mathcal A_{\kappa_1}(p) = \mathcal J\cup \{s\}$ and $\mathcal A_{\kappa_2}(p) = \mathcal J\cup\{u\}$ for $fp>g$.
+In order for vertices $v_{\kappa_1}(p)$ and $v_{\kappa_2}(p)$ to merge, the index sets $\mathcal A_{\kappa_1}(p)$ and 
+$\mathcal A_{\kappa_2}(p)$ have to differ by only one 
+element, i.e.\ $\mathcal A_{\kappa_1}(p) = \mathcal J\cup \{s\}$ and $\mathcal A_{\kappa_2}(p) = \mathcal J\cup\{u\}$ if $fp>g$.
 %
-Furthermore, for $p$ with $fp\leq g$ we have $v_{\kappa_1}(p)=v_{\kappa_2}(p)$, this implies $\mathcal A_{\kappa_1}(p) = 
+Furthermore, for $p$ such that $fp\leq g$ we have $v_{\kappa_1}(p)=v_{\kappa_2}(p)$, implying that $\mathcal A_{\kappa_1}(p) = 
 \mathcal A_{\kappa_2}(p)$.
 %
-Since only one alteration of the active index set is considered (due to non-degeneracy assumptions), the active set 
+Since only one change in the active index set is considered (due to non-degeneracy assumptions), we must have
 $\mathcal A_{\kappa_1}(p) = \mathcal A_{\kappa_2}(p) = \mathcal J \cup \{s,u\}$.
 %
-Hence on the hyperplane $fp=g$ both, the maximising index ${\bf{k}}^\ast(p)$ and the active index sets $\mathcal A_{\kappa_1}(p)$ 
-and $\mathcal A_{\kappa_2}(p)$ change, which is means the problem is degenerate.
+Hence on the hyperplane $fp=g$, both the maximising index ${\bf{k}}^\ast(p)$ and the active index sets $\mathcal A_{\kappa_1}(p)$ 
+and $\mathcal A_{\kappa_2}(p)$ must change, which implies that the problem is degenerate.
 %
-\item In order for the degenerate graph $\mathscr G(\mathcal W)$ to be parametrically convex the overdetermined 
-vertex $v_{\kappa_1}(p)=v_{\kappa_2}(p)$ have to be identical, in particular their dependence on $p$ has to be identical.
+\item In order for a degenerate graph $\mathscr G(\mathcal W)$ to be parametrically convex, the vertices $v_{\kappa_1}(p)$ and $v_{\kappa_2}(p)$ must be identical for $fp\leq g$, and in particular their dependence on $p$ has to be identical.
 %
-This can be expressed with the implicit function theorem:
+This can be expressed using the implicit function theorem; thus
 %
-\begin{equation*}\begin{split}
+\begin{align*}
   \frac{d}{dp}\left(  {\bf{a}}_{\mathcal J\cup \{s\}} v_{\kappa_1}(p) - {\bf{b}}_{\mathcal J\cup \{s\}} - 
   {\bf{c}}_{\mathcal J\cup \{s\},{\bf{k}}^\ast} p\right) &= 0\\
   \frac{d}{dp}\left(  {\bf{a}}_{\mathcal J\cup \{u\}} v_{\kappa_2}(p) - {\bf{b}}_{\mathcal J\cup \{u\}} - 
   {\bf{c}}_{\mathcal J\cup \{u\},{\bf{k}}^\ast} p\right) &= 0
-\end{split}\end{equation*}
+\end{align*}
 %
-which leads to 
-%
-\begin{equation*}\begin{split}
+implies
+\begin{align*}
   {\bf{a}}_{\mathcal J\cup \{s\}} \frac{dv_{\kappa}}{dp} &= {\bf{c}}_{\mathcal J\cup \{s\},{\bf{k}}^\ast}\\
-  {\bf{c}}_{\mathcal J\cup \{u\}} \frac{dv_{\kappa}}{dp} &= {\bf{c}}_{\mathcal J\cup \{u\},{\bf{k}}^\ast}
-\end{split}\end{equation*}
+  {\bf{a}}_{\mathcal J\cup \{u\}} \frac{dv_{\kappa}}{dp} &= {\bf{c}}_{\mathcal J\cup \{u\},{\bf{k}}^\ast}
+\end{align*}
 %
-since we can assume that the inequalities are non-redundant for some right hand side, we obtain that 
+and since we can assume that the inequalities are non-redundant for some right hand side, we find that 
 %
 \begin{equation}\label{eq:derivative:condition:on:index:sets}
   \frac{dv_\kappa}{dp} = {\bf{a}}_{\mathcal J\cup \{s\}}^{-1}{\bf{c}}_{\mathcal J\cup \{s\},{\bf{k}}^\ast} = 
@@ -954,23 +988,22 @@ since we can assume that the inequalities are non-redundant for some right hand 
 %
 has to hold for the degenerate graph to remain parametrically convex.
 %
-Notice that~\eqref{eq:derivative:condition:on:index:sets} is again a degenerate condition, since arbitrarily small perturbations
-will produce different behaviour.
+To complete the proof we note that~\eqref{eq:derivative:condition:on:index:sets} is a degenerate condition, in the sense that an arbitrarily small perturbation will result in $v_{\kappa_1}(p) \neq v_{\kappa_2}(p)$, and we therefore disregard this possibility.
 \end{enumerate}
+\vskip-1.15\baselineskip
 \end{proof}
 %
 \begin{rem}
-Corollary~\ref{thm:p:convexity:PWA:set:constant:num:verts} is essential for numerical evaluation, as it can be reformulated to:
+Corollary~\ref{thm:p:convexity:PWA:set:constant:num:verts} is essential for numerical evaluation since it can be reformulated as follows:
 %
-The set valued map defined by~\eqref{eq:definition:PWA:polytopic:set:general} is non-degenerate and parametrically convex iff 
-it has a constant number of vertices throughout the parameter space~$X$.
+the set valued map defined by~\eqref{eq:definition:PWA:polytopic:set:general} is non-degenerate and parametrically convex iff 
+it has a fixed number of vertices throughout the parameter space~$X$.
 %
 Since the map is continuous it is sufficient to verify this at the vertices of the parameter space.
 %
 \end{rem}
 %
-In order to determine MRPI sets we need to be able to calculate the Pontryagin difference between sets, hence we introduce
-the following.
+In order to determine MRPI sets we need to be able to calculate the Pontryagin difference between point-to-set maps; hence we introduce the following.
 %
 \begin{defi}[Parametric Pontryagin Difference]\label{def:parametric:pontryagin:difference}
   Let $S\subseteq X$ and let $\mathcal W:X\to\mathscr P(X)$ be a continuous point-to-set map such that
@@ -988,60 +1021,74 @@ For the parametric Pontryagin difference of a convex set and a parametrically co
 have the following result.
 %
 \begin{thm}\label{thm:convexity:of:pontryagin:difference}
-  Let $S\subseteq X$ be a convex set and let $\mathcal W:X\rightarrow\mathscr P(X)$ be a parametrically convex point-to-set
-  map such that $\mathcal W(p)$ is convex for all $p\in X$, then $S\ominus \mathcal W(S)$ is convex.
+Let $\mathcal W: X\rightarrow\mathscr P(X)$ denote a point-to-set map, then the parametric Pontryagin difference $S \ominus \mathcal W(S)$ is convex for all convex sets $S$ if and only if $\mathcal W$ is parametrically convex.
 \end{thm}
+% \begin{thm}\label{thm:convexity:of:pontryagin:difference}
+%   Let $S\subseteq X$ be a convex set and let $\mathcal W:X\rightarrow\mathscr P(X)$ be a parametrically convex point-to-set
+%   map such that $\mathcal W(p)$ is convex for all $p\in X$, then $S\ominus \mathcal W(S)$ is convex.
+% \end{thm}
 %
 \begin{proof}
-To prove the convexity of $ Z :=  S\ominus \mathcal W( S)$ we pick any $z_1,z_2\in Z$, then
-by definition of the parametric Pontryagin difference, we have
-%
+To prove convexity of $Z :=  S\ominus \mathcal W( S)$ when $\mathcal W$ is parametrically convex we pick any $z_1,z_2\in Z$, then
+the definition of the parametric Pontryagin difference gives
 \begin{equation}
-  \{z_i\} \oplus \mathcal W(z_i) \subseteq S,\; i=1,2.
+  \{z_i\} \oplus \mathcal W(z_i) \subseteq S,\; i=1,2 
 \end{equation}
 %
-To see that $ Z$ is convex we show that line segments between
-all possible $z_1$ and $z_2$ are subsets of $ Z$, i.e.~for all $\lambda \in [0,1]$,
-\begin{equation}
-\begin{aligned}
+and it can be verified that $ Z$ is convex by showing that line segments between all possible $z_1$ and $z_2$ are subsets of $Z$. In particular, for all $\lambda \in (0,1)$ we have
+\begin{align*}
   \{ \lambda z_1 + (1-&\lambda)z_2
   \}\oplus \mathcal W\left( \lambda z_1 + (1-\lambda)z_2\right)\\
   \subseteq&\left\{ \lambda z_1 + (1-\lambda)z_2
   \right\}\oplus \lambda \mathcal W(z_1) \oplus (1-\lambda)
   \mathcal W(z_2)\\
-  \subseteq &\lambda\underbrace{(\{z_1\}\oplus \mathcal W(z_1))}_{\subseteq S}\oplus
+ = &\lambda\underbrace{(\{z_1\}\oplus \mathcal W(z_1))}_{\subseteq S}\oplus
   (1-\lambda)\underbrace{(\{z_2\}\oplus \mathcal W(z_2))}_{\subseteq S}\\
-  \subseteq& Z
-\end{aligned}
-\end{equation}
+  \subseteq& S
+\end{align*}
 %
-where the last inclusion follows from the convexity of $\mathcal S$.
+where the last inclusion follows from the convexity of $\mathcal S$, and hence 
+$\lambda z_1 + (1-\lambda) z_2 \in Z$ for all $\lambda \in (0,1)$. 
+%the property, which follows from Definition~\ref{def:parametric:pontryagin:difference}, that $S\subseteq Z$.
+%
+
+To demonstrate that parametric convexity of $\mathcal W$ is necessary for convexity of $S\ominus \mathcal W(S)$, suppose that condition~(\ref{eq:def:parametrically:convex}) does not hold and choose $z_1,z_2$ so that $\mathcal W(\lambda z_1 + (1-\lambda) z_2) \not\subseteq \lambda \mathcal W(z_1) \oplus (1-\lambda) \mathcal W (z_2)$ for some $\lambda \in (0,1)$. Then there exists $\lambda\in(0,1)$ such that
+\begin{align*}
+  \{ \lambda z_1 + (1-&\lambda)z_2
+  \}\oplus \mathcal W\left( \lambda z_1 + (1-\lambda)z_2\right)\\
+  % \not\subseteq&\left\{ \lambda z_1 + (1-\lambda)z_2
+  % \right\}\oplus \lambda \mathcal W(z_1) \oplus (1-\lambda)
+  % \mathcal W(z_2)\\
+ \not\subseteq &\lambda\bigl(\{z_1\}\oplus \mathcal W(z_1)\bigr)\oplus
+  (1-\lambda)\bigl(\{z_2\}\oplus \mathcal W(z_2)\bigr) .
+\end{align*}
+Therefore if $S$ is a convex polyhedron constructed so that $\{z_1\}\oplus\mathcal W(z_1)$ and $\{z_2\}\oplus\mathcal W(z_2)$ contain points lying on the same facet of $S$ (this is always possible if $Z=S\ominus \mathcal W(S)$ has a non-empty interior), then there exists $\lambda \in (0,1)$ such that $\lambda z_1 + (1-\lambda) z_2 \notin Z$.
 \end{proof}
 %
-Theorem~\ref{thm:convexity:of:pontryagin:difference} only gives us the convexity of the parametric
-Pontryagin difference, in the following we will see that the parametric Pontryagin difference between
-a polyhedral set and a piecewise affine polytopic parametric set is polyhedral itself.
+Theorem~\ref{thm:convexity:of:pontryagin:difference} provides necessary and sufficient conditions for convexity of the parametric Pontryagin difference. In the following we will see that the parametric Pontryagin difference between a polyhedral set and a piecewise affine polytopic parametric set is itself polyhedral.
 %
 %
 %
 %
 %
 %
-\subsection{Maximal Robust Positive Invariant Sets}\label{ssec:MRPI:sets}
+\subsection{Maximal Robust Positively Invariant Sets}\label{ssec:MRPI:sets}
 %
-In this section we describe an iterative algorithm to compute the MRPI set~\eqref{eq:definition:MRPI:set}
-for a linear system~$x^+=\Psi x + v$ subject to disturbance $v\in\mathcal V(x)$ where $\mathcal V(x)$ is 
+In this section we describe an iterative algorithm to compute the MRPI set, $\mathcal X^\infty$,
+for a linear system~$x^+=\Psi x + v$ subject to disturbances $v\in\mathcal V(x)$, where $\mathcal V(x)$ is 
 a piecewise affine parametrically convex point-to-set map defined 
-like~\eqref{eq:definition:PWA:polytopic:set:general}.
+as in~\eqref{eq:definition:PWA:polytopic:set:general}.
 %
 We assume (without loss of generality) that the set $\mathcal V(x)$ is pointwise compact and polytopic 
-for finite $x\in\mathcal X_0$ and can hence be represented as the 
+for all finite $x\in\mathcal X_0$, and it can therefore be represented as the 
 convex hull of its vertices $\mathcal V(x) = \conv\{v_i(x)\}$. 
 %
-Since ${\mathcal{V}}(x)$ has a piecewise affine dependence on $x$ the vertices $v_i(x)$ are also piecewise 
+Since ${\mathcal{V}}(x)$ has a piecewise affine dependence on $x$, each vertex $v_i(x)$ is also piecewise 
 affine in $x$.
 %
-The set $\mathcal X^\infty$ as defined in~\eqref{eq:definition:MRPI:set} is required to satisfy $\Psi x + 
+
+%The MRPI set $\mathcal X^\infty$ defined in~\eqref{eq:definition:MRPI:set} 
+The MRPI set $\mathcal X^\infty$ is required to satisfy $\Psi x + 
 v\in\mathcal X^\infty$ for all~$x\in\mathcal X^\infty$ and $v\in\mathcal V(x)$. 
 %
 To compute the MRPI set we start from the given state constraint set $\mathcal X_0=\mathcal X$
@@ -1050,62 +1097,67 @@ To compute the MRPI set we start from the given state constraint set $\mathcal X
 \mathcal X_0 = \{x:\;\genmat_{0,i}x\leq \genvec_{0,i}\,\forall i\in\mathcal I_0\}
 \]
 %
-and recursively \emph{cut off} points that cannot satisfy the invariance condition~\eqref{eq:definition:MRPI:set}
+and recursively remove points that cannot satisfy the invariance condition~\eqref{eq:definition:MRPI:set}
 by iteratively introducing constraints that exclude all points for which the successor state can lie outside 
 $\mathcal X_0$. 
 %
-The first iteration enforces the constraint:
+Thus the first iteration enforces the constraint:
 %
-\[
-\begin{split}
-  &\genmat_{0,i}(\Psi x + v)\overset{!}{\leq}\genvec_{0,i}\;\forall v\in\conv\{v_i(x)\}\\
-  &\genmat_{0,i}\Psi x + \max_{v\in\mathcal V(x)} \genmat_{0,i} v \leq \genvec_{0,i}\\
-  &\genmat_{0,i}\Psi x + \underbrace{\max_{j} \genmat_{0,i} v_j(x)}_{=v_{0,i}^\ast(x)} \leq \genvec_{0,i}.
-\end{split}
-\]
+\begin{alignat*}{3}
+&  &\genmat_{0,i}(\Psi x + v) & \overset{!}{\leq}\genvec_{0,i}\;\forall v\in\conv\{v_i(x)\}\\
+&\iff  &\genmat_{0,i}\Psi x + \max_{v\in\mathcal V(x)} \genmat_{0,i} v & \leq \genvec_{0,i}\\
+&\iff\;  &\genmat_{0,i}\Psi x + \underbrace{\max_{j} \genmat_{0,i} v_j(x)}_{=v_{0,i}^\ast(x)} &\leq \genvec_{0,i}.
+\end{alignat*}
 %
 for each $i\in \mathcal I_0$.
 %
 Here $v_{0,i}^\ast(x)$ is not necessarily given by a unique maximiser, but is the solution of a multi-parametric 
 linear program and hence is given by a vertex $v_i(x)$ of $\mathcal V(x)$ for all $x$ on that facet.
 %
-Since each vertex is a piece-wise affine function of $x$, the maximum $v_{0,i}^\ast(x)$ is also piece-wise affine
-so the set $\mathcal X_1=\mathcal X_0 \cap \{x:\genmat_{0,i}\Psi x + v_{0,i}^\ast(x) \leq 
-\genvec_{0,i}\forall i\in\mathcal I_0\}$
-has representation $\mathcal X_1 = \{x:\genmat_{1,i}x\leq\genvec_{1,i}\,\forall i\in\mathcal I_1\}$.
+Since each vertex is a piece-wise affine function of $x$, the maximum $v_{0,i}^\ast(x)$ is also piece-wise affine.
+Hence the set $\mathcal X_1=\mathcal X_0 \cap \{x:\genmat_{0,i}\Psi x + v_{0,i}^\ast(x) \leq 
+\genvec_{0,i}\;\forall i\in\mathcal I_0\}$
+has the representation $\mathcal X_1 = \{x:\genmat_{1,i}x\leq\genvec_{1,i}\;\forall i\in\mathcal I_1\}$.
 %
 The next iterate is defined by
 %
 \begin{align*}
-  \mathcal X_2 &= \mathcal X_1 \cap \\ &\{x:\genmat_{0,i}\Psi(\Psi x + v) + v_{0,i}^\ast(x)\leq\genvec_{0,i}\,
+  \mathcal X_2 &= \mathcal X_1 \cap \\ &\{x:\genmat_{0,i}\Psi(\Psi x + v) + v_{0,i}^\ast(x)\leq\genvec_{0,i}\;
   \forall i\in\mathcal I_0,v\in\mathcal V(x)\}\\
-  &= \mathcal X_1 \cap \{x: \genmat_{0,i}\Psi^2 x + v_{1,i}^\ast(x) + v_{0,i}^\ast(x)\leq\genvec_{0,i}\,\forall 
+  &= \mathcal X_1 \cap \{x: \genmat_{0,i}\Psi^2 x + v_{1,i}^\ast(x) + v_{0,i}^\ast(x)\leq\genvec_{0,i}\;\forall 
   i\in\mathcal I_0\}
 \end{align*}
 %
 and at the $(k+1)$st iteration we have
 %
 \[
-  \mathcal X_{k+1} = \mathcal X_k\cap \{x:\genmat_{0,i}\Psi^k x + \sum_{l=1}^{k-1}v_{l,i}^\ast(x)
-  \leq\genvec_{0,i}\,\forall i\in\mathcal I_0\},
+\mathcal X_{k+1} = \mathcal X_{k}\cap \{x:\genmat_{0,i}\Psi^{k+1} x + \sum_{l=0}^{k}v_{l,i}^\ast(x)
+  \leq\genvec_{0,i}\;\forall i\in\mathcal I_0\},
 \]
 %
 where 
 %
-\[
-  v_{l,i}^\ast(x)=\max_j \ \genmat_{0,i}\Psi^{l-1}v_j(x)
-   = \begin{array}[t]{rl} \displaystyle\max_{\tilde v} & \genmat_{0,i}\tilde v\\ \text{s.t.}& \tilde v\in 
-   \Psi^{l-1}\mathcal V(x) \end{array}
-\]
+\begin{align*}
+v_{l,i}^\ast(x) &= \max_j \ \genmat_{0,i}\Psi^{l}v_j(x)  = \max_{\tilde v} \bigl\{ 
+\genmat_{0,i}\tilde v
+\ \text{s.t.}\ 
+\tilde v\in  \Psi^{l}\mathcal V(x) \bigr\}
+\end{align*}
+% \[
+%   v_{l,i}^\ast(x)=\max_j \ \genmat_{0,i}\Psi^{l}v_j(x)
+%    = \begin{array}[t]{rl} \displaystyle\max_{\tilde v} & \genmat_{0,i}\tilde v\\ \text{s.t.}& \tilde v\in 
+%    \Psi^{l}\mathcal V(x) \end{array}
+% \]
 %
 \begin{rem}
-Determining the map $v_{l,i}(x)$ for all admissible $x\in \mathcal X$ in general poses a great classification
+Determining the map $v_{l,i}(x)$ for all $x\in \mathcal X$ in general poses a great classification
 challenge. 
 %
-Notice that in our calculations we can avoid determining the particular vertex $v_{l,i}(x)$ explicitly, it
-suffices to determine the vertex determining a supporting hyperplane of $\mathcal X_{k+1}$, i.e.~$v_{l,i}^\ast(x)$. 
+However, the approach proposed here avoids determining the particular vertex $v_{l,i}(x)$ explicitly, it
+suffices to determine the vertices that define the supporting hyperplanes of $\mathcal X_{k+1}$, i.e.~$v_{k,i}^\ast(x)$ for each $i\in\mathcal I_0$.
+%i.e.~$v_{l,i}^\ast(x)$, $l\in\mathbb N_[0,k]$, for $i\in\mathcal I_0$.
 %
-This can be done by adding all possible inequalities and applying a inequality reduction algorithm.
+This can be done by adding all possible inequalities and applying an inequality reduction algorithm.
 \end{rem}
 %
 In closed form the iterates can be expressed as
@@ -1114,24 +1166,26 @@ In closed form the iterates can be expressed as
 \begin{split}
   \mathcal X_{k+1} =& \mathcal X_k\cap\left(\Psi^{-1}\mathcal X_k \ominus \Psi^{k-1}\mathcal V(\mathcal X_k)\right)
   =\mathcal X_k\cap D_k \\
-  =& \bigcap_{0\leq l\leq k+1}\left( \Psi^{-l} \mathcal X_0 \underset{1 \leq i\leq l-1}{\bigominus} 
+  =& \bigcap_{l\in \mathbb N_{[0,k+1]}} \left( \Psi^{-l} \mathcal X_0 \ominus \underset{i\in\mathbb N_{l-1}}{\bigoplus} 
   \Psi^i \mathcal V(\mathcal X_{l-1})\right).
+%  =& \bigcap_{l\in \mathbb N_{k+1}} \left( \Psi^{-l} \mathcal X_0 \ominus \underset{i\in\mathbb N_{l-1}}{\bigoplus}  \Psi^i \mathcal V(\mathcal X_{l-1})\right) \cap \mathcal X_0.
+%  =& \bigcap_{0\leq l\leq k+1}\left( \Psi^{-l} \mathcal X_0 \ominus \underset{1 \leq i\leq l-1}{\bigoplus} \Psi^i \mathcal V(\mathcal X_{l-1})\right).
 \end{split}\end{equation}
 %
 Notice that we do not require $\Psi$ to be invertible, in~\eqref{eq:set:iteration:state:dependent:constraints} 
 $\Psi^{-1}\mathcal X_k$ merely denotes the preimage of $\mathcal X_k$ under the linear map $\Psi$.
 %
-We will use~\eqref{eq:set:iteration:state:dependent:constraints} to prove the finite determinability of
+We next use~\eqref{eq:set:iteration:state:dependent:constraints} to prove the finite determinability of
 $\mathcal X^\infty$, namely that there exists a finite number $N$ such that $x\in\mathcal X_N$ implies
-$\Psi x + v \in\mathcal X_N$ for all $v\in\mathcal V(x)$ and hence $\mathcal X_N$ is robustly positively invariant.
+$\Psi x + v \in\mathcal X_N$ for all $v\in\mathcal V(x)$ so that $\mathcal X_N$ is robustly positively invariant and hence $\mathcal X^\infty = \mathcal X_N$.
 %
 \begin{thm}\label{thm:finite:MRPI:set:state:dependable}
 Let the state constraint set $\mathcal X$ be contained in a band: $\mathcal X\subseteq B=\{x:\Gamma x\leq{\bf{1}}\wedge 
 -\Gamma x\leq{\bf{1}}\}$, let the pair $(\Psi,\Gamma)$ be observable and let $\mathcal V(x)=D\mathcal W(x)$ with 
 $\mathcal W(x)$ defined by~\eqref{eq:definition:disturbance:set:explicit}. 
 %
-Then $\mathcal X_N\subseteq \mathcal X_{N+1}$ for a finite $N$, and hence the MRPI set $\mathcal X^\infty =\mathcal X_N$ 
-is a polytope.
+Then $\mathcal X_N\subseteq \mathcal X_{N+1}$ for a finite integer $M$, and hence the MRPI set $\mathcal X^\infty =\mathcal X_M$ 
+is a bounded polytopic set.
 \end{thm}
 %
 %
@@ -1150,66 +1204,78 @@ First we prove that $\mathcal X_p$ is bounded for $p\leq n$ where $n$ is the dim
 %
 The second step is to prove that in~\eqref{eq:set:iteration:state:dependent:constraints}
 the set $D_k$ grows exponentially, i.e. that for any given bounded set $\mathcal C$ there exists
-finite $N$ such that $\mathcal C\subseteq D_{N}$. The proof is concluded by setting 
-$\mathcal C = \mathcal X_{N}$ and deducing that $\mathcal X^\infty = \mathcal X_N$. 
+finite $M$ such that $\mathcal C\subseteq D_{M}$. The proof is concluded by setting 
+$\mathcal C = \mathcal X_{M}$ and deducing that $\mathcal X^\infty = \mathcal X_M$. 
 %
-For the first step, notice that observability of $(\Psi,\Gamma)$ is equivalent to the observability matrix 
-$\Omega$ having full rank, i.e.\ $\mathrm{rank}(\Omega) = \mathrm{rank}(\begin{bmatrix} \Gamma^T \ \cdots \ 
+For the first step, notice that $(\Psi,\Gamma)$ is observable if and only if the observability matrix 
+has full rank, i.e.\ $\mathrm{rank}(\mathcal O) = \mathrm{rank}(\begin{bmatrix} \Gamma^T \ \cdots \ 
 (\Gamma\Psi^{n-1})^T\end{bmatrix}) = n$.
 But  this implies that the set 
 %
 \[
 \mathcal P_{n} = \{x: 
-\Omega x\leq{\bf{1}}\wedge-\Omega x\leq{\bf{1}}\} = \bigcap_{0\leq l\leq n-1} \Psi^{-l} B
+\mathcal O x\leq{\bf{1}}\wedge-\mathcal O x\leq{\bf{1}}\} = \bigcap_{l \in \mathbb N_{[0,n-1]}} \Psi^{-l} B
+%\bigcap_{0\leq l\leq n-1} \Psi^{-l} B
 \]
 %
 is bounded, and since $\mathcal X_k\subseteq \mathcal P_k$ for all $k$, 
 the set $\mathcal X_{n}$ is also bounded.
 
 
-To see that $D_k$ grows exponentially we denote the spectral radius of $\Psi$ by $\rho$, since $\Psi$ is asymptotically
-stable we have $\rho<1$.
+To see that $D_k$ grows exponentially we denote the spectral radius of $\Psi$ by $\rho$ (where $\rho<1$ since $\Psi$ is asymptotically stable), and 
 %
-Let $r_1$ be the radius of the largest ball contained in $\mathcal X_0$ i.e. $\mathcal E(r_1)\subseteq\mathcal X_0$ 
-and let $r_2$ be the radius of smallest ball containing $\mathcal V(x)$ for all $x\in\mathcal X_0$.
+for notational convenience we write $\mathcal E=B_1(0)$. Let
+$r_1\mathcal E \subseteq\mathcal X_0$,
+so that $r_1$ is the radius of a ball $B_{r_1}(0)$ contained in $\mathcal X_0$, 
+%$\mathcal E(r_1)\subseteq\mathcal X_0$ 
+and let $r_2$ be the radius of a ball $B_{r_2}(0)$ containing $\mathcal V(x)$ for all $x\in\mathcal X_0$.
 %
-Recall that $\mathcal X_k = \bigcap_{l\leq k} D_l$, where $D_k$ is defined by
+From~(\ref{eq:set:iteration:state:dependent:constraints}) we have
+%Recall that 
+$\mathcal X_k = \bigcap_{l\in \mathbb N_{[0,k]}} D_l$, where $D_k$ is defined by
 %
 \begin{equation}
   D_l = \underbrace{\Psi^{-l}\mathcal X_0}_{\mathcal S_1} \ominus 
-  \underbrace{\left(\bigoplus_{1\leq i\leq l-1} \Psi^{i}\mathcal V(\mathcal X_{l-1})\right)}_{\mathcal S_2}
+  \underbrace{\left(\bigoplus_{ i \in \mathbb N_{l-1}} \Psi^{i}\mathcal V(\mathcal X_{l-1})\right)}_{\mathcal S_2} ,
 \end{equation}
 %
-We can easily lower bound $\mathcal S_1$ by using $r_1$: $\mathcal S_1 = \Psi^{-l}\mathcal X_0 
-\supseteq \Psi^{-l}\mathcal E(r_1) \supseteq \mathcal E(\rho^{-l} r_1)$.
+and we can easily determine a lower bound for $\mathcal S_1$ using $r_1$: $\mathcal S_1 = \Psi^{-l}\mathcal X_0 
+\supseteq \Psi^{-l} r_1\mathcal E \supseteq \rho^{-l} r_1 \mathcal E$.
 %
-Recall that $\mathcal X_l\subseteq\mathcal X_{l-1}$ and therefore $\mathcal X_l\subseteq\mathcal X_0$ for all $l\geq0$.
+Recall that $\mathcal X_l\subseteq\mathcal X_{l-1}$ so that $\mathcal X_l\subseteq\mathcal X_0$ for all $l\geq0$.
 %
-We use this fact to obtain the containment $\mathcal S_2 = \bigoplus_{1\leq i\leq l-1} 
-\Psi^{i}\mathcal V(\mathcal X_{l-1})\subseteq \bigoplus_{1\leq i\leq l-1} \Psi^{i}\mathcal V(\mathcal X_0)\subseteq
-\bigoplus_{1\leq i\leq l-1} \Psi^{i}\mathcal E(r_2)\subseteq\bigoplus_{1\leq i\leq l-1} \mathcal E(\rho^{i} r_2)\subseteq
-\mathcal E(\sum_{1\leq i\leq l-1}\rho^i r_2)\subseteq \mathcal E(\frac{1}{1-\rho} r_2)$.
+From this fact it follows that 
+\begin{align*}
+\mathcal S_2 &= \bigoplus_{i\in\mathbb N_{l-1}}
+\Psi^{i}\mathcal V(\mathcal X_{l-1})
+\subseteq \bigoplus_{i\in \mathbb N_{l-1}} \Psi^{i}\mathcal V(\mathcal X_0)
+\subseteq
+\bigoplus_{i\in \mathbb N_{l-1}} \Psi^{i} r_2 \mathcal E \\
+&\subseteq\bigoplus_{i\in N_{l-1}} \rho^{i} r_2\mathcal E\subseteq
+\sum_{i\in\mathbb N_{l-1}}\rho^i r_2 \mathcal E\subseteq (1-\rho)^{-1}r_2\mathcal E.
+\end{align*}
 %
-In summary we can state that~$D_l$ consists of the exponentially expanding set~$\mathcal S_1$
-subtracted by the set~$\mathcal S_2$ which is bounded, therefore~$D_l$ itself expands exponentially,
-that is $D_l\supseteq\mathcal E(\rho^{-l} r_1 - \frac{1}{1-\rho} r_2)$.
+In summary we have shown that~$D_l$ consists of the Pontryagin difference between $\mathcal S_1$, which grows exponentially with $l$, and the set~$\mathcal S_2$, which is bounded for all $l$. Therefore~$D_l$ itself grows exponentially,
+that is $D_l\supseteq(\rho^{-l} r_1 - (1-\rho)^{-1} r_2)\mathcal E$.
 %
-We have proven that for $p\leq n$ the set iterate~$\mathcal X_p$ is bounded, let $r_3$ denote the smallest 
-ball that contains $\mathcal X_p$.
+
+To complete the proof, let $r_3$ denote the radius of a ball centred on the origin that contains $\mathcal X_n$.
+%(noting that $\mathcal X_p$ is necessarily bounded for $p\geq n$). 
 %
-We can conclude that for $l$ such that $X_p\subseteq\mathcal E(r_3)\subseteq\mathcal 
-E(\rho^{-l} r_1 - \frac{1}{1-\rho} r_2)\subseteq D_l$ holds the set $D_l$ covers
-$X_p$, i.e. intersections with $D_l$ will not change $X_l$.
+Then, for any $l\geq n$ such that %$\mathcal X_p\subseteq 
+%$r_3 \mathcal E\subseteq (\rho^{-l} r_1 - (1-\rho)^{-1} r_2) \mathcal E$, 
+$\rho^{-l} r_1 - (1-\rho)^{-1} r_2 \geq r_3$, 
+we can conclude that $D_l\supseteq \mathcal X_n$ and, since $\mathcal X_n \supseteq \mathcal X_l$, we also have $D_l\supseteq \mathcal X_l$, so that 
+$\mathcal X_l \cap D_l = \mathcal X_l$.
+%intersections with $D_l$ will not change $\mathcal X_l$.
 %
-We can therefore give an upper bound on the number of iterations necessary for the algorithm
-to terminate, it is given by the smallest integer $M$ such that
+We can therefore provide an upper bound on $M$ such that $\mathcal X_M = \mathcal X^\infty$ as the smallest integer $M$ satisfying
 \begin{equation}\label{bnd:first:lower:bound:on:iteration:count}
-  M\geq \frac{1}{\log(\frac{1}{\rho})}\left(\log\left(r_3+\frac{1}{1-\rho}r_2\right)-\log r_1 \right)
+  M\geq \frac{1}{\log(\frac{1}{\rho})}\left(\log\left(r_3+\frac{1}{1-\rho}r_2\right)-\log r_1 \right) .
 \end{equation}
-is satisfied.
 \end{proof}
 %
-\begin{rem}
+\todo{\begin{rem}
 Notice that the constants used in~\eqref{bnd:first:lower:bound:on:iteration:count} are not
 convenient to compute, we can however compute bounds on $r_1,\, r_2$ and $r_3$ using 
 singular values.
@@ -1264,7 +1330,7 @@ in the iteration.
 %
 All bounds and estimates on $r_1,\,r_2$ and $r_3$ can be calculated in advance to get an estimate
 on how many iterations the described algorithm could require.
-\end{rem}
+\end{rem}}
 %
 %
 %
@@ -1387,7 +1453,10 @@ Thus we can introduce the element\-wise disturbance bound
 \mathcal V(\tilde{x},\tilde{u})=\biggl\{v:\min_k\{
 H^x_{k,i}\tilde{x}+H^u_{k,i}\tilde{u}\}\leq v_i\,\wedge 
 \\ 
-v_i \leq \max_k\{H^x_{k,i}\tilde{x}+H^u_{k,i}\tilde{u}\}, \, i =1,\dots,n\biggr\}.
+v_i \leq \max_k\{H^x_{k,i}\tilde{x}+H^u_{k,i}\tilde{u}\}, \, 
+i \in \mathbb N_n
+%i =1,\dots,n
+\biggr\}.
 \end{multline}
 %
 Notice that~\eqref{eq:definition:element:wise:constraints:on:nonlinearities} is of the form~\eqref{eq:definition:PWA:polytopic:set:general}
@@ -1807,7 +1876,9 @@ subject to
 \end{gather}
 \end{subequations}
 %
-with~$J_0^\ast(x^+) = \frac{1}{2}\|x^+\|_{P_0}^2$, $m=1,\dots,N$ and $H(x,u)=\max_k\{{\bf{H}}_k^x x + {\bf{H}}_k^u u+ {\bf{h}}_k\}$. 
+for all $m\in\mathbb N_N$, with~$J_0^\ast(x^+) = \frac{1}{2}\|x^+\|_{P_0}^2$,
+% $m=1,\dots,N$ 
+and $H(x,u)=\max_k\{{\bf{H}}_k^x x + {\bf{H}}_k^u u+ {\bf{h}}_k\}$. 
 %
 We split the sequence of  min-max problems into a sequence of multi-parametric 
 quadratic programs. Starting with the maximisation at stage $m=1$ and using a backward sweep approach
@@ -2096,7 +2167,9 @@ Figure~\ref{fig:computation:times} illustrates the dependency of the computation
 \begin{figure}
 \centering
 \includegraphics[width=\columnwidth]{myplot}
-\caption{Projected stage constraints $\mathcal X_i, i=1,\dots,N$ in red. Trajectories
+\caption{Projected stage constraints $\mathcal X_i$, $i\in\mathbb N_N$
+% $i=1,\dots,N$ 
+in red. Trajectories
 at the active set changes and on the boundary in blue.}
 \label{fig:plot}
 \end{figure}
@@ -2239,8 +2312,8 @@ The conclusion goes here.
 % use section* for acknowledgment
 \section*{Acknowledgment}
 
+The first author is supported by the Worcester College Senior Scholarship and an EPSRC doctoral studentship.  
 
-The authors would like to thank...
 
 
 % Can use something like this to put references on a page
