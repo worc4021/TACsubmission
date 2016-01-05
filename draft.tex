@@ -566,7 +566,7 @@ state.
 %
 However, this requires extensive offline computation and becomes impractical for a high-dimensional state space.
 %
-In this paper we use an active set approach based on that presented in~\cite{Buerger:ACC,Buerger:IJRNC} for the case of additive disturbances confined to a fixed set and we extend the approach for parametrised sets that was introduced in~\cite{Schaich:NMPC:2015} by considering the case of degenerate constraints.
+In this paper we use an active set approach based on that presented in~\cite{Buerger:ACC,Buerger:IJRNC} for the case of additive disturbances confined to a fixed set and we extend the approach for parametrised sets that were introduced in~\cite{Schaich:NMPC:2015} by considering the case of degenerate constraints.
 %
 In a similar manner to explicit RMPC algorithms, we use multi-parametric programming to obtain solutions efficiently
 for a given active set, however, we avoid an exploration of the entire feasible set of states but rather solve online for the current state only.
@@ -581,7 +581,7 @@ The properties of parametrised sets are then considered in section~\ref{sec:p:co
 parametric convexity and its characterisation in section~\ref{ssec:properties:of:p:convex:maps}, and its use in the computation of MRPI sets, which is presented in section~\ref{ssec:MRPI:sets}.
 %
 To illustrate how state and input dependent disturbances can be used to account for nonlinearities and 
-calculate the MRPI set we present an example in section~\ref{sec:example:I}.
+to calculate the MRPI set we present an example in section~\ref{sec:example:I}.
 %
 The solver we present here relies entirely on a recursive use of multi-parametric programming techniques, 
 which are presented in section~\ref{ssec:recursive:mpQP} for a given active set, the active set is then
@@ -668,7 +668,7 @@ Starting from the MRPI set~$\mathcal X_0=\mathcal X^\infty$ we define, for $i\in
 %$i=1,2,\ldots$,  
 %
 \begin{equation}\label{eq:stage:constraints:in:x:and:u}
-  \mathcal Z_i = \{(x,u)\in\mathcal X\times \mathcal{U}: Ax + Bu + Dw \in\mathcal X_{i-1}\;\forall w\in\mathcal W(x,u)\}
+  \Resize{\mathcal Z_i = \{(x,u)\in\mathcal X\times \mathcal{U}: Ax + Bu + Dw \in\mathcal X_{i-1}\;\forall w\in\mathcal W(x,u)\}}
 \end{equation}
 %
 and its projection
@@ -687,10 +687,10 @@ $J_0^\ast(x) - J_0^\ast(x^+)\geq J(x,Kx,w)$ for all $w$; see e.g.~\cite{Boyd:94}
 % Both input and state constraint sets are assumed polyhedral $U=\{u: \mathbf{f}_{\mathcal I} u\leq \mathbf{1}, \; \mathcal{I} = \mathbb{N}_{n_u}\}$ and $\mathcal{X} = \{x: \boldsymbol{\xi}_{\mathcal{I}} x\leq \mathbf{1} , \; \mathcal{I} = \mathbb{N}_{n_x} \}$.
 Both input and state constraint sets are assumed polyhedral: $\mathcal{U}=\{u : F u \leq \mathbf{1}\}$ and $\mathcal X = \{x:\genmat x\leq \mathbf{1}\}$, where $\mathbf{1}$ denotes in each case a vector of conformal dimensions with all elements equal to $1$.
 %
-For the disturbance set~\eqref{eq:disturbance:constraints} we assume that there exists a piecewise affine representation
+For the disturbance set~\eqref{eq:disturbance:constraints} we assume that there exists a non-redundant piecewise affine representation
 %
 \begin{equation}\label{eq:definition:disturbance:set:explicit}
-  \mathcal W(x,u) = \bigl\{w:G_i w\leq\max_{k}\{H_{i,k}^x x + H_{i,k}^uu + h_{i,k}\}\; \forall i\in\mathcal{I}_{\mathcal{W}}\bigr\}.
+  \Resize{\mathcal W(x,u) = \bigl\{w:G_i w\leq\max_{k}\{H_{i,k}^x x + H_{i,k}^uu + h_{i,k}\}\; \forall i\in\mathcal{I}_{\mathcal{W}}\bigr\}.}
 \end{equation}
 %
 The properties of such sets will be discussed in section~\ref{sec:p:convex:sets}.
@@ -715,7 +715,7 @@ Let $\mathcal W:Y\rightarrow \mathscr P(Z)$, where $Y\ni p\mapsto \mathcal W(p) 
   for all $p_1,p_2\in Y$ and $\lambda\in (0,1)$.
 \end{defi}
 %
-Notice that Definition~\ref{def:parametric:convexity} does not require convexity of~$\mathcal W(p)$. However, we will only consider maps~$\mathcal W$ for which $\mathcal W(p)$ is convex for all $p\in Y$.
+Notice that Definition~\ref{def:parametric:convexity} does not require convexity of~$\mathcal W(p)$. However, we will only consider maps~$\mathcal W$ for which $\mathcal W(p)$ is convex for all fixed $p\in Y$.
 
 \subsection{Properties of Parametrically Convex Maps}\label{ssec:properties:of:p:convex:maps}
 %
@@ -1053,6 +1053,8 @@ To demonstrate that parametric convexity of $\mathcal W$ is necessary for convex
   (1-\lambda)\bigl(\{z_2\}\oplus \mathcal W(z_2)\bigr) .
 \end{align*}
 Therefore if $S$ is a convex polyhedron constructed so that $\{z_1\}\oplus\mathcal W(z_1)$ and $\{z_2\}\oplus\mathcal W(z_2)$ contain points lying on the same facet of $S$ (this is always possible if $S^\prime=S\ominus \mathcal W(S)$ has a non-empty interior), then there exists $\lambda \in (0,1)$ such that $\lambda z_1 + (1-\lambda) z_2 \notin S^\prime$.
+%
+\textcolor{red}{I'm not sure this works. This only shows that it is necessary for polytopic sets, but polytopic sets are a subset of all possible sets. There might be sets for which this still works}
 \end{proof}
 %
 Theorem~\ref{thm:convexity:of:pontryagin:difference} provides necessary and sufficient conditions for convexity of the parametric Pontryagin difference. In the next section we will show that the parametric Pontryagin difference between a polyhedral set and a piecewise affine polytopic parametric set is itself polyhedral.
@@ -1228,7 +1230,7 @@ The proof has two main steps:
 %
 (i) we prove boundedness of $\mathcal X_k$ for all $k\geq n$, where $n$ is the state dimension;
 %
-(ii) we show that $D_k$ grows exponentially with $k$, so that, for any bounded set $\mathcal C$, finite $M$ exists such that $D_{M+1}\supseteq \mathcal{C}$. The proof is concluded by setting 
+(ii) we show that $\mathcal D_k$ grows exponentially with $k$, so that, for any bounded set $\mathcal C$, finite $M$ exists such that $\mathcal D_{M+1}\supseteq \mathcal{C}$. The proof is concluded by setting 
 $\mathcal C = \mathcal X_{M}$ and deducing that $\mathcal X^\infty = \mathcal X_M$. 
 %
 
@@ -1597,6 +1599,16 @@ The algorithm for computing the MRPI set terminates after 3 iterations.
 %
 %
 %
+% \section{Satisfying State Constraints in Min-Max Programming}\label{sec:stage:constraints}
+
+
+% In this section we use the methods introduced for the computation of the MRPI set to compute stage-wise constraints
+% guaranteeing that the state in the terminal stage $m=N$ lies in the MRPI set.
+% %
+%
+%
+%
+%
 \section{Recursive Multi-Parametric Quadratic Programming to Solve Min-Max Programs}\label{sec:recursive:mpQP:via:line:search}
 
 
@@ -1665,9 +1677,9 @@ with the associated Lagrangian function
 Minimising over $x$ we obtain the unconstrained dual mpQP
 %
 \begin{equation}\label{app:mpQP:dual}
-  \min_\lambda -\frac{1}{2}\lambda^T A_{\hat{\mathcal A}} Q^{-1}A_{\hat{\mathcal A}}^T \lambda 
+  \Resize{\min_\lambda -\frac{1}{2}\lambda^T A_{\hat{\mathcal A}} Q^{-1}A_{\hat{\mathcal A}}^T \lambda 
   -(b_{\hat{\mathcal A}} + S_{\hat{\mathcal A}}\theta_0 + A_{\hat{\mathcal A}} Q^{-1}q)^T\lambda
-  -\frac{1}{2}q^TQ^{-1}q
+  -\frac{1}{2}q^TQ^{-1}q}
 \end{equation}
 %
 To solve~\eqref{app:mpQP:primal} we solve the first order optimality conditions
@@ -1957,6 +1969,9 @@ for all $m\in\mathbb N_N$, with~$J_0^\ast(x^+) = \frac{1}{2}\|x^+\|_{P_0}^2$,
 % $m=1,\dots,N$ 
 and $H(x,u)=\max_k\{{\bf{H}}_k^x x + {\bf{H}}_k^u u+ {\bf{h}}_k\}$. 
 %
+\textcolor{red}{Constraint~\eqref{eq:state:constraints} corresponds to the stage constraint~$\mathcal Z_m$ defined 
+in~\eqref{eq:stage:constraints:in:x:and:u}.}
+%
 We split the sequence of  min-max problems into a sequence of multi-parametric 
 quadratic programs. Starting with the maximisation at stage $m=1$ and using a backward sweep approach
 (see e.g.~\cite{Bryson:1975}), this yields
@@ -2162,7 +2177,7 @@ The active indices of the right hand side~${\bf{k}}^\ast_m$ can be included in t
 \mathcal A_N,(\hat{\mathcal A}_N,{\bf{k}}^\ast_N),\dots,\mathcal A_1,(\hat{\mathcal A}_1,{\bf{k}}^\ast_1)\}$.
 %
 Notice that although $\bar{\mathcal A}$ needs to be updated by performing the line search discussed in 
-section~\ref{ssec:line:search} and solving the scalar mpLP~\eqref{eq:definition:as:mpLP}, the recursion solving-equality constrained mpQPs discussed in section~\eqref{ssec:recursive:mpQP} does not need to be performed when
+section~\ref{ssec:line:search} and solving the scalar mpLP~\eqref{eq:definition:as:mpLP}, the recursion solving equality constrained mpQPs discussed in section~\eqref{ssec:recursive:mpQP} does not need to be performed when
 some~${\bf{k}}^\ast_m$ changes for an inactive constraint, i.e. only when $W_m^x$, $W_m^u$ and $w_m^c$ change the
 recursion has to be solved again.
 %
