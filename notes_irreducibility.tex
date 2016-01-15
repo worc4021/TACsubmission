@@ -1,0 +1,103 @@
+
+
+
+\documentclass[journal]{IEEEtran}
+\usepackage{cite}
+\usepackage[pdftex]{graphicx}
+\usepackage{lpic}
+\usepackage{xcolor}
+\usepackage[cmex10]{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb,mathrsfs}
+\usepackage[hidelinks]{hyperref}
+
+
+\providecommand{\norm}[1]{\left\|#1\right\|}
+\providecommand{\abs}[1]{\left|#1\right|}
+\providecommand{\span}{\text{span}}
+\providecommand{\conv}{\text{conv}}
+\providecommand{\rk}[1]{\text{rank}\left(#1\right)}
+
+\newcommand*{\Resize}[1]{\resizebox{\columnwidth}{!}{$#1$}}
+
+\newcounter{thmcount}
+\renewcommand{\thethmcount}{\arabic{thmcount}}
+\renewcommand{\theequation}{\arabic{section}.\arabic{equation}}
+\renewcommand{\thefigure}{\arabic{section}.\arabic{figure}}
+
+
+\newtheorem{thm}[thmcount]{Theorem}
+\newtheorem{cor}[thmcount]{Corollary}
+
+\theoremstyle{remark}
+\newtheorem{rem}[thmcount]{Remark}
+
+\theoremstyle{definition}
+\newtheorem{defi}[thmcount]{Definition}
+\newtheorem{alg}[thmcount]{Algorithm}
+
+\DeclareFontFamily{U}{mathx}{\hyphenchar\font45}
+\DeclareFontShape{U}{mathx}{m}{n}{
+      <5> <6> <7> <8> <9> <10> gen * mathx
+      <10.95> mathx10 <12> <14.4> <17.28> <20.74> <24.88> mathx12
+      }{}
+\DeclareSymbolFont{mathx}{U}{mathx}{m}{n}
+\DeclareFontSubstitution{U}{mathx}{m}{n}
+\DeclareMathSymbol{\temp}{\mathbin}{mathx}{'341}
+\newcommand{\bigominus}{\raisebox{10pt}{$\temp$}}
+
+\newcommand{\todo}[1]{\textcolor{blue}{#1}}
+\newcommand{\highlight}[1]{\textcolor{red}{#1}}
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+
+\begin{document}
+
+\section*{Notes on irreducibility of piecewise affine parametric sets}
+
+For all $p\in Y\subseteq \mathbb{R}^d$ and any $i\in\mathbb{N}_m$ let $t_i : Y\to \mathbb{R}$ denote the value of the (right-hand side) mpLP problem:
+\[
+t_i(p) = \min \{ t : t \geq b_{i,k} + c_{i,k} p \, \forall k \in \mathbb{N}_q\} .
+\]
+%
+Then $t_i(\cdot)$ is continuous and piecewise affine~\cite{Gal:1995}. 
+%
+Furthermore, for each $i\in\mathbb{N}_m$ there exists a mapping $k_i: Y\to \mathbb{N}_q$ such that
+\[
+t_i(p) = b_{i,k_i} + c_{i,k_i} p \ \forall p \in \Pi_i(k_i),
+\]
+where $\Pi_i(k_i)\subseteq Y$ and $\{\Pi_i(k) : k = k_i(p),\ p\in Y\}$ is a polyhedral complex whose support is equal to $Y$
+%
+(i.e.\ a finite collection of closed convex polyhedra covering $Y$ such that the intersection of any two polyhedra is either empty or equal to a common facet of both polyhedra).  
+
+Let $\Sigma = \bigl\{ \bigl(k_1(p),\ldots,k_m(p)\bigr) : p\in Y\bigr\}$ and define 
+%$\bar{\Pi}:\Sigma \to \mathscr{P}(Y)$ 
+$\bar{\Pi}$ for all $(k_1,\ldots,k_m)\in\Sigma$ 
+as the mapping
+\[
+\bar{\Pi} (k_1,\ldots,k_m) = \bigcap_{i=0}^m \Pi_i (k_i) .
+\]
+Then clearly $\{\bar{\Pi} (k_1,\ldots,k_m): (k_1,\ldots,k_m)\in\Sigma\}$ is a polyhedral complex that covers $Y$.
+
+We therefore conclude that, for any given $(k_1,\ldots,k_m)\in \Sigma$, $t_i(p)$ is defined for all $p\in\bar{\Pi}(k_1,\ldots,k_m)$ by a single affine function, for each $i\in \mathbb{N}_m$. Therefore the problem of checking redundancy by determining whether the solution of
+\[
+\max_{z,p} a_r z - t_r(p) \ \text{subject to} \ a_iz \leq t_i(p) \, \forall i\in\mathbb{N} \setminus r 
+\]
+is non-positive (which is nonconvex) reduces to one of checking whether the solution of the LP
+\[
+\max_{z,p\in\bar{\Pi}(k_1,\ldots,k_m)} a_r z - t_r(p) \ \text{subject to} \ a_iz \leq t_i(p) \, \forall i\in\mathbb{N} \setminus r 
+\]
+is non-positive, for each $(k_1,\ldots,k_m)\in\Sigma$; this requires the solution of a finite number of LPs.
+
+\vfill
+
+
+
+\newpage
+\bibliographystyle{IEEEtran}
+% argument is your BibTeX string definitions and bibliography database(s)
+\bibliography{IEEEabrv,MyLib}
+
+\end{document}
+
+
