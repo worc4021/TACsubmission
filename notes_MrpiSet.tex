@@ -1,0 +1,171 @@
+
+
+
+\documentclass[journal]{IEEEtran}
+\usepackage{cite}
+\usepackage[pdftex]{graphicx}
+\usepackage{lpic}
+\usepackage{xcolor}
+\usepackage[cmex10]{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb,mathrsfs}
+\usepackage[hidelinks]{hyperref}
+
+
+\providecommand{\norm}[1]{\left\|#1\right\|}
+\providecommand{\abs}[1]{\left|#1\right|}
+\providecommand{\span}{\text{span}}
+\providecommand{\conv}{\text{conv}}
+\providecommand{\rk}[1]{\text{rank}\left(#1\right)}
+
+\newcommand*{\Resize}[1]{\resizebox{\columnwidth}{!}{$#1$}}
+
+\newcounter{thmcount}
+\renewcommand{\thethmcount}{\arabic{thmcount}}
+\renewcommand{\theequation}{\arabic{section}.\arabic{equation}}
+\renewcommand{\thefigure}{\arabic{section}.\arabic{figure}}
+
+
+\newtheorem{thm}[thmcount]{Theorem}
+\newtheorem{cor}[thmcount]{Corollary}
+\newtheorem{prop}[thmcount]{Proposition}
+
+\theoremstyle{remark}
+\newtheorem{rem}[thmcount]{Remark}
+
+\theoremstyle{definition}
+\newtheorem{defi}[thmcount]{Definition}
+\newtheorem{alg}[thmcount]{Algorithm}
+
+\DeclareFontFamily{U}{mathx}{\hyphenchar\font45}
+\DeclareFontShape{U}{mathx}{m}{n}{
+      <5> <6> <7> <8> <9> <10> gen * mathx
+      <10.95> mathx10 <12> <14.4> <17.28> <20.74> <24.88> mathx12
+      }{}
+\DeclareSymbolFont{mathx}{U}{mathx}{m}{n}
+\DeclareFontSubstitution{U}{mathx}{m}{n}
+\DeclareMathSymbol{\temp}{\mathbin}{mathx}{'341}
+\newcommand{\bigominus}{\raisebox{10pt}{$\temp$}}
+
+\newcommand{\todo}[1]{\textcolor{blue}{#1}}
+\newcommand{\highlight}[1]{\textcolor{red}{#1}}
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+
+\begin{document}
+
+\section*{Notes on MRPI sets for piecewise affine parametric disturbances}
+
+For $k=0,1,\ldots$ we define $\mathcal{X}_k$ as the set of initial states of the system $x^+=\Psi x + v$, $v\in\mathcal{V}(x)$, such that the $i$ steps ahead state lies robustly in $\mathcal{X}$ for all $i\in\mathbb{N}_{[0,k]}$, where $\mathcal{V}(x)$ is a continuous point-to-set map.
+%
+The MRPI set $\mathcal{X}^\infty$ is then obtained as the limit of the sequence $\mathcal{X}_0,\mathcal{X}_1,\ldots$ (see e.g.~\cite{blanchini:2007}).
+
+Let $\mathcal{X}_0=\mathcal{X}$ and for $k=1,2,\ldots$ define $\mathcal{X}_k$ as the set
+\begin{equation}\label{eq:Xk:iteration}
+\mathcal{X}_k = \mathcal{X}_{k-1}\cap \mathcal{D}_k 
+\end{equation} 
+where $\mathcal{D}_k$ is the set of initial states for which the $k$ steps ahead state lies in $\mathcal{X}$ for all admissible disturbances.
+%
+To explain how the sequence $\mathcal{X}_0,\mathcal{X}_1,\ldots$ is computed and to simplify the analysis of $\mathcal{X}^\infty$, we define $\mathcal{R}_0,\mathcal{R}_1,\ldots$ as the sequence with $\mathcal{R}_0 = \mathcal{X}$ and
+\begin{equation}\label{eq:Rk:iteration}
+\mathcal{R}_k = \mathcal{R}_{k-1}\ominus \Psi^{k-1} \mathcal{V}_k(\mathcal{R}_{k-1}) \ \forall k=1,2\ldots,
+\end{equation} 
+where $\mathcal{V}_k$ is the point-to-set map given by $\mathcal{V}_k(x) = \mathcal{V}(\Psi^{-k} x)$. 
+
+\begin{prop}
+$\mathcal{D}_k = \Psi^{-k}\mathcal{R}_k$ for all $k\geq 0$.
+\end{prop}
+
+\begin{proof}
+Since $\mathcal{D}_k$ is the set of initial states for which the $k$ steps ahead state lies in $\mathcal{X}$, we have $\mathcal{D}_0 = \mathcal{X}$ and
+%, for $k\geq 1$,
+\[
+\mathcal{D}_k = \bigl\{ x : \{\Psi x\} \oplus \mathcal{V}(x) \subseteq \mathcal{D}_{k-1}\bigr\}  
+\ \forall k = 1,2\ldots 
+\]
+Hence for $k\geq 1$, $\Psi^k \mathcal{D}_k$ is given by
+\begin{align*}
+\Psi^k\mathcal{D}_k &= \bigl\{ \Psi^k x : \{\Psi x\} \oplus \mathcal{V}(x) \subseteq \mathcal{D}_{k-1}\bigr\} \\
+& = \bigl\{ y : \{\Psi^{-k+1} y\} \oplus \mathcal{V}_k(y) \subseteq \mathcal{D}_{k-1}\bigr\} \\
+& = \bigl\{ y : \{ y\} \oplus \Psi^{k-1}\mathcal{V}_k(y) \subseteq \Psi^{k-1}\mathcal{D}_{k-1}\bigr\} ,
+\end{align*}
+Using the definition of the parametric Pontryagin difference, this implies
+\[
+\Psi^{k}\mathcal{D}_k = (\Psi^{k-1}\mathcal{D}_{k-1}) \ominus \Psi^{k-1}\mathcal{V}_k(\Psi^{k-1}\mathcal{D}_{k-1}) \ \forall k=1,2\ldots 
+\]
+and the result therefore follows from  $\mathcal{R}_0=\mathcal{D}_0$ and (\ref{eq:Rk:iteration}).
+%
+% so if $\Psi^{k}\mathcal{D}_k = \mathcal{R}_k$ and $\Psi^{k-1}\mathcal{D}_{k-1} = \mathcal{R}_{k-1}$, then by the definition of the parametric Pontryagin difference we have
+% \[
+% \mathcal{R}_k = \mathcal{R}_{k-1}\ominus \Psi^{k-1} \mathcal{V}_k(\mathcal{R}_{k-1}), \ \forall k=1,2,\ldots,
+% \]
+% and the result follows from
+% (\ref{eq:Rk:iteration}) and $\mathcal{R}_0=\mathcal{D}_0 = \mathcal{X}$.
+\end{proof}
+
+\begin{rem}
+It can be shown by induction using (\ref{eq:Rk:iteration}) and Theorem~\ref{thm:convexity:of:pontryagin:difference} that if $\mathcal{X}$ is convex and $\mathcal{V}(x)$ is parametrically convex, then $\mathcal{R}_k$, $\mathcal{D}_k$ and $\mathcal{X}_k$ are convex for all $k$, and hence $\mathcal{X}^\infty$ is also convex.
+\end{rem}
+
+We assume that $\mathcal V(x)$ is a piecewise affine parametrically convex 
+%point-to-set map defined 
+set defined as in~\eqref{eq:definition:PWA:polytopic:set:general}:
+\begin{equation}\label{eq:definition:PWA:polytopic:set:cl}
+\mathcal{V}(x) = \Bigl\{ v : a_i v \leq\max_{k} \{ b_{i,k} + c_{i,k} x\} \ \forall i \in\mathbb N_m\Bigr\} ,
+\end{equation}
+%
+and that $\mathcal{X}$ is convex and polyhedral:
+\begin{equation}\label{eq:definition:polytopic:X}
+\mathcal{X}=\{x : \xi_i x \leq 1\ \forall i \in\mathcal{I}_{\mathcal{X}} \} 
+\end{equation}
+where $\boldsymbol{\xi}_{\mathcal{I}_{\mathcal{X}}}=\Xi$.
+%
+We further assume (without loss of generality) that $\mathcal V(x)$ is compact for all finite $x\in\mathcal X$,
+and can therefore be represented as the 
+convex hull of its vertices: 
+\begin{equation}\label{eq:definition:PWA:polytopic:set:vertices}
+\mathcal V(x) = \conv\{v_j(x), \, j\in\mathbb{N}_q\} 
+=  \conv\{\Theta_j x + \theta_j,\, j\in\mathbb{N}_q\}.
+\end{equation}
+%
+Here $v_j(x)$ is necessarily piecewise affine in $x$ for all $j\in\mathbb{N}_q$ since ${\mathcal{V}}(x)$ is piecewise affine in $x$.
+%
+
+\begin{rem}\label{rem:pPdiff:calculation}
+For a polyhedral set $S=\{x : h_i x \leq 1\ \forall i \in\mathcal{I} \}\subseteq \mathcal{X}$, the parametric Pontryagin difference $S \ominus \mathcal{V}(S)$ is given by
+%and a para\-met\-rically convex polytopic set $\mathcal{V}(x)$, we have 
+% \begin{align*}
+% S \ominus \mathcal{V}(S) 
+% &= \{x : h_i x + \max_{v\in \mathcal{V}(x)} h_i v \leq 1 
+% \ \forall i \in\mathcal{I} \}\\
+% &= \{x : h_i x + \max_{j} h_i v_j(x) \leq 1 
+% \ \forall i \in\mathcal{I}\}\\
+% &= \{x : h_i x + \zeta_i(x) \leq 1 
+% \ \forall i \in\mathcal{I}\}, \ 
+% \zeta_i(x) = \max_{j} h_i v_j(x)
+% \end{align*}
+\begin{align*}
+S \ominus \mathcal{V}(S) 
+&= \{x : h_i x + \max_{v\in \mathcal{V}(x)} h_i v \leq 1 
+\ \forall i \in\mathcal{I} \}\\
+&= \{x : h_i x + \underbrace{\max_{j} h_i v_j(x)}_{=\zeta_i(x)} \leq 1 
+\ \forall i \in\mathcal{I}\} .
+\end{align*}
+Here $\zeta_i(x)$ is the solution of a mpLP and hence a continuous piecewise affine function of $x$. It follows that $S\ominus\mathcal{V}(S)$ is a convex polyhedral set.
+%
+To compute $\zeta_i(x)$ for all $x\in\mathcal X$ is in general a challenging problem, and a simpler method of determining the supporting hyperplanes of $S\ominus\mathcal{V}(S)$ is to include all possible affine inequalities in the set description:
+\[
+S\ominus\mathcal{V}(S) = \{ x : h_ix + h_i v_j(x) \leq 1, \ \forall j\in\mathbb{N}_q\ \forall i\in \mathcal I\}
+\] 
+and to subsequently remove redundant inequalities by applying an inequality reduction algorithm.
+\end{rem}
+%
+
+\newpage
+\bibliographystyle{IEEEtran}
+% argument is your BibTeX string definitions and bibliography database(s)
+\bibliography{IEEEabrv,MyLib}
+
+\end{document}
+
+

@@ -361,6 +361,7 @@
 
 \newtheorem{thm}[thmcount]{Theorem}
 \newtheorem{cor}[thmcount]{Corollary}
+\newtheorem{prop}[thmcount]{Proposition}
 
 \theoremstyle{remark}
 \newtheorem{rem}[thmcount]{Remark}
@@ -1079,20 +1080,75 @@ Specifically, at each iteration $k=0,1,\ldots$, we define $\mathcal{X}_k$ as the
 %
 The MRPI set is then obtained as the limit of the sequence $\mathcal{X}_0,\mathcal{X}_1,\ldots$ (see e.g.~\cite{blanchini:2007}).
 
+\textcolor{red}{%
 Let $\mathcal{X}_0=\mathcal{X}$ and for $k=1,2,\ldots$ define $\mathcal{X}_k$ as the set
 \begin{equation}\label{eq:Xk:iteration}
 \mathcal{X}_k = \mathcal{X}_{k-1}\cap \mathcal{D}_k 
 \end{equation} 
-where $\mathcal{D}_k$ contains all initial states for which the $k$ steps ahead state lies in $\mathcal{X}$. Defining $\mathcal{R}_k$, $k=0,1,\ldots$ as the sequence
+where $\mathcal{D}_k$ is the set of initial states for which the $k$ steps ahead state lies in $\mathcal{X}$ for all admissible disturbances.
+%
+To explain how $\mathcal{X}_k$ is computed and to simplify the analysis of $\mathcal{X}^\infty$, we define $\mathcal{R}_0,\mathcal{R}_1,\ldots$ as the sequence with $\mathcal{R}_0 = \mathcal{X}$ and
 \begin{equation}\label{eq:Rk:iteration}
-\mathcal{R}_0 = \mathcal{X}, \quad \mathcal{R}_k = \mathcal{R}_{k-1}\ominus \Psi^{k-1} \mathcal{V}(\mathcal{R}_{k-1}),
+\mathcal{R}_k = \mathcal{R}_{k-1}\ominus \Psi^{k-1} \mathcal{V}_k(\mathcal{R}_{k-1}) \ \forall k=1,2\ldots,
 \end{equation} 
-%so that $\mathcal{R}_1 = \mathcal{X} \ominus \mathcal{V}(\mathcal{X})$, $\mathcal{R}_2 = \bigl(\mathcal{X} \ominus \mathcal{V}(\mathcal{X})\bigr) \ominus \mathcal{V}\bigl(\mathcal{X}\ominus \mathcal{V}(\mathcal{X})\bigr)$ etc., 
-it follows that
-\begin{equation}\label{eq:Dk:iteration}
-\Psi^k \mathcal{D}_k = \mathcal{R}_k .
-\end{equation}
-It can therefore be shown by induction using Theorem~\ref{thm:convexity:of:pontryagin:difference} that if $\mathcal{X}$ is convex and $\mathcal{V}(x)$ is parametrically convex, then $\mathcal{R}_k$, $\mathcal{D}_k$ and $\mathcal{X}_k$ are convex for all $k$, and hence $\mathcal{X}^\infty$ is also convex.
+with $\mathcal{V}_k$ defined as the point-to-set map $\mathcal{V}_k(x) = \mathcal{V}(\Psi^{-k} x)$.%
+}
+
+\textcolor{red}{%
+\begin{prop}\label{prop:Dk:iteration}
+$\mathcal{D}_k = \Psi^{-k}\mathcal{R}_k$ for all $k\geq 0$.
+\end{prop}%
+}
+
+\textcolor{red}{%
+\begin{proof}
+Since $\mathcal{D}_k$ is the set of initial states for which the state $k$ steps ahead lies in $\mathcal{X}$, we have $\mathcal{D}_0 = \mathcal{X}$ and
+%, for $k\geq 1$,
+\[
+\mathcal{D}_k = \bigl\{ x : \{\Psi x\} \oplus \mathcal{V}(x) \subseteq \mathcal{D}_{k-1}\bigr\}  
+\ \forall k = 1,2\ldots 
+\]
+Hence for $k\geq 1$, $\Psi^k \mathcal{D}_k$ is given by
+\begin{align*}
+\Psi^k\mathcal{D}_k &= \bigl\{ \Psi^k x : \{\Psi x\} \oplus \mathcal{V}(x) \subseteq \mathcal{D}_{k-1}\bigr\} \\
+& = \bigl\{ y : \{\Psi^{-k+1} y\} \oplus \mathcal{V}_k(y) \subseteq \mathcal{D}_{k-1}\bigr\} \\
+& = \bigl\{ y : \{ y\} \oplus \Psi^{k-1}\mathcal{V}_k(y) \subseteq \Psi^{k-1}\mathcal{D}_{k-1}\bigr\} .
+\end{align*}
+Using the definition of the parametric Pontryagin difference, this implies
+\[
+\Psi^{k}\mathcal{D}_k = (\Psi^{k-1}\mathcal{D}_{k-1}) \ominus \Psi^{k-1}\mathcal{V}_k(\Psi^{k-1}\mathcal{D}_{k-1}) \ \forall k=1,2\ldots 
+\]
+and the result therefore follows from  $\mathcal{R}_0=\mathcal{D}_0$ and (\ref{eq:Rk:iteration}).
+%
+% so if $\Psi^{k}\mathcal{D}_k = \mathcal{R}_k$ and $\Psi^{k-1}\mathcal{D}_{k-1} = \mathcal{R}_{k-1}$, then by the definition of the parametric Pontryagin difference we have
+% \[
+% \mathcal{R}_k = \mathcal{R}_{k-1}\ominus \Psi^{k-1} \mathcal{V}_k(\mathcal{R}_{k-1}), \ \forall k=1,2,\ldots,
+% \]
+% and the result follows from
+% (\ref{eq:Rk:iteration}) and $\mathcal{R}_0=\mathcal{D}_0 = \mathcal{X}$.
+\end{proof}%
+}
+
+\textcolor{red}{%
+\begin{rem}
+It can be shown by induction using (\ref{eq:Rk:iteration}) and Theorem~\ref{thm:convexity:of:pontryagin:difference} that if $\mathcal{X}$ is convex and $\mathcal{V}(x)$ is parametrically convex, then $\mathcal{R}_k$, $\mathcal{D}_k$ and $\mathcal{X}_k$ are convex for all $k$, and hence $\mathcal{X}^\infty$ is also convex.
+\end{rem}%
+}
+
+% Let $\mathcal{X}_0=\mathcal{X}$ and for $k=1,2,\ldots$ define $\mathcal{X}_k$ as the set
+% \begin{equation}\label{eq:Xk:iteration}
+% \mathcal{X}_k = \mathcal{X}_{k-1}\cap \mathcal{D}_k 
+% \end{equation} 
+% where $\mathcal{D}_k$ contains all initial states for which the $k$ steps ahead state lies in $\mathcal{X}$. Defining $\mathcal{R}_k$, $k=0,1,\ldots$ as the sequence
+% \begin{equation}\label{eq:Rk:iteration}
+% \mathcal{R}_0 = \mathcal{X}, \quad \mathcal{R}_k = \mathcal{R}_{k-1}\ominus \Psi^{k-1} \mathcal{V}(\mathcal{R}_{k-1}),
+% \end{equation} 
+% %so that $\mathcal{R}_1 = \mathcal{X} \ominus \mathcal{V}(\mathcal{X})$, $\mathcal{R}_2 = \bigl(\mathcal{X} \ominus \mathcal{V}(\mathcal{X})\bigr) \ominus \mathcal{V}\bigl(\mathcal{X}\ominus \mathcal{V}(\mathcal{X})\bigr)$ etc., 
+% it follows that
+% \begin{equation}\label{eq:Dk:iteration}
+% \Psi^k \mathcal{D}_k = \mathcal{R}_k .
+% \end{equation}
+% It can therefore be shown by induction using Theorem~\ref{thm:convexity:of:pontryagin:difference} that if $\mathcal{X}$ is convex and $\mathcal{V}(x)$ is parametrically convex, then $\mathcal{R}_k$, $\mathcal{D}_k$ and $\mathcal{X}_k$ are convex for all $k$, and hence $\mathcal{X}^\infty$ is also convex.
 
 We assume that $\mathcal V(x)$ is a piecewise affine parametrically convex 
 %point-to-set map defined 
@@ -1119,7 +1175,10 @@ Here $v_j(x)$ is necessarily piecewise affine in $x$ for all $j\in\mathbb{N}_q$ 
 %
 
 \begin{rem}\label{rem:pPdiff:calculation}
-For a polyhedral set $S=\{x : h_i x \leq 1\ \forall i \in\mathcal{I} \}\subseteq \mathcal{X}$, the parametric Pontryagin difference $S \ominus \mathcal{V}(S)$ is given by
+For a convex polyhedron $S=\{x : h_i x \leq 1$ $\forall i \in\mathcal{I} \}$ the parametric Pontryagin difference $S \ominus \mathcal{V}(S)$ is given by
+%
+%The parametric Pontryagin difference $S \ominus \mathcal{V}(S)$, for a convex polyhedral set $S=\{x : h_i x \leq 1\ \forall i \in\mathcal{I} \}$, is given by
+%
 %and a para\-met\-rically convex polytopic set $\mathcal{V}(x)$, we have 
 % \begin{align*}
 % S \ominus \mathcal{V}(S) 
@@ -1138,27 +1197,40 @@ S \ominus \mathcal{V}(S)
 &= \{x : h_i x + \underbrace{\max_{j} h_i v_j(x)}_{=\zeta_i(x)} \leq 1 
 \ \forall i \in\mathcal{I}\} .
 \end{align*}
-Here $\zeta_i(x)$ is the solution of a mpLP and hence a continuous piecewise affine function of $x$. It follows that $S\ominus\mathcal{V}(S)$ is a convex polyhedral set.
+Here $\zeta_i(x)$ is the solution of a mpLP and hence is a continuous piecewise affine function of $x$~\cite{Gal:1995}. It follows that $S\ominus\mathcal{V}(S)$ is a convex polyhedral set.
 %
 To compute $\zeta_i(x)$ for all $x\in\mathcal X$ is in general a challenging problem, and a simpler method of determining the supporting hyperplanes of $S\ominus\mathcal{V}(S)$ is to include all possible affine inequalities in the set description:
 \[
 S\ominus\mathcal{V}(S) = \{ x : h_ix + h_i v_j(x) \leq 1, \ \forall j\in\mathbb{N}_q\ \forall i\in \mathcal I\}
 \] 
-and to subsequently remove redundant inequalities by applying an inequality reduction algorithm.
+and to subsequently remove redundant inequalities by applying an inequality reduction algorithm. 
+\textcolor{red}{%
+The resulting set can be expressed $S\ominus \mathcal{V}(S) = \{ x : h_i^\prime x \leq 1 \ \forall i \in \mathcal{I}^\prime \}$.%
+}%
 \end{rem}
 %
 
-Using (\ref{eq:Rk:iteration})-(\ref{eq:definition:PWA:polytopic:set:vertices}), the set $\mathcal{D}_k$ can be expressed 
-\begin{subequations}\label{eq:explicit:Dk}
+\textcolor{red}{Given $\mathcal{R}_{k-1} = \{ x : \xi_{i,k-1} x \leq 1 \ \forall i \in \mathcal{I}_{k-1}\}$, we can compute $\mathcal{R}_k$ using (\ref{eq:Rk:iteration}) and (\ref{eq:definition:PWA:polytopic:set:vertices}) as
+\begin{subequations}\label{eq:Rk:explicit}
 \begin{gather}
-\mathcal{D}_k = \Bigl\{x : \xi_i \Psi^k x + \sum_{l=0}^{k-1} \zeta_{i,l}(x) \leq 1 \ \forall i \in \mathcal{I}_{\mathcal{X}}\Bigr\} \\
-\zeta_{i,l}(x) = \max_{j} \xi_i \Psi^l v_j(x) ,
+\mathcal{R}_k = \Bigl\{ x : \xi_{i,k-1} x + \zeta_{i,k-1}(x) \leq 1 \ \forall i \in \mathcal{I}_{k-1} \Bigr\} \\
+\zeta_{i,k-1}(x) = \max_{j} \xi_{i,k-1} \Psi^{k-1} v_j(\Psi^{-k}x) ,
 \end{gather}
 \end{subequations}
-%Clearly $\mathcal{X}_k$ is a convex polyhedral set for each finite $k$, 
-and the approach described in Remark~\ref{rem:pPdiff:calculation} can be used to compute $\mathcal{X}_k = \{x: \xi_{i,k} x \leq 1,\, \forall i \in \mathcal{I}_k\}$ for each $k=0,1,\ldots$ without explicitly determining $\zeta_{i,k}(x)$ for all $x\in\mathcal{X}_{k-1}$. 
-This iterative procedure is summarized as follows.
-%In summary we have the following iteration.
+and the approach outlined in Remark~\ref{rem:pPdiff:calculation} can be used to compute $\mathcal{R}_k = \{x: \xi_{i,k} x \leq 1\, \forall i \in \mathcal{I}_k\}$ without explicitly determining $\zeta_{i,k-1}(x)$ for all $x\in\mathcal{R}_{k-1}$. This gives $\mathcal{X}_k = \mathcal{X}_{k-1}\cap \{x: \xi_{i,k}\Psi^k x \leq 1\, \forall i \in \mathcal{I}_k\}$,%
+}
+%
+% Using (\ref{eq:Rk:iteration})-(\ref{eq:definition:PWA:polytopic:set:vertices}), the set $\mathcal{D}_k$ can be expressed 
+% \begin{subequations}\label{eq:explicit:Dk}
+% \begin{gather}
+% \mathcal{D}_k = \Bigl\{x : \xi_i \Psi^k x + \sum_{l=0}^{k-1} \zeta_{i,l}(x) \leq 1 \ \forall i \in \mathcal{I}_{\mathcal{X}}\Bigr\} \\
+% \zeta_{i,l}(x) = \max_{j} \xi_i \Psi^l v_j(x) ,
+% \end{gather}
+% \end{subequations}
+% %Clearly $\mathcal{X}_k$ is a convex polyhedral set for each finite $k$, 
+% and the approach described in Remark~\ref{rem:pPdiff:calculation} can be used to compute $\mathcal{X}_k = \{x: \xi_{i,k} x \leq 1,\, \forall i \in \mathcal{I}_k\}$ for each $k=0,1,\ldots$ without explicitly determining $\zeta_{i,k}(x)$ for all $x\in\mathcal{X}_{k-1}$. 
+%
+and the implied iteration is summarized as follows.
 %
 \begin{alg}(Computation of MRPI set $\mathcal{X}^\infty$)\label{alg:MRPI:set}\\
 \textsc{Data}: 
@@ -1170,16 +1242,29 @@ $\mathcal{V}(x) = \conv\{\Theta_j x + \theta_j,\, j\in\mathbb{N}_q\}$.
 \end{tabular}
 \\
 \textsc{Initialization}:
-$\mathcal{X}_0 \gets \mathcal{X}$, $k\gets 1$.\\
+$\mathcal{X}_0 \gets \mathcal{X}$, \textcolor{red}{$\mathcal{R}_0 \gets \mathcal{X}$}, $k\gets 1$.\\
+% \begin{tabular}[t]{@{}l@{}}
+% $\mathcal{X}_0 \gets \mathcal{X}$, 
+% \textcolor{red}{$\mathcal{I}_0\gets \mathcal{I}_{\mathcal{X}}$, 
+% $\xi_{i,0}\gets \xi_i\, \forall i\in\mathcal{I}_0$}\\
+% \textcolor{red}{$k\gets 1$.}\end{tabular}\\
 \begin{tabular}{@{}l@{~}l@{}}
 1. &
-$\begin{aligned}[t]\mathcal{D}_k\gets 
-\displaystyle\Bigl\{x : \xi_i \Psi^k x + \sum_{l=0}^{k-1} \xi_{i}\Psi^l(\Theta_j x &+ \theta_j)
-\leq 1 \\ 
-&\forall i \in \mathcal{I}_{\mathcal{X}}, \, \forall j\in\mathbb{N}_q \Bigr\};\end{aligned}$\\
+\textcolor{red}{%
+Compute $\mathcal{R}_k = \{x: \xi_{i,k} x \leq 1\, \forall i \in \mathcal{I}_k\}$ using (\ref{eq:Rk:explicit}a,b)%
+}\\ 
+& 
+\textcolor{red}{%
+and 
+$\mathcal{D}_k \gets \Psi^{-k}\mathcal{R}_k$.%
+}\\
+% $\begin{aligned}[t]\mathcal{D}_k\gets 
+% \displaystyle\Bigl\{x : \xi_i \Psi^k x + \sum_{l=0}^{k-1} \xi_{i}\Psi^l(\Theta_j x &+ \theta_j)
+% \leq 1 \\ 
+% &\forall i \in \mathcal{I}_{\mathcal{X}}, \, \forall j\in\mathbb{N}_q \Bigr\};\end{aligned}$\\
 2. &
 \begin{tabular}[t]{@{}l@{}}
-if $\mathcal{D}_k \supseteq \mathcal{X}_{k-1}$, then\\ \hspace{2em}$\mathcal{X}^\infty \gets \mathcal{X}_{k-1}$; stop;\end{tabular}\\
+If $\mathcal{D}_k \supseteq \mathcal{X}_{k-1}$, then\\ \hspace{2em}$\mathcal{X}^\infty \gets \mathcal{X}_{k-1}$; stop;\end{tabular}\\
 & 
 \begin{tabular}[t]{@{}l@{}}
 else\\
@@ -1221,7 +1306,7 @@ Then the MRPI set $\mathcal X^\infty$ for the system $x^+ = \Psi x + v$ subject 
 %
 %
 \begin{proof}
-From~\eqref{eq:Xk:iteration} and~\eqref{eq:Dk:iteration} it is clear that $\mathcal X^\infty$ is empty if $\mathcal{R}_k =\emptyset$ for some $k\geq 0$.
+From~\eqref{eq:Xk:iteration} and Proposition~\ref{prop:Dk:iteration} it is clear that $\mathcal X^\infty$ is empty if $\mathcal{R}_k =\emptyset$ for some $k\geq 0$.
 %
 For the remainder of the proof we assume that $\mathcal{R}^\infty \neq \emptyset$ exists such that $\mathcal{R}_k \supseteq \mathcal{R}^\infty$ for all $k$.
 %
@@ -1245,10 +1330,10 @@ is bounded.
 %
 (Here $\Psi^{-1}\mathcal{P}$ denotes the pre-image of $\mathcal{P}$ under the linear map $\Psi$, and $\Psi$ is not assumed to be an invertible matrix.)
 %
-But from (\ref{eq:Xk:iteration})-(\ref{eq:Dk:iteration}) we have $\mathcal{D}_k\subseteq \Psi^{-k}\mathcal{X} \subseteq \Psi^{-k}\mathcal{P}$ and hence $\mathcal X_k\subseteq \mathcal P_k$ for all $k$. Therefore $\mathcal X_{n}$ is bounded and $\mathcal{X}^\infty$ is also bounded since $\mathcal{X}_k\supseteq\mathcal{X}_{k+1}\supseteq\mathcal{X}^\infty$ for all $k$.
+But from (\ref{eq:Xk:iteration})-(\ref{eq:Rk:iteration}) and Proposition~\ref{prop:Dk:iteration} we have $\mathcal{D}_k\subseteq \Psi^{-k}\mathcal{X} \subseteq \Psi^{-k}\mathcal{P}$ and hence $\mathcal X_k\subseteq \mathcal P_k$ for all $k$. Therefore $\mathcal X_{n}$ is bounded and $\mathcal{X}^\infty$ is also bounded since $\mathcal{X}_k\supseteq\mathcal{X}_{k+1}\supseteq\mathcal{X}^\infty$ for all $k$.
 
 To see that $\mathcal{D}_k$ grows exponentially, let $r_1$ be the radius of the largest ball centred on the origin that is contained in $\mathcal{R}^\infty$ so that $\mathcal{R}^\infty \supseteq r_1\mathcal{E}$ (where 
-for notational convenience we write $\mathcal E=B_1(0)$). Then (\ref{eq:Dk:iteration}) implies $\mathcal{D}_k=\Psi^{-k}\mathcal{R}_k\supseteq\rho^{-k}r_1\mathcal{E}$. 
+for notational convenience we write $\mathcal E=B_1(0)$). Then Proposition~\ref{prop:Dk:iteration} implies $\mathcal{D}_k=\Psi^{-k}\mathcal{R}_k\supseteq\rho^{-k}r_1\mathcal{E}$. 
 
 % To see that $\mathcal{D}_k$ grows exponentially we denote the spectral radius of $\Psi$ by $\rho$ (where $\rho<1$ since $\Psi$ is asymptotically stable), and 
 % for notational convenience we write $\mathcal E=B_1(0)$.
