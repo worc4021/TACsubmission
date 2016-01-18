@@ -649,9 +649,9 @@ and state constraints
 %
 We assume that $Q$ and $R$ are, respectively, semi-positive definite and positive definite constant matrices, the matrices $A,B,D$ are also assumed to be deterministic and known.
 %
-\todo{Since we require guarantees of stability and feasibility in presence of disturbances arbitrary state constraints
+Since we require guarantees of stability and feasibility in presence of disturbances arbitrary state constraints
 like~\eqref{eq:general:state:constraints} cannot be robustly satisfied~\cite{Bertsekas:1971}, instead specially designed
-ones are used.}
+ones are used.
 %
 Recursively defined sets are used to guarantee that the terminal state lies in the 
 \emph{maximal robust positively invariant} (MRPI) set~$\mathcal X^\infty\subseteq\mathcal X$ 
@@ -1054,7 +1054,6 @@ To demonstrate that parametric convexity of $\mathcal W$ is necessary for convex
 \end{align*}
 Therefore if $S$ is a convex polyhedron constructed so that $\{z_1\}\oplus\mathcal W(z_1)$ and $\{z_2\}\oplus\mathcal W(z_2)$ contain points lying on the same facet of $S$ (this is always possible if $S^\prime=S\ominus \mathcal W(S)$ has a non-empty interior), then there exists $\lambda \in (0,1)$ such that $\lambda z_1 + (1-\lambda) z_2 \notin S^\prime$.
 %
-\textcolor{red}{I'm not sure this works. This only shows that it is necessary for polytopic sets, but polytopic sets are a subset of all possible sets. There might be sets for which this still works}
 \end{proof}
 %
 Theorem~\ref{thm:convexity:of:pontryagin:difference} provides necessary and sufficient conditions for convexity of the parametric Pontryagin difference. In the next section we will show that the parametric Pontryagin difference between a polyhedral set and a piecewise affine polytopic parametric set is itself polyhedral.
