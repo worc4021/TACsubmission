@@ -476,12 +476,20 @@ mark.cannon@eng.ox.ac.uk}% <-this % stops a space
 % As a general rule, do not put math, special symbols or citations
 % in the abstract or keywords.
 \begin{abstract}
-The abstract goes here.
+A robust model predictive control problem formulated as a sequence of min-max quadratic programs for a linear discrete time system with polytopic constraints is proposed.
+%
+The system is considered to be subject to additive disturbances which are realisations of a piecewise affine, state and input dependent disturbance set.
+%
+The analytic and algorithmic framework to accommodate state and input dependent disturbances in the computation of appropriate state constraint sets is presented and an algorithm that yields the convex maximal robust positive invariant set is proven to terminate in a finite number of iterations.
+%
+The min-max sequence is solved using an active-set based approach where the set of active constraints is updated via a line-search.
+%
+Throughout the paper a numerical example levitating ball system is used to illustrate the concepts.
 \end{abstract}
 
 % Note that keywords are not normally used for peerreview papers.
 \begin{IEEEkeywords}
-IEEEtran, journal, \LaTeX, paper, template.
+
 \end{IEEEkeywords}
 
 
@@ -980,15 +988,15 @@ To complete the proof we note that~\eqref{eq:derivative:condition:on:index:sets}
 \vskip-1.15\baselineskip
 \end{proof}
 %
-\begin{rem}
-Corollary~\ref{thm:p:convexity:PWA:set:constant:num:verts} is essential for numerical evaluation since it can be reformulated as follows:
-%
-the set valued map defined by~\eqref{eq:definition:PWA:polytopic:set:general} is non-degenerate and parametrically convex iff 
-it has a fixed number of vertices for all allowable parameters $p\in Y$.
-%
-\todo{If the parameter set $Y$ is polytopic, then since $\mathcal{W}(p)$ is continuous it is sufficient to verify this at the vertices of $Y$.}
-%
-\end{rem}
+% \begin{rem}
+% Corollary~\ref{thm:p:convexity:PWA:set:constant:num:verts} is essential for numerical evaluation since it can be reformulated as follows:
+% %
+% the set valued map defined by~\eqref{eq:definition:PWA:polytopic:set:general} is non-degenerate and parametrically convex iff 
+% it has a fixed number of vertices for all allowable parameters $p\in Y$.
+% %
+% \todo{If the parameter set $Y$ is polytopic, then since $\mathcal{W}(p)$ is continuous it is sufficient to verify this at the vertices of $Y$.}
+% %
+% \end{rem}
 %
 In order to determine MRPI sets we need to be able to calculate the Pontryagin difference between point-to-set maps; hence we introduce the following.
 %
@@ -1080,7 +1088,7 @@ Specifically, at each iteration $k=0,1,\ldots$, we define $\mathcal{X}_k$ as the
 %
 The MRPI set is then obtained as the limit of the sequence $\mathcal{X}_0,\mathcal{X}_1,\ldots$ (see e.g.~\cite{blanchini:2007}).
 
-\textcolor{red}{%
+% \textcolor{red}{%
 Let $\mathcal{X}_0=\mathcal{X}$ and for $k=1,2,\ldots$ define $\mathcal{X}_k$ as the set
 \begin{equation}\label{eq:Xk:iteration}
 \mathcal{X}_k = \mathcal{X}_{k-1}\cap \mathcal{D}_k 
@@ -1092,15 +1100,15 @@ To explain how $\mathcal{X}_k$ is computed and to simplify the analysis of $\mat
 \mathcal{R}_k = \mathcal{R}_{k-1}\ominus \Psi^{k-1} \mathcal{V}_k(\mathcal{R}_{k-1}) \ \forall k=1,2\ldots,
 \end{equation} 
 with $\mathcal{V}_k$ defined as the point-to-set map $\mathcal{V}_k(x) = \mathcal{V}(\Psi^{-k} x)$.%
-}
+% }
 
-\textcolor{red}{%
+% \textcolor{red}{%
 \begin{prop}\label{prop:Dk:iteration}
 $\mathcal{D}_k = \Psi^{-k}\mathcal{R}_k$ for all $k\geq 0$.
 \end{prop}%
-}
+% }
 
-\textcolor{red}{%
+% \textcolor{red}{%
 \begin{proof}
 Since $\mathcal{D}_k$ is the set of initial states for which the state $k$ steps ahead lies in $\mathcal{X}$, we have $\mathcal{D}_0 = \mathcal{X}$ and
 %, for $k\geq 1$,
@@ -1127,13 +1135,13 @@ and the result therefore follows from  $\mathcal{R}_0=\mathcal{D}_0$ and (\ref{e
 % and the result follows from
 % (\ref{eq:Rk:iteration}) and $\mathcal{R}_0=\mathcal{D}_0 = \mathcal{X}$.
 \end{proof}%
-}
+% }
 
-\textcolor{red}{%
+% \textcolor{red}{%
 \begin{rem}
 It can be shown by induction using (\ref{eq:Rk:iteration}) and Theorem~\ref{thm:convexity:of:pontryagin:difference} that if $\mathcal{X}$ is convex and $\mathcal{V}(x)$ is parametrically convex, then $\mathcal{R}_k$, $\mathcal{D}_k$ and $\mathcal{X}_k$ are convex for all $k$, and hence $\mathcal{X}^\infty$ is also convex.
 \end{rem}%
-}
+% }
 
 % Let $\mathcal{X}_0=\mathcal{X}$ and for $k=1,2,\ldots$ define $\mathcal{X}_k$ as the set
 % \begin{equation}\label{eq:Xk:iteration}
@@ -1204,13 +1212,14 @@ To compute $\zeta_i(x)$ for all $x\in\mathcal X$ is in general a challenging pro
 S\ominus\mathcal{V}(S) = \{ x : h_ix + h_i v_j(x) \leq 1, \ \forall j\in\mathbb{N}_q\ \forall i\in \mathcal I\}
 \] 
 and to subsequently remove redundant inequalities by applying an inequality reduction algorithm. 
-\textcolor{red}{%
+% \textcolor{red}{%
 The resulting set can be expressed $S\ominus \mathcal{V}(S) = \{ x : h_i^\prime x \leq 1 \ \forall i \in \mathcal{I}^\prime \}$.%
-}%
+% }%
 \end{rem}
 %
 
-\textcolor{red}{Given $\mathcal{R}_{k-1} = \{ x : \xi_{i,k-1} x \leq 1 \ \forall i \in \mathcal{I}_{k-1}\}$, we can compute $\mathcal{R}_k$ using (\ref{eq:Rk:iteration}) and (\ref{eq:definition:PWA:polytopic:set:vertices}) as
+% \textcolor{red}{
+Given $\mathcal{R}_{k-1} = \{ x : \xi_{i,k-1} x \leq 1 \ \forall i \in \mathcal{I}_{k-1}\}$, we can compute $\mathcal{R}_k$ using (\ref{eq:Rk:iteration}) and (\ref{eq:definition:PWA:polytopic:set:vertices}) as
 \begin{subequations}\label{eq:Rk:explicit}
 \begin{gather}
 \mathcal{R}_k = \Bigl\{ x : \xi_{i,k-1} x + \zeta_{i,k-1}(x) \leq 1 \ \forall i \in \mathcal{I}_{k-1} \Bigr\} \\
@@ -1218,7 +1227,7 @@ The resulting set can be expressed $S\ominus \mathcal{V}(S) = \{ x : h_i^\prime 
 \end{gather}
 \end{subequations}
 and the approach outlined in Remark~\ref{rem:pPdiff:calculation} can be used to compute $\mathcal{R}_k = \{x: \xi_{i,k} x \leq 1\, \forall i \in \mathcal{I}_k\}$ without explicitly determining $\zeta_{i,k-1}(x)$ for all $x\in\mathcal{R}_{k-1}$. This gives $\mathcal{X}_k = \mathcal{X}_{k-1}\cap \{x: \xi_{i,k}\Psi^k x \leq 1\, \forall i \in \mathcal{I}_k\}$,%
-}
+% }
 %
 % Using (\ref{eq:Rk:iteration})-(\ref{eq:definition:PWA:polytopic:set:vertices}), the set $\mathcal{D}_k$ can be expressed 
 % \begin{subequations}\label{eq:explicit:Dk}
@@ -1242,7 +1251,11 @@ $\mathcal{V}(x) = \conv\{\Theta_j x + \theta_j,\, j\in\mathbb{N}_q\}$.
 \end{tabular}
 \\
 \textsc{Initialization}:
-$\mathcal{X}_0 \gets \mathcal{X}$, \textcolor{red}{$\mathcal{R}_0 \gets \mathcal{X}$}, $k\gets 1$.\\
+$\mathcal{X}_0 \gets \mathcal{X}$, 
+% \textcolor{red}{
+$\mathcal{R}_0 \gets \mathcal{X}$
+% }
+, $k\gets 1$.\\
 % \begin{tabular}[t]{@{}l@{}}
 % $\mathcal{X}_0 \gets \mathcal{X}$, 
 % \textcolor{red}{$\mathcal{I}_0\gets \mathcal{I}_{\mathcal{X}}$, 
@@ -1250,14 +1263,16 @@ $\mathcal{X}_0 \gets \mathcal{X}$, \textcolor{red}{$\mathcal{R}_0 \gets \mathcal
 % \textcolor{red}{$k\gets 1$.}\end{tabular}\\
 \begin{tabular}{@{}l@{~}l@{}}
 1. &
-\textcolor{red}{%
+% \textcolor{red}{%
 Compute $\mathcal{R}_k = \{x: \xi_{i,k} x \leq 1\, \forall i \in \mathcal{I}_k\}$ using (\ref{eq:Rk:explicit}a,b)%
-}\\ 
+% }
+\\ 
 & 
-\textcolor{red}{%
+% \textcolor{red}{%
 and 
 $\mathcal{D}_k \gets \Psi^{-k}\mathcal{R}_k$.%
-}\\
+% }
+\\
 % $\begin{aligned}[t]\mathcal{D}_k\gets 
 % \displaystyle\Bigl\{x : \xi_i \Psi^k x + \sum_{l=0}^{k-1} \xi_{i}\Psi^l(\Theta_j x &+ \theta_j)
 % \leq 1 \\ 
@@ -2053,8 +2068,10 @@ for all $m\in\mathbb N_N$, with~$J_0^\ast(x^+) = \frac{1}{2}\|x^+\|_{P_0}^2$,
 % $m=1,\dots,N$ 
 and $H(x,u)=\max_k\{{\bf{H}}_k^x x + {\bf{H}}_k^u u+ {\bf{h}}_k\}$. 
 %
-\textcolor{red}{Constraint~\eqref{eq:state:constraints} corresponds to the stage constraint~$\mathcal Z_m$ defined 
-in~\eqref{eq:stage:constraints:in:x:and:u}.}
+% \textcolor{red}{
+Constraint~\eqref{eq:state:constraints} corresponds to the stage constraint~$\mathcal Z_m$ defined 
+in~\eqref{eq:stage:constraints:in:x:and:u}.
+% }
 %
 We split the sequence of  min-max problems into a sequence of multi-parametric 
 quadratic programs. Starting with the maximisation at stage $m=1$ and using a backward sweep approach
@@ -2461,7 +2478,23 @@ performed which approximately is linear.}
 
 
 \section{Conclusion}\label{sec:conclusion}
-\todo{The conclusion goes here.}
+In this paper we presented a framework to treat robust model predictive control problems that are formulated with state and input dependent disturbance constraints.
+%
+These problems are formulated as a sequence of min-max programs where the constraints at each stage are chosen in such a way that at the last stage the state is contained in the maximal positive robust invariant set.
+%
+In order to determine the MRPI set for a constrained system with state dependent disturbances a key property is \emph{parametric convexity}, which the disturbance set necessarily has to have in order to guarantee the convexity of the MRPI set.
+%
+For a polytopic setup in connection with parametric convexity of a piecewise affine disturbance set we prove the finite determinability of the MRPI set.
+%
+\par The quadratic min-max sequence is solved recursively by an active-set based approach. 
+%
+For a known sequence of active constraints the optimal control strategy is affine in the initial state, this optimal strategy is then updated with a line-search through the state space towards the current state when necessary.
+%
+Both main concepts are illustrated with a numerical example.
+%
+\par The complexity of the solver is linear in the horizon length for each set of active constraints, however no sensible bound on the number of active-set updates can be given. 
+%
+
 
 
 
