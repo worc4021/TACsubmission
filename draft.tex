@@ -345,6 +345,23 @@
 \usepackage[hidelinks]{hyperref}
 
 
+%% Ticketing System
+\usepackage{etoolbox}
+\usepackage{xparse}
+\NewDocumentCommand{\openTickets}{ > {\SplitList {,} } m }{\ProcessList{#1}{\BoolInit}}
+\newcommand{\BoolInit}[1]{\providetoggle{#1}\toggletrue{#1}}
+\newcommand{\todo}[2]{%
+  \providetoggle{#1}%
+    \iftoggle{#1}{%
+    {\color{red}#2}%
+    }{#2}
+}
+
+%% Ticket list
+\openTickets{Manuel:wlog,Manuel:convHull,Manuel:remConcavity,Manuel:thm14:ref,Manuel:invertability:assumption,Manuel:inclusion:step,Manuel:minus:one}
+
+
+
 \providecommand{\norm}[1]{\left\|#1\right\|}
 \providecommand{\abs}[1]{\left|#1\right|}
 \providecommand{\span}{\text{span}}
@@ -380,7 +397,7 @@
 \DeclareMathSymbol{\temp}{\mathbin}{mathx}{'341}
 \newcommand{\bigominus}{\raisebox{10pt}{$\temp$}}
 
-\newcommand{\todo}[1]{\textcolor{blue}{#1}}
+% \newcommand{\todo}[1]{\textcolor{blue}{#1}}
 \newcommand{\highlight}[1]{\textcolor{red}{#1}}
 
 % *** Do not adjust lengths that control margins, column widths, etc. ***
@@ -495,8 +512,6 @@ Throughout the paper a levitating ball system is used to illustrate the concepts
 
 
 
-
-
 % For peer review papers, you can put extra information on the cover
 % page as needed:
 % \ifCLASSOPTIONpeerreview
@@ -525,6 +540,7 @@ Throughout the paper a levitating ball system is used to illustrate the concepts
 % 
 % Here we have the typical use of a "T" for an initial drop letter
 % and "HIS" in caps to complete the first word.
+
 
 Robust model predictive control (RMPC) is a control strategy for uncertain systems that optimises a 
 performance objective for all possible realisations of model uncertainty.
@@ -1171,12 +1187,13 @@ and that $\mathcal{X}$ is convex and polyhedral:
 \end{equation}
 where $\boldsymbol{\xi}_{\mathcal{I}_{\mathcal{X}}}=\Xi$.
 %
-We further assume (without loss of generality) that $\mathcal V(x)$ is compact for all finite $x\in\mathcal X$,
+We further assume \todo{Manuel:wlog}{(without loss of generality)} that $\mathcal V(x)$ is compact for all finite $x\in\mathcal X$,
 and can therefore be represented as the 
 convex hull of its vertices: 
 \begin{equation}\label{eq:definition:PWA:polytopic:set:vertices}
 \mathcal V(x) = \conv\{v_j(x), \, j\in\mathbb{N}_q\} 
-=  \conv\{\Theta_j x + \theta_j,\, j\in\mathbb{N}_q\}.
+=  \conv\{\todo{Manuel:convHull}{\max_{k}}
+\Theta_{j\todo{Manuel:convHull}{,k}} x + \theta_{j\todo{Manuel:convHull}{,k}},\, j\in\mathbb{N}_q\}.
 \end{equation}
 %
 Here $v_j(x)$ is necessarily piecewise affine in $x$ for all $j\in\mathbb{N}_q$ since ${\mathcal{V}}(x)$ is piecewise affine in $x$.
@@ -1205,7 +1222,7 @@ S \ominus \mathcal{V}(S)
 &= \{x : h_i x + \underbrace{\max_{j} h_i v_j(x)}_{=\zeta_i(x)} \leq 1 
 \ \forall i \in\mathcal{I}\} .
 \end{align*}
-Here $\zeta_i(x)$ is the solution of a mpLP and hence is a continuous piecewise affine function of $x$~\cite{Gal:1995}. It follows that $S\ominus\mathcal{V}(S)$ is a convex polyhedral set.
+Here $\zeta_i(x)$ is the solution of a mpLP and hence is a continuous \todo{Manuel:remConcavity}{and concave} piecewise affine function of $x$~\cite{Gal:1995}. It follows that $S\ominus\mathcal{V}(S)$ is a convex polyhedral set.
 %
 To compute $\zeta_i(x)$ for all $x\in\mathcal X$ is in general a challenging problem, and a simpler method of determining the supporting hyperplanes of $S\ominus\mathcal{V}(S)$ is to include all possible affine inequalities in the set description:
 \[
@@ -1316,7 +1333,7 @@ that $\mathcal X^\infty = \mathcal X_M$, and hence  $\mathcal{X}^\infty$ is defi
 Let $\rho < 1$, where $\rho$ is the spectral radius of $\Psi$, and let $\mathcal{X}\subseteq\mathcal{P}$, $\mathcal{P}=\{x:\Gamma x\leq{\bf{1}}\wedge 
 -\Gamma x\leq{\bf{1}}\}$, where $(\Psi,\Gamma)$ is an observable pair.
 %
-Then the MRPI set $\mathcal X^\infty$ for the system $x^+ = \Psi x + v$ subject to disturbances $v\in\mathcal{V}(x)$, where $\mathcal V(x)$ is a continuous point-to-set map, and constraints $x\in\mathcal{X}$, is either empty or else is a bounded polytopic set satisfying $\mathcal X^\infty =\mathcal X_M$ for finite $M$.
+Then the MRPI set $\mathcal X^\infty$ for the system $x^+ = \Psi x + v$ subject to disturbances $v\in\mathcal{V}(x)$, where $\mathcal V(x)$ is a continuous \todo{Manuel:thm14:ref}{and piece-wise affine point-to-set map as defined in~\eqref{eq:definition:PWA:polytopic:set:cl}}, and constraints $x\in\mathcal{X}$, is either empty or else is a bounded polytopic set satisfying $\mathcal X^\infty =\mathcal X_M$ for finite $M$.
 \end{thm}
 %
 %
@@ -1343,12 +1360,12 @@ For the first step, notice that $(\Psi,\Gamma)$ is observable if and only if $\m
 %
 is bounded. 
 %
-(Here $\Psi^{-1}\mathcal{P}$ denotes the pre-image of $\mathcal{P}$ under the linear map $\Psi$, and $\Psi$ is not assumed to be an invertible matrix.)
+(Here $\Psi^{-1}\mathcal{P}$ denotes the pre-image of $\mathcal{P}$ under the linear map $\Psi$\todo{Manuel:invertability:assumption}{, and $\Psi$ is not assumed to be an invertible matrix}.)
 %
 But from (\ref{eq:Xk:iteration})-(\ref{eq:Rk:iteration}) and Proposition~\ref{prop:Dk:iteration} we have $\mathcal{D}_k\subseteq \Psi^{-k}\mathcal{X} \subseteq \Psi^{-k}\mathcal{P}$ and hence $\mathcal X_k\subseteq \mathcal P_k$ for all $k$. Therefore $\mathcal X_{n}$ is bounded and $\mathcal{X}^\infty$ is also bounded since $\mathcal{X}_k\supseteq\mathcal{X}_{k+1}\supseteq\mathcal{X}^\infty$ for all $k$.
 
 To see that $\mathcal{D}_k$ grows exponentially, let $r_1$ be the radius of the largest ball centred on the origin that is contained in $\mathcal{R}^\infty$ so that $\mathcal{R}^\infty \supseteq r_1\mathcal{E}$ (where 
-for notational convenience we write $\mathcal E=B_1(0)$). Then Proposition~\ref{prop:Dk:iteration} implies $\mathcal{D}_k=\Psi^{-k}\mathcal{R}_k\supseteq\rho^{-k}r_1\mathcal{E}$. 
+for notational convenience we write $\mathcal E=B_1(0)$). Then Proposition~\ref{prop:Dk:iteration} implies $\mathcal{D}_k=\Psi^{-k}\mathcal{R}_k\supseteq\todo{Manuel:inclusion:step}{\Psi^{-k}\mathcal R^\infty\supseteq}\rho^{-k}r_1\mathcal{E}$. 
 
 % To see that $\mathcal{D}_k$ grows exponentially we denote the spectral radius of $\Psi$ by $\rho$ (where $\rho<1$ since $\Psi$ is asymptotically stable), and 
 % for notational convenience we write $\mathcal E=B_1(0)$.
@@ -1395,7 +1412,7 @@ $\mathcal X_k = \mathcal{X}_{k-1} \cap D_l$.
 %
 Therefore $\mathcal X^\infty = \mathcal X_M$ where
 \begin{equation}\label{eq:iteration:bound}
-M = \max \left\{ n , \left\lceil \frac{\log(r_2/r_1)}{\log(1/\rho)}\right\rceil - 1 \right\},
+M = \max \left\{ n , \left\lceil \frac{\log(r_2/r_1)}{\log(1/\rho)}\right\rceil \todo{Manuel:minus:one}{- 1} \right\},
 \end{equation}
 and it follows that $\mathcal{X}^\infty$ is a bounded polytopic set.
 \end{proof}
@@ -1448,7 +1465,7 @@ where
 $\mathcal{P}_n  =\conv\{x_j,\, j\in\mathbb{N}_p\}$; 
 and
 \[
-c_3 = \max_{j\in\mathbb{N}_q} \max_x \|\Theta_jx + \theta_j\|^2 \ \  \text{subject to} \ \ \Xi x \leq {\bf 1} ,
+c_3 = \max_{j\in\mathbb{N}_q} \max_x \todo{Manuel:convHull}{\max_k} \|\Theta_{j\todo{Manuel:convHull}{,k}} x + \theta_{j\todo{Manuel:convHull}{,k}}\|^2 \ \  \text{subject to} \ \ \Xi x \leq {\bf 1} ,
 \]
 which requires the solution of $q$ (nonconvex) QPs.
 \end{rem}
