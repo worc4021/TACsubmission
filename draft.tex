@@ -354,11 +354,11 @@
   \providetoggle{#1}%
     \iftoggle{#1}{%
     {\color{red}#2}%
-    }{#2}
+    }{#2}%
 }
 
 %% Ticket list
-\openTickets{Manuel:wlog,Manuel:convHull,Manuel:remConcavity,Manuel:thm14:ref,Manuel:invertability:assumption,Manuel:inclusion:step,Manuel:minus:one,Manuel:proof:thm14}
+\openTickets{Manuel:wlog,Manuel:invertability:assumption,Mark:log:bounds,Mark:proof:cor15}
 
 
 
@@ -1225,7 +1225,7 @@ S \ominus \mathcal{V}(S)
 &= \{x : h_i x + \underbrace{\max_{j} h_i v_j(x)}_{=\zeta_i(x)} \leq 1 
 \ \forall i \in\mathcal{I}\} .
 \end{align*}
-Here $\zeta_i(x)$ is the solution of a mpLP and hence is a continuous \todo{Manuel:remConcavity}{and concave} piecewise affine function of $x$~\cite{Gal:1995}. It follows that $S\ominus\mathcal{V}(S)$ is a convex polyhedral set.
+Here $\zeta_i(x)$ is the solution of a mpLP and hence is a continuous and concave piecewise affine function of $x$~\cite{Gal:1995}. It follows that $S\ominus\mathcal{V}(S)$ is a convex polyhedral set.
 %
 To compute $\zeta_i(x)$ for all $x\in\mathcal X$ is in general a challenging problem, and a simpler method of determining the supporting hyperplanes of $S\ominus\mathcal{V}(S)$ is to include all possible affine inequalities in the set description:
 \[
@@ -1336,7 +1336,7 @@ that $\mathcal X^\infty = \mathcal X_M$, and hence  $\mathcal{X}^\infty$ is defi
 Let $\rho < 1$, where $\rho$ is the spectral radius of $\Psi$, and let $\mathcal{X}\subseteq\mathcal{P}$, $\mathcal{P}=\{x:\Gamma x\leq{\bf{1}}\wedge 
 -\Gamma x\leq{\bf{1}}\}$, where $(\Psi,\Gamma)$ is an observable pair.
 %
-Then the MRPI set $\mathcal X^\infty$ for the system $x^+ = \Psi x + v$ subject to disturbances $v\in\mathcal{V}(x)$, where $\mathcal V(x)$ is a continuous \todo{Manuel:thm14:ref}{and piece-wise affine point-to-set map as defined in~\eqref{eq:definition:PWA:polytopic:set:cl}}, and constraints $x\in\mathcal{X}$, is either empty or else is a bounded polytopic set satisfying $\mathcal X^\infty =\mathcal X_M$ for finite $M$.
+Then the MRPI set $\mathcal X^\infty$ for the system $x^+ = \Psi x + v$ subject to disturbances $v\in\mathcal{V}(x)$, where $\mathcal V(x)$ is a continuous and piece-wise affine point-to-set map as defined in~\eqref{eq:definition:PWA:polytopic:set:cl}, and constraints $x\in\mathcal{X}$, is either empty or else is a bounded polytopic set satisfying $\mathcal X^\infty =\mathcal X_M$ for finite $M$.
 \end{thm}
 %
 %
@@ -1368,7 +1368,7 @@ is bounded.
 But from (\ref{eq:Xk:iteration})-(\ref{eq:Rk:iteration}) and Proposition~\ref{prop:Dk:iteration} we have $\mathcal{D}_k\subseteq \Psi^{-k}\mathcal{X} \subseteq \Psi^{-k}\mathcal{P}$ and hence $\mathcal X_k\subseteq \mathcal P_k$ for all $k$. Therefore $\mathcal X_{n}$ is bounded and $\mathcal{X}^\infty$ is also bounded since $\mathcal{X}_k\supseteq\mathcal{X}_{k+1}\supseteq\mathcal{X}^\infty$ for all $k$.
 
 To see that $\mathcal{D}_k$ grows exponentially, let $r_1$ be the radius of the largest ball centred on the origin that is contained in $\mathcal{R}^\infty$ so that $\mathcal{R}^\infty \supseteq r_1\mathcal{E}$ (where 
-for notational convenience we write $\mathcal E=B_1(0)$). Then Proposition~\ref{prop:Dk:iteration} implies $\mathcal{D}_k=\Psi^{-k}\mathcal{R}_k\supseteq\todo{Manuel:inclusion:step}{\Psi^{-k}\mathcal R^\infty\supseteq}\rho^{-k}r_1\mathcal{E}$. 
+for notational convenience we write $\mathcal E=B_1(0)$). Then Proposition~\ref{prop:Dk:iteration} implies $\mathcal{D}_k=\Psi^{-k}\mathcal{R}_k\supseteq\Psi^{-k}\mathcal R^\infty\supseteq \rho^{-k}r_1\mathcal{E}$. 
 
 % To see that $\mathcal{D}_k$ grows exponentially we denote the spectral radius of $\Psi$ by $\rho$ (where $\rho<1$ since $\Psi$ is asymptotically stable), and 
 % for notational convenience we write $\mathcal E=B_1(0)$.
@@ -1411,11 +1411,13 @@ To complete the proof, let $r_2$ denote the radius of the smallest ball centred 
 Then, for any $k\geq n+1$ such that 
 $\rho^{-k} r_1 \geq r_2$, 
 we can conclude that $D_k\supseteq \mathcal X_n$ and, since $\mathcal X_n \supseteq \mathcal X_{k-1}$, we also have $D_k\supseteq \mathcal X_{k-1}$ so that 
-$\mathcal X_k \todo{Manuel:proof:thm14}{\supseteq} \mathcal{X}_{k-1} \cap D_k$.
+$\mathcal X_k = \mathcal{X}_{k-1}$.
 %
 Therefore $\mathcal X^\infty = \mathcal X_M$ where
 \begin{equation}\label{eq:iteration:bound}
-M = \max \left\{ n , \left\lceil \frac{\log(r_2/r_1)}{\log(1/\rho)}\right\rceil \todo{Manuel:minus:one}{- 1} \right\},
+M = \max \Bigl\{ n , \todo{Mark:log:bounds}{\bigl\lfloor 
+\log_{\rho}(r_1/r_2)\bigr\rfloor}\Bigr\},
+%\frac{\log(r_2/r_1)}{\log(1/\rho)}\right\rfloor} \right\},
 \end{equation}
 and it follows that $\mathcal{X}^\infty$ is a bounded polytopic set.
 \end{proof}
@@ -1431,27 +1433,57 @@ the largest ball centered on the origin contained in $\mathcal{X}$,
 %
 the smallest ball centered on the origin that contains $\mathcal{P}_n$, and
 %
-the smallest ball centered on the origin that contains $\mathcal{V}(x)$ for all $x\in\mathcal{X}$.
+the smallest ball centered on the origin that contains $\mathcal{V}_1(x)$ for all $x\in\mathcal{X}$.
 %
-If $c_1\geq (1-\rho)^{-1}c_3$, then $\mathcal X^\infty = \mathcal X_M$ where
+If $c_i > (1-\rho)^{-1}c_3$ for $i=1,2$, then $\mathcal X^\infty = \mathcal X_M$ where
 \begin{equation}\label{eq:iteration:cbound}
-M = \max \left\{ n , \left\lceil \frac{1}{\log(1/\rho)}\log\left(\frac{c_2-(1-\rho)^{-1}c_3}{c_1-(1-\rho)^{-1}c_3}\right)\right\rceil - 1 \right\}.
+M = \max \biggl\{ n , 
+\todo{Mark:log:bounds}{
+\biggl\lfloor \log_{\rho}\Bigl(\frac{c_1-(1-\rho)^{-1}c_3}{c_2-(1-\rho)^{-1}c_3}\Bigr)\biggr\rfloor \biggr\}}.
 \end{equation}
 \end{cor}
 %
 
 \begin{proof}
-If $\mathcal{V}(x)\subseteq c_3\mathcal{E}$ for all $x\in\mathcal{X}$, then since $\mathcal{X}_k\subseteq\mathcal{X}$ for all $k$, we have $\mathcal{R}_k \supseteq \mathcal{R}_{k-1}\ominus \rho^{k-1} c_3\mathcal{E}$ from (\ref{eq:Rk:iteration}), and hence
+\todo{Mark:proof:cor15}{%
+\def\X{\mathcal{X}}%
+\def\D{\mathcal{D}}%
+\def\V{\mathcal{V}}%
+\def\E{\mathcal{E}}%
+%
+The iteration (\ref{eq:Xk:iteration}) can be defined  equivalently as $\X_0=\X$ and $\X_k = \X_{k-1} \cap \D_k^\prime$ for $k=1,2,\ldots$, with
 \[
-\mathcal{R}_k \supseteq \mathcal{X} \ominus \sum_{i=0}^{k-1} \rho^{i} c_3\mathcal{E} 
-%=\mathcal{X} \ominus \Bigl(\frac{1-\rho^k}{1-\rho} \Bigr) c_3 \mathcal{E}.
-\supseteq \Bigl[ c_1 - \Bigl(\frac{1-\rho^k}{1-\rho} \Bigr) c_3\Bigr] \mathcal{E}.
+\D_k^\prime = \bigl\{ x\in\X_{k-1} : \{\Psi x\} \oplus \V(x) If \subseteq \D_{k-1}^\prime\}
 \]
-where $c_1 \mathcal{E} \subseteq \mathcal{X}$. 
+for $k=1,2,\ldots$ and $\D_0^\prime=\X$. Clearly $\X_k\subseteq \X$ for all $k$, and since $V_1(x)\subseteq c_3\E$ for all $x\in\X$ (where $\E = B_1(0)$), it follows that $\D^\prime_k \supseteq \Psi^{-1}(\D_{k-1}^\prime \ominus c_3\E)$ and 
+\[
+\D_k^\prime 
+\supseteq 
+%\Psi^{-k}\ominus \bigoplus_{i=0}^k c_3 \Psi^{-i}\E=
+\Psi^{-k} \Bigl[ \X \ominus \bigoplus_{i=0}^{k-1} c_3\Psi^i\E \Bigr]
+\supseteq 
+\Bigl[ c_1 - \Bigl(\frac{1-\rho^k}{1-\rho} \Bigr) c_3\Bigr] \rho^{-k}\mathcal{E} 
+\]
+since $\X\subseteq c_1\E$. 
 %
-Therefore $\mathcal{R}^\infty \supseteq \bigl( c_1 - (1-\rho)^{-1}c_3\bigr) \mathcal{E} \neq \emptyset$ if $c_1\geq (1-\rho)^{-1}c_3$,
+Therefore $\D_k^\prime\neq \emptyset$ for all $k$ if $c_1 > (1-\rho)^{-1}c_3$, and in this case, since $\X_{k-1} \subseteq \mathcal{P}_n\subseteq c_2\E$ for all $k\geq n+1$, we have $\X_{k-1}\subseteq \D_k^\prime$ if $c_2\rho^k \leq c_1 - c_3(1-\rho^k)/(1-\rho)$. 
 %
-in which case $\mathcal{X}_k \subseteq \mathcal{P}_n \subseteq c_2 \mathcal{E}$ for all $k\geq n$ implies that $\mathcal X^\infty = \mathcal X_M$ where $M$ is given by (\ref{eq:iteration:cbound}).
+Hence $\X^\infty=\X_M$, where $M$ is 
+%given by (\ref{eq:iteration:cbound}).}
+the smallest integer such that $k= M+1$ satisfies this condition, which is given by (\ref{eq:iteration:cbound})
+since $c_2>(1-\rho)^{-1}c_3$ is assumed.}
+%
+% If $\mathcal{V}(x)\subseteq c_3\mathcal{E}$ for all $x\in\mathcal{X}$, then since $\mathcal{X}_k\subseteq\mathcal{X}$ for all $k$, we have $\mathcal{R}_k \supseteq \mathcal{R}_{k-1}\ominus \rho^{k-1} c_3\mathcal{E}$ from (\ref{eq:Rk:iteration}), and hence
+% \[
+% \mathcal{R}_k \supseteq \mathcal{X} \ominus \sum_{i=0}^{k-1} \rho^{i} c_3\mathcal{E} 
+% %=\mathcal{X} \ominus \Bigl(\frac{1-\rho^k}{1-\rho} \Bigr) c_3 \mathcal{E}.
+% \supseteq \Bigl[ c_1 - \Bigl(\frac{1-\rho^k}{1-\rho} \Bigr) c_3\Bigr] \mathcal{E}.
+% \]
+% where $c_1 \mathcal{E} \subseteq \mathcal{X}$. 
+% %
+% Therefore $\mathcal{R}^\infty \supseteq \bigl( c_1 - (1-\rho)^{-1}c_3\bigr) \mathcal{E} \neq \emptyset$ if $c_1\geq (1-\rho)^{-1}c_3$,
+% %
+% in which case $\mathcal{X}_k \subseteq \mathcal{P}_n \subseteq c_2 \mathcal{E}$ for all $k\geq n$ implies that $\mathcal X^\infty = \mathcal X_M$ where $M$ is given by (\ref{eq:iteration:cbound}).
 \end{proof}
 
 \begin{rem}
