@@ -1415,8 +1415,8 @@ $\mathcal X_k = \mathcal{X}_{k-1}$.
 %
 Therefore $\mathcal X^\infty = \mathcal X_M$ where
 \begin{equation}\label{eq:iteration:bound}
-M = \max \Bigl\{ n , \todo{Mark:log:bounds}{\bigl\lfloor 
-\log_{\rho}(r_1/r_2)\bigr\rfloor}\Bigr\},
+M = \max \Bigl\{ n , \todo{Mark:log:bounds}{\bigl\lceil 
+\log_{\rho}(r_1/r_2)\bigr\rceil -1}\Bigr\},
 %\frac{\log(r_2/r_1)}{\log(1/\rho)}\right\rfloor} \right\},
 \end{equation}
 and it follows that $\mathcal{X}^\infty$ is a bounded polytopic set.
@@ -1439,7 +1439,7 @@ If $c_i > (1-\rho)^{-1}c_3$ for $i=1,2$, then $\mathcal X^\infty = \mathcal X_M$
 \begin{equation}\label{eq:iteration:cbound}
 M = \max \biggl\{ n , 
 \todo{Mark:log:bounds}{
-\biggl\lfloor \log_{\rho}\Bigl(\frac{c_1-(1-\rho)^{-1}c_3}{c_2-(1-\rho)^{-1}c_3}\Bigr)\biggr\rfloor \biggr\}}.
+\biggl\lceil \log_{\rho}\Bigl(\frac{c_1-(1-\rho)^{-1}c_3}{c_2-(1-\rho)^{-1}c_3}\Bigr)\biggr\rceil -1 \biggr\}}.
 \end{equation}
 \end{cor}
 %
