@@ -358,7 +358,7 @@
 }
 
 %% Ticket list
-\openTickets{Manuel:wlog,Manuel:invertability:assumption,Mark:log:bounds,Mark:proof:cor15,Manuel:proof:rewritten}
+\openTickets{Manuel:convHull,Manuel:wlog,Manuel:invertability:assumption,Mark:log:bounds,Mark:proof:cor15,Manuel:proof:rewritten}
 
 
 
@@ -553,7 +553,6 @@ We discuss the \emph{closed-loop setup} where, at each stage of a prediction hor
 The closed-loop setup includes, as a special case, the \emph{open-loop setup} in which the disturbance is allowed to perturb the 
 entire trajectory before the controller is allowed to react, since this can be understood as a closed loop setup (with a horizon length of one) applied to a lifted system.
 %
-
 This paper considers the use of parametrised sets to bound model uncertainty. By allowing the bounds on model uncertainty to depend explicitly on the model state and control input we obtain a generalised framework for RMPC in which linearisation errors and multiplicative uncertainties can be modelled as additive disturbances.
 %
 General parametrised disturbance bounding sets were used in~\cite{Rakovic03,Rakovic06}; however, here we focus exclusively on problem formulations that lead to convex-concave min-max control problems.
@@ -1190,7 +1189,9 @@ and that $\mathcal{X}$ is convex and polyhedral:
 \end{equation}
 where $\boldsymbol{\xi}_{\mathcal{I}_{\mathcal{X}}}=\Xi$.
 %
-We further assume \todo{Manuel:wlog}{(without loss of generality)} that $\mathcal V(x)$ is compact for all finite $x\in\mathcal X$,
+We further assume 
+% \todo{Manuel:wlog}{(without loss of generality)} 
+that $\mathcal V(x)$ is compact for all finite $x\in\mathcal X$,
 and can therefore be represented as the 
 convex hull of its vertices: 
 \begin{equation}\label{eq:definition:PWA:polytopic:set:vertices}
