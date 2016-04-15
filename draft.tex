@@ -358,7 +358,7 @@
 }
 
 %% Ticket list
-\openTickets{Manuel:convHull,Manuel:wlog,Manuel:invertability:assumption,Mark:log:bounds,Mark:proof:cor15,Manuel:proof:rewritten}
+\openTickets{Manuel:convHull,Manuel:wlog,Manuel:invertability:assumption,Mark:log:bounds,Mark:proof:cor15,Manuel:proof:rewritten,Manuel:generic}
 
 
 
@@ -904,7 +904,7 @@ is convex and violates the conditions of Theorem~\ref{thm:p:convexity:graph}.
 \end{proof}
 %
 \begin{cor}\label{thm:p:convexity:PWA:set:constant:num:verts}
-The non-degenerate piecewise affine polytopic parametric point-to-set valued map 
+The generic piecewise affine polytopic parametric point-to-set valued map 
 %
 \begin{equation}\label{eq:definition:PWA:polytopic:set:general}
   \mathcal W(p) := \Bigl\{z: a_i z \leq \max_{k}\{b_{i,k} + c_{i,k}p\} \; \forall i\in\mathbb N_m \Bigr\}
@@ -953,8 +953,9 @@ $\mathcal I_\kappa(p) = \mathbb N_m
   a_i v_\kappa(p) &< b_{i,k_i^\ast} + c_{i,k_i^\ast} p \quad\forall i\in\mathcal I_\kappa(p) .
 \end{split}\end{equation*}
 %
+\todo{Manuel:generic}{Since $\mathcal W(p)$ is assumed to be generic, it has to be generic for every~$p\in\mathbb R^d$, which means it is \emph{simple}, i.e. each vertex is defined by exactly $n$ active inequalities $\abs{\mathcal A_\kappa(p)}=n$ for all $p\in\mathbb R^d$ and all $\kappa$.}
 %
-A standard degeneracy assumption is that in neighbouring partitions ${\bf{k}}^\ast\vert_{\mathcal P_{j_1}}$
+Another standard degeneracy assumption is that in neighbouring partitions ${\bf{k}}^\ast\vert_{\mathcal P_{j_1}}$
 and ${\bf{k}}^\ast\vert_{\mathcal P_{j_2}}$ differ by exactly one element.
 %
 Hence, in order for the number of vertices to change, there must be a hyperplane $fp=g$, such that the number of vertices for $fp \leq g$ is 
@@ -1006,6 +1007,36 @@ To complete the proof we note that~\eqref{eq:derivative:condition:on:index:sets}
 \vskip-1.15\baselineskip
 \end{proof}
 %
+\todo{Manuel:generic}{It is worth pointing out that Corollary~\ref{thm:p:convexity:PWA:set:constant:num:verts} can be reformulated in a numerically helpful way:
+%
+\begin{cor}\label{thm:combinatorical:equivalence:alternative}
+The generic set~$\mathcal W(p)$ defined by~\eqref{eq:definition:PWA:polytopic:set:general} is parametrically convex if and only if, it is combinatorially equivalent for any $p_1,p_2\in\mathbb R^d$ almost everywhere, i.e. $\mathcal W(p_1)\cong\mathcal W(p_2)$.
+\end{cor}
+%
+\begin{proof}
+Two polyhedra are combinatorially equivalent if there exists a bijection between all their faces which preserves the inclusion, see~\cite{Ziegler:1995} for a detailed discussion.
+%
+It is clear that as long as all complexes $\mathcal A_\kappa(p)=\mathcal A_\kappa$ are constant all faces of $\mathcal W(p)$ are defined as intersections of the same set of half spaces.
+%
+Although the shape of~$\mathcal W(p)$ might change its combinatorial structure does not, furthermore the combinatorial structure of $\mathcal W(p)$ is not affected by changes of the right hand side.
+%
+The \emph{Perles' Conjecture}, which was proven e.g. in~\cite{Kalai:1988}, states that the combinatorial structure of a simple polytope is uniquely determined by its graph, that is, as long as the graph of~$\mathcal W(p)$ remains unchanged so does its combinatorial structure.
+%
+The graph of a polytope is given by the vertices and the edges of a polytope, since we have that the number of vertices remains unchanged throughout~$\mathbb R^d$ for $\mathcal W(p)$ the graph $G(\mathcal W(p))$ has to have a constant number of vertices.
+%
+This is only possible if it is constant itself or it abruptly changes multiple edges which is degenerate, however changing multiple edges involves changing multiple active sets which is a degenerate case.
+%
+Notice that this result only applies to sets with positive measure where $\mathcal W(p)$ is non-degenerate.
+%
+It is possible that there exist zero-measure sets (points, lines, $n-1$-hyperplanes) where $\mathcal W$ becomes singular, meaning not simple
+and vertices may merge, however due to the fact that for parameters outside that set the combinatorial structure is fixed we can find a continuation through this set.
+%
+This means in particular that we ignore the fact that locally $v_{\kappa_1}=v_{\kappa_2}$ and use a locally redundant representation $\mathcal W(p) = \conv_\kappa\{v_\kappa(p)\}$.
+\end{proof}
+%
+This allows for efficient numerical treatment, since we know how the vertices are defined~$\mathcal A_\kappa = const.$.
+}
+%
 % \begin{rem}
 % Corollary~\ref{thm:p:convexity:PWA:set:constant:num:verts} is essential for numerical evaluation since it can be reformulated as follows:
 % %
@@ -1016,6 +1047,8 @@ To complete the proof we note that~\eqref{eq:derivative:condition:on:index:sets}
 % %
 % \end{rem}
 %
+
+
 In order to determine MRPI sets we need to be able to calculate the Pontryagin difference between point-to-set maps; hence we introduce the following.
 %
 \begin{defi}[Parametric Pontryagin Difference]\label{def:parametric:pontryagin:difference}
@@ -1196,29 +1229,20 @@ and can therefore be represented as the
 convex hull of its vertices: 
 \begin{equation}\label{eq:definition:PWA:polytopic:set:vertices}
 \mathcal V(x) = \conv\{v_j(x), \, j\in\mathbb{N}_q\} 
-=  \conv\{\todo{Manuel:convHull}{\max_{k}}
-\Theta_{j\todo{Manuel:convHull}{,k}} x + \theta_{j\todo{Manuel:convHull}{,k}},\, j\in\mathbb{N}_q\}.
+=  \conv\{
+\Theta_j(x) x + \theta_j(x),\, j\in\mathbb{N}_q\}.
 \end{equation}
 %
-Here $v_j(x)$ is necessarily piecewise affine in $x$ for all $j\in\mathbb{N}_q$ since ${\mathcal{V}}(x)$ is piecewise affine in $x$.
+where $\Theta_j(x)$ and $\theta_j(x)$ are piecewise constant and defined by the basis of $v_j$, $\mathcal A_j\subset \mathbb N_m$ and the
+current maximiser $A_{\mathcal A_j}v_j(x) = \max_k\{ B_{\mathcal A_j,k} + C_{\mathcal A_j,k}x\} = 
+B_{\mathcal A_j,k^\ast(x)}+C_{\mathcal A_j,k^\ast(x)}x$, i.e. $\Theta_j(x) = A_{\mathcal A_j}^{-1}C_{\mathcal A_j,k^\ast(x)}$ and
+$\theta_j(x)=A_{\mathcal A_j}^{-1}B_{\mathcal A_j,k^\ast(x)}$.
+%
+Therefore $v_j(x)$ is necessarily piecewise affine in $x$ for all $j\in\mathbb{N}_q$ and we will see that it is unnecessary to evaluate $\Theta_j$ and $\theta_j$ explicitly.
 %
 
 \begin{rem}\label{rem:pPdiff:calculation}
 For a convex polyhedron $S=\{x : h_i x \leq 1$ $\forall i \in\mathcal{I} \}$ the parametric Pontryagin difference $S \ominus \mathcal{V}(S)$ is given by
-%
-%The parametric Pontryagin difference $S \ominus \mathcal{V}(S)$, for a convex polyhedral set $S=\{x : h_i x \leq 1\ \forall i \in\mathcal{I} \}$, is given by
-%
-%and a para\-met\-rically convex polytopic set $\mathcal{V}(x)$, we have 
-% \begin{align*}
-% S \ominus \mathcal{V}(S) 
-% &= \{x : h_i x + \max_{v\in \mathcal{V}(x)} h_i v \leq 1 
-% \ \forall i \in\mathcal{I} \}\\
-% &= \{x : h_i x + \max_{j} h_i v_j(x) \leq 1 
-% \ \forall i \in\mathcal{I}\}\\
-% &= \{x : h_i x + \zeta_i(x) \leq 1 
-% \ \forall i \in\mathcal{I}\}, \ 
-% \zeta_i(x) = \max_{j} h_i v_j(x)
-% \end{align*}
 \begin{align*}
 S \ominus \mathcal{V}(S) 
 &= \{x : h_i x + \max_{v\in \mathcal{V}(x)} h_i v \leq 1 
