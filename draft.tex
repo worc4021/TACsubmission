@@ -93,7 +93,7 @@
 
 % *** CITATION PACKAGES ***
 %
-\usepackage{cite}
+\usepackage[noadjust]{cite}
 % cite.sty was written by Donald Arseneau
 % V1.6 and later of IEEEtran pre-defines the format of the cite.sty package
 % \cite{} output to follow that of IEEE. Loading the cite package will
@@ -493,15 +493,16 @@ mark.cannon@eng.ox.ac.uk}% <-this % stops a space
 % As a general rule, do not put math, special symbols or citations
 % in the abstract or keywords.
 \begin{abstract}
-A robust model predictive control problem formulated as a sequence of min-max quadratic programs for a linear discrete time system with polytopic constraints is proposed.
+A robust model predictive control strategy for a linear discrete time system with polytopic constraints is formulated in terms of sequence of min-max quadratic programs.
 %
-The system is considered to be subject to additive disturbances which are realisations of a piecewise affine, state and input dependent disturbance set.
+The system is assumed to be subject to additive disturbances that belong to a piecewise affine, state and input dependent disturbance set.
 %
-The analytic and algorithmic framework to accommodate state and input dependent disturbances in the computation of appropriate state constraint sets is presented and an algorithm that yields the convex maximal robust positive invariant set is proven to terminate in a finite number of iterations.
+The analytic and algorithmic framework to accommodate state and input dependent disturbances in the computation of appropriate state constraint sets is presented. 
+An algorithm that yields the convex maximal robust positive invariant set is proven to terminate in a finite number of iterations.
 %
 The min-max sequence is solved using an active-set based approach where the set of active constraints is updated via a line-search.
 %
-Throughout the paper a levitating ball system is used to illustrate the concepts numerically.
+A levitating ball system is used to illustrate the concepts numerically.
 \end{abstract}
 
 % Note that keywords are not normally used for peerreview papers.
@@ -553,19 +554,18 @@ We discuss the \emph{closed-loop setup} where, at each stage of a prediction hor
 The closed-loop setup includes, as a special case, the \emph{open-loop setup} in which the disturbance is allowed to perturb the 
 entire trajectory before the controller is allowed to react, since this can be understood as a closed loop setup (with a horizon length of one) applied to a lifted system.
 %
+
 This paper considers the use of parametrised sets to bound model uncertainty. By allowing the bounds on model uncertainty to depend explicitly on the model state and control input we obtain a generalised framework for RMPC in which linearisation errors and multiplicative uncertainties can be modelled as additive disturbances.
 %
 General parametrised disturbance bounding sets were used in~\cite{Rakovic03,Rakovic06}; however, here we focus exclusively on problem formulations that lead to convex-concave min-max control problems.
 % 
 The paper's main contributions are to develop
 %extends~\cite{Schaich:CDC:2015} by developing 
-the analytical and computational tools that are needed to characterise and determine convex invariant and controllable sets for systems with parametrised uncertainty sets, and to employ these sets in a closed loop RMPC strategy. To this end, we provide necessary and sufficient conditions for the property, introduced in~\cite{Schaich:CDC:2015}, of \emph{parametric convexity}. We show that this condition is both necessary and sufficient to ensure that the corresponding robustly invariant and controllable sets are convex.
+the analytical and computational tools that are needed to characterise and determine convex invariant and controllable sets for systems with parametrised uncertainty sets, and to employ these sets in a closed loop RMPC strategy. To this end, we make use of necessary and sufficient conditions for the property, introduced in~\cite{Schaich:CDC:2015}, of \emph{parametric convexity}. We show that this condition is both necessary and sufficient to ensure that the corresponding robustly invariant and controllable sets are convex.
 
-A major challenge in RMPC is to guarantee feasibility of the control problem for all possible uncertainties in 
-presence of state constraints.
+A major challenge in RMPC is to guarantee feasibility of the control problem for all possible uncertainties in the presence of state constraints.
 %
-This can be achieved by introducing additional constraints into the problem that force the state at the end of the horizon to lie in a set that is feasible and invariant for all possible realisations of uncertainty under a given feedback law; the largest such set, 
-the so-called \emph{maximal robust positively invariant} (MRPI) set, is often used for this purpose.
+This can be achieved by introducing additional constraints into the problem that force the state at the end of the horizon to lie in a set that is feasible and invariant for all possible realisations of uncertainty under a given feedback law; the largest such set, the so-called \emph{maximal robust positively invariant} (MRPI) set, is often used for this purpose.
 %
 The concept of MRPI sets and their analytical properties were introduced in the literature (e.g.~\cite{Bertsekas:1971,Glover:1971}) shortly after robust model predictive control was originally proposed. However algorithms for numerically 
 computing MRPI sets were not developed until more than two decades later~\cite{Blanchini:1994,DeSantis:1994,Kolmanovsky:1998}.
@@ -577,14 +577,13 @@ This paper builds on the work of~\cite{Kolmanovsky:1998,Rakovic06} by proposing 
 
 The current paper also develops an online implementation of closed loop min-max RMPC that allows the bounds on model uncertainty to depend on the model state and control input.
 %
-Several methods are available to solve RMPC problems with fixed disturbance bounds. For the case of unknown additive disturbances, 
-a scenario-based approach is proposed in~\cite{Scokaert:1998} for the online solution of min-max RMPC problems. However, the computational complexity of this approach grows exponentially with the length of the horizon. 
+Several methods are available to solve RMPC problems with fixed disturbance bounds. For the case of unknown additive disturbances, a scenario-based approach is proposed in~\cite{Scokaert:1998} for the online solution of min-max RMPC problems. However, the number of optimization variables required by this approach grows exponentially with the length of the horizon.
 %
 A parametrisation of predicted feedback laws proposed in~\cite{Rakovic:2012} reduces the RMPC problem to a single linear 
 program to be solved online, but although this is a closed loop strategy, the parametrisation is in general 
 suboptimal. 
 %
-The Explicit RMPC algorithms~\cite{Bemporad:2003,Diehl:2004} optimise the worst case predicted performance for each admissible model state offline and
+The Explicit RMPC algorithms of~\cite{Bemporad:2003,Diehl:2004} optimise the worst case predicted performance for each admissible model state offline and
 use results from multi-parametric programming to parametrise the optimal control law as a piecewise affine function of the
 state.
 %
@@ -595,7 +594,7 @@ In this paper we use an active set approach based on that presented in~\cite{Bue
 In a similar manner to explicit RMPC algorithms, we use multi-parametric programming to obtain solutions efficiently
 for a given active set, however, we avoid an exploration of the entire feasible set of states but rather solve online for the current state only.
 %
-Our approach uses a line search to update the set of active constraints, thus generating
+We use a line search to update the set of active constraints, thus generating
 the solution of the RMPC problem online in an efficient manner.
 
 The paper is structured as follows, in section~\ref{sec:problem:statement} we present the RMPC problem under consideration
@@ -614,24 +613,29 @@ degeneracy that can occur in the optimisation, we consider the case of degenerat
 %
 In section~\ref{sec:solving:min:max:programs} we translate the general formulation of section~\ref{sec:recursive:mpQP:via:line:search}
 to the problem presented in section~\ref{sec:problem:statement}, and section~\ref{sec:complexity}
-deals with the complexity of the proposed algorithm.
+considers the complexity of the proposed algorithm.
 %
 We revisit the example system presented in section~\ref{sec:example:I} to illustrate the proposed RMPC
-algorithm in section~\ref{sec:example:II}.
+algorithm in section~\ref{sec:example:II} and section~\ref{sec:conclusion} provides brief conclusions.
 %
-Section~\ref{sec:conclusion} provides brief conclusions.
+%Section~\ref{sec:conclusion} provides brief conclusions and proofs are given in the Appendix. 
 
-\emph{Notation:} Throughout this paper 
+\emph{Notation:} 
+Throughout this paper we denote sequences of integers $\mathbb N_m = \{1,\ldots,m\}$ for $m\geq 1$, $\mathbb N_{[n,m]} = \{n,\ldots,m\}$ for $n\leq m$, and $\mathbb N = \mathbb N_\infty$.
 %
-we denote sequences of integers $\mathbb N_m = \{1,\ldots,m\}$ for $m\geq 1$ and $\mathbb N_{[n,m]} = \{n,\ldots,m\}$ for $n\leq m$.
+Given a collection of row-vectors $a_i$ and scalars $b_i$ for $i\in\mathbb N_m$, we denote ${\bf{a}}_{\mathcal I}$ and ${\bf{b}}_{\mathcal I}$ as the matrix and vector with rows equal to $a_i$ and $b_i$ for all $i$ in the index set $\mathcal I\subseteq \mathbb N_m$.
 %
-Given a collection of row-vectors $a_i$ and scalars $b_i$ for $i\in\mathbb N_m$, we denote as ${\bf{a}}_{\mathcal I}$ and ${\bf{b}}_{\mathcal I}$ the matrix and vector, respectively, with rows $a_i$ and $b_i$ for all indices $i$ in the index set $\mathcal I\subseteq \mathbb N_m$.
+The Euclidean norm is denoted $\|x\|=\sqrt{x^T x}$ and for a positive definite matrix $P$ (denoted $P\succ 0$) we define the weighted norm $\|x\|_P=\sqrt{x^T P x}$ and the $P$-ball 
+$\mathscr B_P(r) = \{x: \|x\|_P \leq r\}$. 
+%The spectral radius of matrix $A$ is denoted $\rho(A)$.
 %
-For $x\in\mathbb R^n$ the Euclidean norm is denoted $\|x\|=\sqrt{x^T x}$, and we define the weighted norm $\|x\|_P=\sqrt{x^T P x}$ for a positive definite matrix $P\in\mathbb R^{n\times n}$, and for any $\epsilon > 0$ we define the ball $B_\epsilon(x) = \{y\in\mathbb R^n : \|x-y\| \leq \epsilon\}$.
+%For $x\in\mathbb R^n$ the Euclidean norm is denoted $\|x\|=\sqrt{x^T x}$, and we define the weighted norm $\|x\|_P=\sqrt{x^T P x}$ for a positive definite matrix $P\in\mathbb R^{n\times n}$; we also define the ball 
+%$\mathscr B_P(r) = \{x: \|x\|_P \leq r\}$.
+%$\mathscr B_\epsilon(x) = \{y\in\mathbb R^n : \|x-y\| \leq \epsilon\}$.
 %
-We denote the image of a set $\mathcal C\subseteq X$ under the map $f:X\mapsto Y$ as $f\vert_{\mathcal C} = \{y\in Y:\exists x\in\mathcal C,\;y=f(x)\}$, and for $f(x) = Ax$ we write $f\vert_{\mathcal{C}} = A\mathcal{C}$.
+The image of a set $\mathcal C\subseteq X$ under the map $f:X\mapsto Y$ is denoted $f\vert_{\mathcal C} = \{y\in Y:\exists x\in\mathcal C,\;y=f(x)\}$ and the pre-image is $f^{-1}\vert_{\mathcal C} = \{x\in X : f(x)\in \mathcal C\}$; for $f(x) = Ax$ we write $f\vert_{\mathcal{C}} = A\mathcal{C}$ and $f^{-1}\vert_{\mathcal{C}} = A^{-1}\mathcal{C}$.
 %
-The Minkowski sum, $\mathcal{X}\oplus\mathcal{Y}$, of sets $\mathcal{X},\mathcal{Y}\subseteq\mathbb{R}^n$ is the set $\{z: \exists x\in\mathcal{X}, y\in\mathcal{Y} : z = x+y\}$.
+The Minkowski sum, $\mathcal{X}\oplus\mathcal{Y}$, of sets $\mathcal{X},\mathcal{Y}\subseteq\mathbb{R}^n$ is the set $\{ z \in\mathbb{R}^n : z = x+y,  x\in\mathcal{X}, y\in\mathcal{Y} \}$.
 %
 
 %To represent the facets of a polytope defined by intersection of the half spaces $\{x : a_i x \leq b_i\}$ for $i\in\{1,\dots,m\}$, we denote as ${\bf{a}}_{\mathcal I}$ and ${\bf{b}}_{\mathcal I}$ the matrix and vector, respectively, with rows $a_i$ and $b_i$ for all indices in the index set $i\in\mathcal I\subseteq\{1,\dots,m\}$.
@@ -676,13 +680,12 @@ and state constraints
 %
 We assume that $Q$ and $R$ are, respectively, semi-positive definite and positive definite constant matrices, the matrices $A,B,D$ are also assumed to be deterministic and known.
 %
-Since we require guarantees of stability and feasibility in presence of disturbances arbitrary state constraints
-like~\eqref{eq:general:state:constraints} cannot be robustly satisfied~\cite{Bertsekas:1971}, instead specially designed
-ones are used.
+Since we require guarantees of stability and feasibility in the presence of disturbances, arbitrary state constraints
+like~\eqref{eq:general:state:constraints} cannot be robustly satisfied~\cite{Bertsekas:1971}, instead specially designed constraints are used.
 %
 Recursively defined sets are used to guarantee that the terminal state lies in the 
 \emph{maximal robust positively invariant} (MRPI) set~$\mathcal X^\infty\subseteq\mathcal X$ 
-(see e.g.~\cite{blanchini:2007}), i.e. the largest set satisfying
+(see e.g.~\cite{blanchini:2007}), namely the largest set satisfying
 %
 \begin{equation}\label{eq:definition:MRPI:set}
 \mathcal X^\infty = \{x\in\mathcal X: \Psi x + v \in\mathcal X^\infty\;\forall v\in\mathcal V(x)\}.
@@ -691,7 +694,7 @@ Recursively defined sets are used to guarantee that the terminal state lies in t
 The MRPI set~\eqref{eq:definition:MRPI:set} is defined for $\Psi=A+BK$ and $\mathcal V(x) = D\mathcal W(x,Kx)$,
 with a fixed feedback controller $u = Kx$.
 %
-Starting from the MRPI set~$\mathcal X_0=\mathcal X^\infty$ we define, for $i\in\mathbb N_\infty$,
+Starting from the MRPI set~$\mathcal X_0=\mathcal X^\infty$ we define, for $i\in\mathbb N$,
 %$i=1,2,\ldots$,  
 %
 \begin{equation}\label{eq:stage:constraints:in:x:and:u}
@@ -707,7 +710,7 @@ and its projection
 The state constraint~\eqref{eq:general:state:constraints} and input constraint~\eqref{eq:general:input:constraints}
 are then replaced by $(x,u)\in\mathcal Z_m$.
 %
-To initialise the cost-to-go we use $J_0^\ast(x) = \frac{1}{2}x^T P_0x$, which is designed in combination with the feedback 
+To initialise the cost-to-go we use $J_0^\ast(x) = \frac{1}{2}x^T P_0x$, where $P_0$ is designed in combination with the feedback 
 controller~$K$ as the optimal unconstrained solution to~\eqref{seq:general:problem:statement}, i.e.\ they satisfy
 $J_0^\ast(x) - J_0^\ast(x^+)\geq J(x,Kx,w)$ for all $w$; see e.g.~\cite{Boyd:94} for details of how to compute $P_0$ using semidefinite programming.
 %
@@ -720,7 +723,8 @@ For the disturbance set~\eqref{eq:disturbance:constraints} we assume that there 
   \Resize{\mathcal W(x,u) = \bigl\{w:G_i w\leq\max_{k}\{H_{i,k}^x x + H_{i,k}^uu + h_{i,k}\}\; \forall i\in\mathcal{I}_{\mathcal{W}}\bigr\}.}
 \end{equation}
 %
-The properties of such sets will be discussed in section~\ref{sec:p:convex:sets}.
+The properties of such sets are discussed in the next section.
+%section~\ref{sec:p:convex:sets}.
 %
 %
 %
@@ -732,12 +736,13 @@ The properties of such sets will be discussed in section~\ref{sec:p:convex:sets}
 % %
 % In this section we refer to sets $Y\subseteq\mathbb R^d$ and $Z\subseteq\mathbb R^n$, and we denote the power set of $Z$ as $\mathscr P(Z)$.
 %
-In this section we define \emph{parametric convexity} and summarise relevant results together with the central ideas on particular set-valued maps.
+This section defines \emph{parametric convexity} in the context of set-valued maps and summarises relevant results together with the central ideas on particular set-valued maps.
 %
-For a detailed discussion on parametric convexity we refer to~\cite{Schaich:2016comb}.
+For a detailed discussion of parametric convexity 
+we refer the reader to~\cite{Schaich:2016comb}.
 %
 \begin{defi}[Parametric Convexity]\label{def:parametric:convexity}
-Let $\mathcal W:Y\rightarrow \mathscr P(Z)$, where $Y\ni p\mapsto \mathcal W(p) \subset Z$, be a continuous point-to-set map. The map $\mathcal W$ is called \emph{parametrically convex} if it satisfies
+Let $\mathcal W:Y\rightarrow \mathscr P(Z)$, where $Y\ni p\mapsto \mathcal W(p) \subset Z$, be a continuous point-to-set map. The map $\mathcal W$ is \emph{parametrically convex} if it satisfies
 %
   \begin{equation}\label{eq:def:parametrically:convex}
   \mathcal W(\lambda p_1 + (1-\lambda)p_2)\subseteq\lambda \mathcal W(p_1) \oplus (1-\lambda) \mathcal W(p_2)
@@ -749,7 +754,7 @@ Let $\mathcal W:Y\rightarrow \mathscr P(Z)$, where $Y\ni p\mapsto \mathcal W(p) 
 
 \subsection{Properties of Parametrically Convex Maps}\label{ssec:properties:of:p:convex:maps}
 %
-In the following we present an equivalent characterisation of parametric convexity based on the \emph{graph} of the set-valued map.
+In the following we provide a characterisation of parametric convexity based on the \emph{graph} of the set-valued map.
 % We begin by introducing an equivalent characterisation of parametric convexity that provides an insight into the geometrical properties of 
 % point-to-set maps satisfying~(\ref{eq:def:parametrically:convex}).
 %Definition~\ref{def:parametric:convexity}. 
@@ -788,17 +793,16 @@ furthermore for any $(p,z)\in\partial\mathscr G(\mathcal W)$ the \emph{orientati
 %
 \begin{rem}
 %
-Note that the orientation cone is defined in the space of the
-\emph{set variable} $z$ rather than \emph{graph variable} $(p,z)$.
+Note that the orientation cone is defined in the space of the \emph{set variable} $z$ rather than the \emph{graph variable} $(p,z)$.
 %
-Furthermore, the orientation cone contains all directions that 
-point out of the set $\mathcal W(p)$ and hence all linear combinations thereof.
+Furthermore the orientation cone contains all directions that point out of $\mathcal W(p)$ and all linear combinations thereof.
 %
 \end{rem}
 %
-The central idea connecting parametric convexity of a set valued map $\mathcal W$ with properties of its graph $\mathscr G(\mathcal W)$ is stated next.
+The connection between parametric convexity of a set valued map $\mathcal W$ and the properties of its graph $\mathscr G(\mathcal W)$ is stated next
+%; for relevant proofs we refer the reader to~\cite{Schaich:2016comb}.
 %
-\begin{thm}\label{thm:p:convexity:graph}
+\begin{thm}[\cite{Schaich:2016comb}]\label{thm:p:convexity:graph}
 The map $\mathcal W$ is parametrically convex iff for all $(p_1,z_1), (p_2,z_2)\in\partial\mathscr G(\mathcal W)$
 with $p_1\neq p_2$ and $\mathcal N\mathcal W(p_1,z_1)\cap\mathcal N\mathcal W(p_2,z_2)\neq\emptyset$,
 %
@@ -859,15 +863,15 @@ Condition~\eqref{eq:graph:def:p:convexity} requires that the graph $\mathscr G(\
 % Indeed it is shown next that if $\mathscr G(\mathcal W)$ is strictly convex at any $(p,z)\in\partial \mathscr G (\mathcal W)$, then~\eqref{eq:graph:def:p:convexity} is violated and 
 % $\mathcal W$ cannot be parametrically convex.
 %
-The next statement makes~\eqref{eq:graph:def:p:convexity} more precise.
+The next statements make~\eqref{eq:graph:def:p:convexity} more precise.
 
 %
-\begin{cor}
+\begin{cor}%[\cite{Schaich:2016comb}]
 %
 Let $\mathcal W(p):=\{z\in\mathbb R^n: r(p,z)\leq0\}$ define a set-valued map where 
-$r: \mathbb R^d \times\mathbb R^n \rightarrow \mathbb R$, $(p,z)\mapsto r(p,z)$ is a continuous function which is convex in $z \in\mathbb R^n$, 
+$r: \mathbb R^d \times\mathbb R^n \rightarrow \mathbb R$, $(p,z)\mapsto r(p,z)$ is a continuous function which is convex in $z \in\mathbb R^n$ for each fixed $p\in\mathbb R^d$,
 %$r: \mathbb R^d \times\mathbb R^n \ni (p,x) \mapsto r(p,x) \in \mathbb R$ is  a continuous function, 
-then $\mathcal W$ is parametrically convex iff the function $r$ is concave in $p\in\mathbb R^d$.
+then $\mathcal W$ is parametrically convex iff the function $r$ is concave in $p\in\mathbb R^d$ for each fixed $z \in\mathbb R^n$.
 %
 \end{cor}
 %
@@ -907,7 +911,8 @@ then $\mathcal W$ is parametrically convex iff the function $r$ is concave in $p
 % is convex and violates the conditions of Theorem~\ref{thm:p:convexity:graph}.
 % \end{proof}
 %
-\begin{cor}\label{thm:p:convexity:PWA:set:constant:num:verts}
+\begin{cor}%[\cite{Schaich:2016comb}]
+\label{thm:p:convexity:PWA:set:constant:num:verts}
 The generic piecewise affine polytopic parametric point-to-set valued map 
 %
 \begin{equation}\label{eq:definition:PWA:polytopic:set:general}
@@ -1011,14 +1016,15 @@ is parametrically convex iff the number of vertices, $v_\kappa(p)$, and rays, $r
 % \vskip-1.15\baselineskip
 % \end{proof}
 %
-\begin{rem}
+\begin{rem}\label{rem:simple_polytope}
 The condition of being generic in Corollary~\ref{thm:p:convexity:PWA:set:constant:num:verts} implies that for every choice of parameter~$p\in Y$ the polyhedron~$\mathcal W(p)$ is \emph{simple}, i.e. every vertex and ray is the intersection of exactly $n$ and $n-1$ hyperplanes.
 %
-This property fixes the combinatorial structure of $\mathcal W(\tilde p)$ for $\tilde p$ in a neighbourhood around $p$, in fact the combinatorial structure has to be fixed for all admissible parameters~$p\in Y$ as summarised in the next statement.
+This property fixes the combinatorial structure of $\mathcal W(\tilde p)$ for $\tilde p$ in a neighbourhood of $p$. In fact the combinatorial structure of $\mathcal W(p)$ has to be fixed for all admissible parameters~$p\in Y$ as summarised in the next statement.
 \end{rem}
 %
-\begin{cor}\label{thm:combinatorical:equivalence:alternative}
-The generic set~$\mathcal W(p)$ defined by~\eqref{eq:definition:PWA:polytopic:set:general} is parametrically convex if and only if, it is combinatorially equivalent for any $p_1,p_2\in Y$ almost everywhere, i.e. $\mathcal W(p_1)\cong\mathcal W(p_2)$.
+\begin{cor}%[\cite{Schaich:2016comb}]
+\label{thm:combinatorical:equivalence:alternative}
+The generic set~$\mathcal W(p)$ in~\eqref{eq:definition:PWA:polytopic:set:general} is parametrically convex if and only if it is combinatorially equivalent for any $p_1,p_2\in Y$ almost everywhere, i.e. $\mathcal W(p_1)\cong\mathcal W(p_2)$.
 \end{cor}
 % %
 % \begin{proof}
@@ -1044,17 +1050,17 @@ The generic set~$\mathcal W(p)$ defined by~\eqref{eq:definition:PWA:polytopic:se
 %
 Two polyhedra are combinatorially equivalent if there exists a bijection between all their faces which preserves the inclusion.
 %
-This means, similar to simplicity, while the position and orientation of hyperplanes supporting the polyhedron may change, the combination of which hyperplanes support each vertex or ray can not change.
+This means, analogously to the property of simplicity in Remark~\ref{rem:simple_polytope}, while the position and orientation of hyperplanes supporting the polyhedron may change, the combination of which hyperplanes support each vertex or ray cannot change.
 %
-In particular, index set~$\mathcal I_\kappa$ defining the vertex 
+In particular, the index set~$\mathcal A_\kappa$ defining the vertex 
 %
 \begin{equation}\label{eq:def:v:kappa}
-  v_\kappa(p)=\{z\in\mathbb R^n: a_i z = \max_k\{b_{i,k} + c_{i,k}p\}\;i\in\mathcal I_\kappa\}
+  v_\kappa(p)=\{z\in\mathbb R^n: a_i z = \max_k\{b_{i,k} + c_{i,k}p\}\;i\in\mathcal A_\kappa\}
 \end{equation}
 %
 also defines a continuous selection of extremal points of $\mathscr G(\mathcal W)$ in the sense of~\cite{Finzel2000}.
 %
-Knowledge of all index sets~$\mathcal I_\kappa$ therefore allows us to have the equivalent description~$\mathcal W(p)=\conv_\kappa\{v_\kappa(p)\}$, which will allow us to perform numerical calculations.
+Given knowledge of all index sets $\mathcal A_\kappa$, we therefore have the equivalent description~$\mathcal W(p)=\conv_\kappa\{v_\kappa(p)\}$, and this facilitates numerical calculations.
 %
 %
 % \begin{rem}
@@ -1068,8 +1074,7 @@ Knowledge of all index sets~$\mathcal I_\kappa$ therefore allows us to have the 
 % \end{rem}
 %
 
-
-In order to determine MRPI sets we need to be able to calculate the Pontryagin difference between set-valued maps; hence we introduce the following.
+To determine MRPI sets we need to calculate the Pontryagin difference between set-valued maps, this is defined as follows.
 %
 \begin{defi}[Parametric Pontryagin Difference]\label{def:parametric:pontryagin:difference}
   Let $S\subseteq Z$ and let $\mathcal W:Z\to\mathscr P(Z)$ be a continuous point-to-set map such that
@@ -1092,7 +1097,7 @@ In fact the definition~(\ref{eq:definition:parametric:pontryagin:difference}) in
 For the parametric Pontryagin difference of a convex set and a parametrically convex map we 
 have the following result.
 %
-\begin{thm}\label{thm:convexity:of:pontryagin:difference}
+\begin{thm}[\cite{Schaich:2016comb}]\label{thm:convexity:of:pontryagin:difference}
 Let $\mathcal W: Z\rightarrow\mathscr P(Z)$ be a given point-to-set map, then the parametric Pontryagin difference $S \ominus \mathcal W(S)$ is convex for every convex $S\subseteq Z$ if and only if $\mathcal W$ is parametrically convex.
 \end{thm}
 % \begin{thm}\label{thm:convexity:of:pontryagin:difference}
@@ -1140,7 +1145,7 @@ Let $\mathcal W: Z\rightarrow\mathscr P(Z)$ be a given point-to-set map, then th
 %
 Theorem~\ref{thm:convexity:of:pontryagin:difference} provides necessary and sufficient conditions for convexity of the parametric Pontryagin difference. 
 %
-In the next section we will show that the parametric Pontryagin difference between a polyhedral set and a piecewise affine polytopic parametric set is itself polyhedral.
+In the next section we show that the parametric Pontryagin difference between a polyhedral set and a piecewise affine polytopic parametric set is itself polyhedral.
 %
 %
 %
@@ -1153,7 +1158,7 @@ This section describes an iterative algorithm to compute the MRPI set for a line
 \[
 x^+=\Psi x + v, \quad v\in\mathcal V(x),
 \]
-where $\mathcal V(x)$ is a continuous point-to-set map and the state $x$ is subject to the constraint $x\in\mathcal{X}$. 
+where $\mathcal V(x)$ is a continuous point-to-set map. The state $x$ is subject to the constraint $x\in\mathcal{X}$ and $x^+ = \Psi x$ is assumed to be an asymptotically stable system. 
 %
 To compute the MRPI set $\mathcal X^\infty$ we start from the constraint set $\mathcal X$ and  iteratively remove points that do not satisfy the definition~\eqref{eq:definition:MRPI:set}
 by introducing constraints that exclude states for which a successor state can lie outside 
@@ -1161,35 +1166,28 @@ $\mathcal X$.
 %
 Specifically, at each iteration $k=0,1,\ldots$, we define $\mathcal{X}_k$ as the set of initial states of the system $x^+=\Psi x + v$ such that the $i$ steps ahead state lies in $\mathcal{X}$ for all $i\in\mathbb{N}_{[0,k]}$, for all admissible disturbances. 
 %
-The MRPI set is then obtained as the limit of the sequence $\mathcal{X}_0,\mathcal{X}_1,\ldots$ (see e.g.~\cite{blanchini:2007}).
+The MRPI set is defined as the limit of the sequence $\mathcal{X}_0,\mathcal{X}_1,\ldots$ (see e.g.~\cite{blanchini:2007}).
 
-% \textcolor{red}{%
-Let $\mathcal{X}_0=\mathcal{X}$ and for $k=1,2,\ldots$ define $\mathcal{X}_k$ as the set
+Let $\mathcal{X}_0=\mathcal{X}$ and for each $k\in\mathbb N$ define $\mathcal{X}_k$ as the set
 \begin{equation}\label{eq:Xk:iteration}
 \mathcal{X}_k = \mathcal{X}_{k-1}\cap \mathcal{D}_k 
 \end{equation} 
 where $\mathcal{D}_k$ is the set of initial states for which the $k$ steps ahead state lies in $\mathcal{X}$ for all admissible disturbances.
 %
-To explain how $\mathcal{X}_k$ is computed and to simplify the analysis of $\mathcal{X}^\infty$, we define $\mathcal{R}_0,\mathcal{R}_1,\ldots$ as the sequence with $\mathcal{R}_0 = \mathcal{X}$ and
+To explain how $\mathcal{X}_k$ is computed and to simplify the analysis of $\mathcal{X}^\infty$, we define $\mathcal{R}_0,\mathcal{R}_1,\ldots$ as the sequence with $\mathcal{R}_0 = \mathcal{X}$ and, for $i\in\mathbb N$,
 \begin{equation}\label{eq:Rk:iteration}
-\mathcal{R}_k = \mathcal{R}_{k-1}\ominus \Psi^{k-1} \mathcal{V}_k(\mathcal{R}_{k-1}) \ \forall k=1,2\ldots,
+\mathcal{R}_k = \mathcal{R}_{k-1}\ominus \Psi^{k-1} \mathcal{V}_k(\mathcal{R}_{k-1}) ,
 \end{equation} 
 with $\mathcal{V}_k$ defined as the point-to-set map $\mathcal{V}_k(x) = \mathcal{V}(\Psi^{-k} x)$.%
-% }
-
-% \textcolor{red}{%
+%
 \begin{prop}\label{prop:Dk:iteration}
 $\mathcal{D}_k = \Psi^{-k}\mathcal{R}_k$ for all $k\geq 0$.
-\end{prop}%
-% }
-
-% \textcolor{red}{%
+\end{prop}
+%
 \begin{proof}
-Since $\mathcal{D}_k$ is the set of initial states for which the state $k$ steps ahead lies in $\mathcal{X}$, we have $\mathcal{D}_0 = \mathcal{X}$ and
-%, for $k\geq 1$,
+Since $\mathcal{D}_k$ is the set of initial states for which the $k$ steps ahead state lies in $\mathcal{X}$, we have $\mathcal{D}_0 = \mathcal{X}$ and, for $k \in\mathbb N$,
 \[
-\mathcal{D}_k = \bigl\{ x : \{\Psi x\} \oplus \mathcal{V}(x) \subseteq \mathcal{D}_{k-1}\bigr\}  
-\ \forall k = 1,2\ldots 
+\mathcal{D}_k = \bigl\{ x : \{\Psi x\} \oplus \mathcal{V}(x) \subseteq \mathcal{D}_{k-1}\bigr\}  .
 \]
 Hence for $k\geq 1$, $\Psi^k \mathcal{D}_k$ is given by
 \begin{align*}
@@ -1197,11 +1195,11 @@ Hence for $k\geq 1$, $\Psi^k \mathcal{D}_k$ is given by
 & = \bigl\{ y : \{\Psi^{-k+1} y\} \oplus \mathcal{V}_k(y) \subseteq \mathcal{D}_{k-1}\bigr\} \\
 & = \bigl\{ y : \{ y\} \oplus \Psi^{k-1}\mathcal{V}_k(y) \subseteq \Psi^{k-1}\mathcal{D}_{k-1}\bigr\} .
 \end{align*}
-Using the definition of the parametric Pontryagin difference, this implies
+Using the definition of the parametric Pontryagin difference this implies, for all $k\in\mathbb N$,
 \[
-\Psi^{k}\mathcal{D}_k = (\Psi^{k-1}\mathcal{D}_{k-1}) \ominus \Psi^{k-1}\mathcal{V}_k(\Psi^{k-1}\mathcal{D}_{k-1}) \ \forall k=1,2\ldots 
+\Psi^{k}\mathcal{D}_k = (\Psi^{k-1}\mathcal{D}_{k-1}) \ominus \Psi^{k-1}\mathcal{V}_k(\Psi^{k-1}\mathcal{D}_{k-1}) %\forall k=1,2\ldots 
 \]
-and the result therefore follows from  $\mathcal{R}_0=\mathcal{D}_0$ and (\ref{eq:Rk:iteration}).
+and the result therefore follows from  $\mathcal{R}_0=\mathcal{D}_0$ and (\ref{eq:Rk:iteration}).%
 %
 % so if $\Psi^{k}\mathcal{D}_k = \mathcal{R}_k$ and $\Psi^{k-1}\mathcal{D}_{k-1} = \mathcal{R}_{k-1}$, then by the definition of the parametric Pontryagin difference we have
 % \[
@@ -1209,10 +1207,8 @@ and the result therefore follows from  $\mathcal{R}_0=\mathcal{D}_0$ and (\ref{e
 % \]
 % and the result follows from
 % (\ref{eq:Rk:iteration}) and $\mathcal{R}_0=\mathcal{D}_0 = \mathcal{X}$.
-\end{proof}%
-% }
-
-% \textcolor{red}{%
+\end{proof}
+%
 \begin{rem}
 It can be shown by induction using (\ref{eq:Rk:iteration}) and Theorem~\ref{thm:convexity:of:pontryagin:difference} that if $\mathcal{X}$ is convex and $\mathcal{V}(x)$ is parametrically convex, then $\mathcal{R}_k$, $\mathcal{D}_k$ and $\mathcal{X}_k$ are convex for all $k$, and hence $\mathcal{X}^\infty$ is also convex.
 \end{rem}%
@@ -1244,7 +1240,7 @@ and that $\mathcal{X}$ is convex and polyhedral:
 \begin{equation}\label{eq:definition:polytopic:X}
 \mathcal{X}=\{x : \xi_i x \leq 1\ \forall i \in\mathcal{I}_{\mathcal{X}} \} 
 \end{equation}
-where $\boldsymbol{\xi}_{\mathcal{I}_{\mathcal{X}}}=\Xi$.
+with $\boldsymbol{\xi}_{\mathcal{I}_{\mathcal{X}}}=\Xi$.
 %
 We further assume 
 % \todo{Manuel:wlog}{(without loss of generality)} 
@@ -1252,7 +1248,7 @@ that $\mathcal V(x)$ is compact for all finite $x\in\mathcal X$,
 and can therefore be represented as the 
 convex hull of its vertices: 
 \begin{equation}\label{eq:definition:PWA:polytopic:set:vertices}
-\mathcal V(x) = \conv_{j\in\mathbb{N}_q}\{v_j(x)\} 
+\mathcal V(x) = \conv_{j\in\mathbb{N}_q}\{v_j(x)\} .
 % =  \conv\{
 % \Theta_j(x) x + \theta_j(x),\, j\in\mathbb{N}_q\}.
 \end{equation}
@@ -1262,14 +1258,15 @@ convex hull of its vertices:
 % B_{\mathcal A_j,k^\ast(x)}+C_{\mathcal A_j,k^\ast(x)}x$, i.e. $\Theta_j(x) = A_{\mathcal A_j}^{-1}C_{\mathcal A_j,k^\ast(x)}$ and
 % $\theta_j(x)=A_{\mathcal A_j}^{-1}B_{\mathcal A_j,k^\ast(x)}$.
 %
-where $v_j(x)$ is defined by the $j$-th active index set~$\mathcal A_j$ as in~\eqref{eq:def:v:kappa}.
+Here $v_j(x)$ is defined by the $j$th active index set~$\mathcal A_j$ as in~\eqref{eq:def:v:kappa},
 %
-Therefore $v_j(x)$ is necessarily piecewise affine in $x$ for all $j\in\mathbb{N}_q$ and we will see that it is unnecessary to % evaluate $\Theta_j$ and $\theta_j$ explicitly.
-have its explicit representation.
+and $v_j(x)$ is therefore piecewise affine in $x$. Note, however, that it is not necessary to determine $v_j(x)$ explicitly as a function of $x$ provided $\mathcal A_j$ is known for each $j\in\mathbb N_q$.
+% evaluate $\Theta_j$ and $\theta_j$ explicitly.
+%unnecessary to have its explicit representation.
 %
 
 \begin{rem}\label{rem:pPdiff:calculation}
-For a convex polyhedron $S=\{x : h_i x \leq 1$ $\forall i \in\mathcal{I} \}$ the parametric Pontryagin difference $S \ominus \mathcal{V}(S)$ is given by
+For a convex polyhedron $S=\{x : h_i x \leq 1 \, \forall i \in\mathcal{I} \}$ the parametric Pontryagin difference $S \ominus \mathcal{V}(S)$ is given by
 \begin{align*}
 S \ominus \mathcal{V}(S) 
 &= \{x : h_i x + \max_{v\in \mathcal{V}(x)} h_i v \leq 1 
@@ -1279,20 +1276,19 @@ S \ominus \mathcal{V}(S)
 \end{align*}
 Here $\zeta_i(x)$ is the solution of a mpLP and hence is a continuous and concave piecewise affine function of $x$~\cite{Gal:1995}. It follows that $S\ominus\mathcal{V}(S)$ is a convex polyhedral set.
 %
-To compute $\zeta_i(x)$ for all $x\in\mathcal X$ is in general a challenging problem, and a simpler method of determining the supporting hyperplanes of $S\ominus\mathcal{V}(S)$ is to include all possible affine inequalities in the set description:
+To compute $\zeta_i(x)$ for all $x\in\mathcal X$ is, in general, a challenging problem, and a simpler method of determining the supporting hyperplanes of $S\ominus\mathcal{V}(S)$ is to include all possible affine inequalities in the set description:
 \[
 S\ominus\mathcal{V}(S) = \{ x : h_ix + h_i v_j(x) \leq 1, \ \forall j\in\mathbb{N}_q\ \forall i\in \mathcal I\}
 \] 
 and to subsequently remove redundant inequalities by applying an inequality reduction algorithm. 
 %
-If this is not possible a projection can be used to perform the parametric Pontryagin difference, see~\cite{Schaich:2016comb}.
+Alternatively, a projection can be used to perform the parametric Pontryagin difference (see~\cite{Schaich:2016comb}).
 % \textcolor{red}{%
-Either way, the resulting set can be expressed $S\ominus \mathcal{V}(S) = \{ x : h_i^\prime x \leq 1 \ \forall i \in \mathcal{I}^\prime \}$.%
+In either case the resulting set can be expressed $S\ominus \mathcal{V}(S) = \{ x : h_i^\prime x \leq 1 \ \forall i \in \mathcal{I}^\prime \}$.%
 % }%
 \end{rem}
 %
 
-% \textcolor{red}{
 Given $\mathcal{R}_{k-1} = \{ x : \xi_{i,k-1} x \leq 1 \ \forall i \in \mathcal{I}_{k-1}\}$, we can compute $\mathcal{R}_k$ using (\ref{eq:Rk:iteration}) and (\ref{eq:definition:PWA:polytopic:set:vertices}) as
 \begin{subequations}\label{eq:Rk:explicit}
 \begin{gather}
@@ -1300,8 +1296,7 @@ Given $\mathcal{R}_{k-1} = \{ x : \xi_{i,k-1} x \leq 1 \ \forall i \in \mathcal{
 \zeta_{i,k-1}(x) = \max_{j} \xi_{i,k-1} \Psi^{k-1} v_j(\Psi^{-k}x) ,
 \end{gather}
 \end{subequations}
-and the approach outlined in Remark~\ref{rem:pPdiff:calculation} can be used to compute $\mathcal{R}_k = \{x: \xi_{i,k} x \leq 1\, \forall i \in \mathcal{I}_k\}$ without explicitly determining $\zeta_{i,k-1}(x)$ for all $x\in\mathcal{R}_{k-1}$. This gives $\mathcal{X}_k = \mathcal{X}_{k-1}\cap \{x: \xi_{i,k}\Psi^k x \leq 1\, \forall i \in \mathcal{I}_k\}$,%
-% }
+and the approach outlined in Remark~\ref{rem:pPdiff:calculation} can be used to compute $\mathcal{R}_k = \{x: \xi_{i,k} x \leq 1\, \forall i \in \mathcal{I}_k\}$ without explicitly determining $\zeta_{i,k-1}(x)$ for all $x\in\mathcal{R}_{k-1}$. This gives $\mathcal{X}_k = \mathcal{X}_{k-1}\cap \{x: \xi_{i,k}\Psi^k x \leq 1\, \forall i \in \mathcal{I}_k\}$,
 %
 % Using (\ref{eq:Rk:iteration})-(\ref{eq:definition:PWA:polytopic:set:vertices}), the set $\mathcal{D}_k$ can be expressed 
 % \begin{subequations}\label{eq:explicit:Dk}
@@ -1316,14 +1311,19 @@ and the approach outlined in Remark~\ref{rem:pPdiff:calculation} can be used to 
 and the implied iteration is summarized as follows.
 %
 \begin{alg}(Computation of MRPI set $\mathcal{X}^\infty$)\label{alg:MRPI:set}\\
-\textsc{Data}: 
-\begin{tabular}[t]{@{}l@{}}
+\textsc{Data}:
+%
 $\Psi$, 
 $\mathcal X= \{x: \xi_i x \leq 1 \, \forall i\in\mathcal{I}_{\mathcal{X}}\}$, 
-and\\
-$\mathcal{V}(x) = \conv_{j\in\mathbb{N}_q}\{v_j(x)\}$\\
-equivalently determine all $q$ $\mathcal A_j$.
-\end{tabular}
+and $\mathcal A_j$ for all $j\in\mathbb N_q$.
+%
+% \begin{tabular}[t]{@{}l@{}}
+% $\Psi$, 
+% $\mathcal X= \{x: \xi_i x \leq 1 \, \forall i\in\mathcal{I}_{\mathcal{X}}\}$, 
+% and\\
+% $\mathcal{V}(x) = \conv_{j\in\mathbb{N}_q}\{v_j(x)\}$\\
+% equivalently determine $\mathcal A_j$ for all $j\in\mathbb N_q$.
+% \end{tabular}
 \\
 \textsc{Initialization}:
 $\mathcal{X}_0 \gets \mathcal{X}$, 
@@ -1371,64 +1371,67 @@ else\\
 %We next provide conditions under which Algorithm~\ref{alg:MRPI:set} is guaranteed to terminate after a finite number of iterations.
 % whenever the MRPI set $\mathcal X^\infty$ is non-empty. 
 %
-To show that algorithm~\ref{alg:MRPI:set} terminates in a finite number of iterations we will use norm balls that contain and are contained in the sets used in the algorithm.
+%To show that algorithm~\ref{alg:MRPI:set} terminates in a finite number of iterations we introduce balls that contain and are contained within the sets used in the algorithm.
 %
-For this let $\norm{\cdot}$ denote any norm in $\mathbb R^n$ and let $\mathscr B(r)$ be the norm ball of radius $r$, i.e.~$\mathscr B(r)=\{x\in\mathbb R^n:\norm{x}\leq r\}$.
 %
-\begin{thm}\label{thm:norm:balls:set:operations}
-The two following inclusions hold:
-\begin{subequations}
-\begin{equation}
-  \mathscr B(r_1+r_2)\subseteq\mathscr B(r_1)\oplus\mathscr B(r_2)
-\end{equation}
-\begin{equation}
-  \mathscr B(r_1-r_2)\subseteq\mathscr B(r_1)\ominus\mathscr B(r_2)
-\end{equation}
-\end{subequations}
-\end{thm}
-%
-\begin{proof}
-Both statements follow from the triangle inequality.
-%
-For the first statement observe that $\norm{x+y}\leq r_1+r_2$ implies that $\norm{x}+\norm{y}\leq r_1+r_2$ which is equivalent to $\norm{x}\leq r_1\wedge\norm{y}\leq r_2$ which is the definition of $\mathscr B(r_1)\oplus\mathscr B(r_2)$.
-%
-The second statement follows since the Pontryagin difference is defined using the Minkowski sum:
-%
-If $\norm{z}\leq r_1 -r_2$ then $\norm{z+y}\leq\norm{z}+\norm{y}\leq r_1-r_2+r_2$.
-\end{proof}
-%
-Since we assume the system~$x^+=\Psi x$ to be asymptotically stable, in particular its spectral radius to be strictly less than one $\rho(\Psi)<1$, the converse Lyapunov theorem states that there exists one positive definite $P>0$ such that the Lyapunov equation $\Psi^TP\Psi-P+Q=0$ holds for any positive definite $Q>0$, this matrix is given by $P=\sum_{k\geq0}(\Psi^k)^TQ\Psi^k$.
-%
-Since $Q>0$ and $P$ is defined as a series of congruent transformations of $Q$ we have~$Q\leq P$.
-%
-Maximising over $\delta$ such that $\delta P\leq Q$ holds, we obtain a measure of the contraction of $\Psi$:
-%
-\begin{equation}
-  0 = x^T\Psi^TP\Psi x-x^TPx+x^TQx\geq x^T(\Psi^TP\Psi-P+\delta P)x.
-\end{equation}
-%
-Since $P>0$ the quadratic form $x^TPx=\norm{x}_P^2$ defines a norm and we get $0\leq\norm{\Psi x}_P^2\leq(1-\delta)\norm{x}_P^2$.
-%
-It immediately follows that the inverse $\Psi^{-1}$ satisfies $(1-\delta)^{-1}\norm{x}_P^2\leq\norm{\Psi^{-1}x}_P^2$ with the same $\delta$.
-%
-In general $\delta$ depends on the choice of $Q$ but is positive and strictly less than one, since $\Psi$ is asymptotically stable.
-%
-For the purpose of tight convergence rates we would like to find the smallest possible $1-\delta$:
-%
-\begin{thm}\label{thm:spectral:radius:stability:degree}
-Let $\Psi$ be asymptotically stable and let $\rho(\Psi)$ denote the spectral radius of $\Psi$, i.e. there exists at least one eigenvalue $\gamma$ and an eigenvector $v$ such that $\Psi v = \gamma v$ with $\abs{\gamma}=\rho(\Psi)$, then the bound $\rho^2\leq1-\delta$ is tight and is attained for $P=\Psi^T\Psi$.
-\end{thm}
-%
-\begin{proof}
-Using the test vector $\tilde\xi=\frac{v}{\norm{v}_P}$ we obtain $\gamma^\ast\tilde\xi^H P\tilde \xi\gamma\leq(1-\rho)\tilde\xi^H P\tilde\xi$ but $\gamma^\ast\gamma = \abs{\gamma}^2 = \rho(\Psi)^2$.
-%
-The symmetric matrix $P = \Psi^T\Psi$ is positive definite for any invertible $\Psi$ and hence $\xi^T P\xi$ defines the square of a norm and using the same test vector we obtain $1-\delta=\rho(\Psi)^2$.
-%
-\end{proof}
-%
-The value of $1-\delta$ i.e. $\rho(\Psi)^2$ is also referred to as \emph{stability degree}, see~\cite{Boyd:94}.
+% \begin{prop}\label{prop:norm:balls:set:operations}
+% Let $\norm{\cdot}$ denote any norm in $\mathbb R^n$ and let $\mathscr B(r)$ be the ball of radius $r$, i.e.~$\mathscr B(r)=\{x\in\mathbb R^n:\norm{x}\leq r\}$.
+% %
+%  The two following inclusions hold:
+% \begin{subequations}
+% \begin{equation}
+%   \mathscr B(r_1+r_2)\subseteq\mathscr B(r_1)\oplus\mathscr B(r_2)
+% \end{equation}
+% \begin{equation}
+%   \mathscr B(r_1-r_2)\subseteq\mathscr B(r_1)\ominus\mathscr B(r_2)
+% \end{equation}
+% \end{subequations}
+% \end{prop}
+% %
+% \begin{proof}
+% Both statements follow from the triangle inequality.
+% %
+% For the first statement observe that $\norm{x+y}\leq r_1+r_2$ implies that $\norm{x}+\norm{y}\leq r_1+r_2$ which is equivalent to $\norm{x}\leq r_1\wedge\norm{y}\leq r_2$ which is the definition of $\mathscr B(r_1)\oplus\mathscr B(r_2)$.
+% %
+% The second statement follows since the Pontryagin difference is defined using the Minkowski sum:
+% %
+% If $\norm{z}\leq r_1 -r_2$ then $\norm{z+y}\leq\norm{z}+\norm{y}\leq r_1-r_2+r_2$.
+% \end{proof}
+% %
 
-We will now show that Algorithm~\ref{alg:MRPI:set} is guaranteed to terminate after a finite number of iterations if:
+% We next use Proposition~\ref{prop:Dk:iteration} to show that Algorithm~\ref{alg:MRPI:set} terminates in a finite number of iterations. 
+% Since $x^+=\Psi x$ is assumed to be asymptotically stable, so that $\rho(\Psi)<1$, the Lyapunov equation $P = \Psi^TP\Psi+Q$ necessarily has a solution $P\succ 0$ for any given $Q\succ 0$.  $P=\sum_{k\geq0}(\Psi^k)^TQ\Psi^k$.
+% %
+% Since $Q \succ 0$ and $P$ is defined as a series of congruent transformations of $Q$ we have~$Q\leq P$.
+% %
+% Maximising over $\delta$ such that $\delta P\leq Q$ holds, we obtain a measure of the contraction of $\Psi$:
+% %
+% \begin{equation}
+%   0 = x^T\Psi^TP\Psi x-x^TPx+x^TQx\geq x^T(\Psi^TP\Psi-P+\delta P)x.
+% \end{equation}
+% %
+% Since $P>0$ the quadratic form $x^TPx=\norm{x}_P^2$ defines a norm and we get $0\leq\norm{\Psi x}_P^2\leq(1-\delta)\norm{x}_P^2$.
+% %
+% It immediately follows that the inverse $\Psi^{-1}$ satisfies $(1-\delta)^{-1}\norm{x}_P^2\leq\norm{\Psi^{-1}x}_P^2$ with the same $\delta$.
+% %
+% In general $\delta$ depends on the choice of $Q$ but is positive and strictly less than one, since $\Psi$ is asymptotically stable.
+% %
+% For the purpose of tight convergence rates we would like to find the smallest possible $1-\delta$:
+% %
+% \begin{thm}\label{thm:spectral:radius:stability:degree}
+% Let $\Psi$ be asymptotically stable and let $\rho(\Psi)$ denote the spectral radius of $\Psi$, i.e. there exists at least one eigenvalue $\gamma$ and an eigenvector $v$ such that $\Psi v = \gamma v$ with $\abs{\gamma}=\rho(\Psi)$, then the bound $\rho^2\leq1-\delta$ is tight and is attained for $P=\Psi^T\Psi$.
+% \end{thm}
+% %
+% \begin{proof}
+% Using the test vector $\tilde\xi=\frac{v}{\norm{v}_P}$ we obtain $\gamma^\ast\tilde\xi^H P\tilde \xi\gamma\leq(1-\rho)\tilde\xi^H P\tilde\xi$ but $\gamma^\ast\gamma = \abs{\gamma}^2 = \rho(\Psi)^2$.
+% %
+% The symmetric matrix $P = \Psi^T\Psi$ is positive definite for any invertible $\Psi$ and hence $\xi^T P\xi$ defines the square of a norm and using the same test vector we obtain $1-\delta=\rho(\Psi)^2$.
+% %
+% \end{proof}
+% %
+% The value of $1-\delta$ i.e. $\rho(\Psi)^2$ is also referred to as \emph{stability degree}, see~\cite{Boyd:94}.
+
+We next show that Algorithm~\ref{alg:MRPI:set} is guaranteed to terminate after a finite number of iterations if:
 %
 (i) $\Psi$ is asymptotically stable, and 
 %
@@ -1438,59 +1441,86 @@ We will now show that Algorithm~\ref{alg:MRPI:set} is guaranteed to terminate af
 %
 %, so that the spectral radius, $\rho$, of $\Psi$ satisfies $\rho < 1$. We denote the pre-image of a set $S$ under the linear map $\Psi$ as $\Psi^{-1}S$; 
 %
-The finite determinability of the MRPI set $\mathcal X^\infty$ implies that there exists a finite number, $M$, such that $\mathcal X^\infty = \mathcal X_M$, and hence  $\mathcal{X}^\infty$ is defined by a finite set of linear inequalities whenever $\mathcal X^\infty\neq \emptyset$.
+The finite determinability of the MRPI set $\mathcal X^\infty$ implies that there exists a finite integer $M$ such that $\mathcal X^\infty = \mathcal X_M$, and hence  $\mathcal{X}^\infty$ is defined by a finite set of linear inequalities whenever $\mathcal X^\infty\neq \emptyset$.
 %
 %that $x\in\mathcal X_M$ implies $\Psi x + v \in\mathcal X_M$ for all $v\in\mathcal V(x)$, and hence $\mathcal X^\infty = \mathcal X_M$.
 %
+The analysis uses $P$-balls $\mathscr B_P(r)$ 
+%that contain $\mathcal X_k$ and are contained within $\mathcal R_k$. We define 
+where $P$ is a positive definite matrix satisfying 
+\begin{equation}\label{eq:Pcondition}
+\varrho^2 P \succ \Psi^T P \Psi
+\end{equation} 
+for some scalar $\varrho\in (0,1)$, so that $\Psi\mathscr B_P(r) \subseteq \varrho\mathscr B_P(r)$ and $\Psi^{-1}\mathscr B_P(r) \supseteq \varrho^{-1}\mathscr B_P(r)$ for all $r>0$. 
+Note that $P\succ 0$ and $\varrho$ exist satisfying (\ref{eq:Pcondition}) whenever
+%$\Psi$ is assumed to be an asymptotically stable matrix.
+$\varrho \leq \rho(\Psi) < 1$
+where $\rho(\Psi)$ is the spectral radius of $\Psi$ (see e.g.~\cite{Boyd:94}). 
+
 \begin{thm}\label{thm:finite:MRPI:set:state:dependable}
-Let $\rho < 1$, where $\rho$ is the spectral radius of $\Psi$, and let $\mathcal{X}\subseteq\mathcal{P}$, $\mathcal{P}=\{x:\Gamma x\leq{\bf{1}}\wedge -\Gamma x\leq{\bf{1}}\}$, where $(\Psi,\Gamma)$ is an observable pair.
+Let $\rho(\Psi) < 1$ and let $\mathcal{X}\subseteq\mathcal{P}$, $\mathcal{P}=\{x:\Gamma x\leq{\bf{1}}, {-\Gamma} x\leq{\bf{1}}\}$, where $(\Psi,\Gamma)$ is an observable pair.
 %
 Then the MRPI set $\mathcal X^\infty$ for the system $x^+ = \Psi x + v$ subject to disturbances $v\in\mathcal{V}(x)$, where $\mathcal V(x)$ is a continuous and piece-wise affine set-valued map as defined in~\eqref{eq:definition:PWA:polytopic:set:cl}, and constraints $x\in\mathcal{X}$, is either empty or else is a bounded polytopic set satisfying $\mathcal X^\infty =\mathcal X_M$ for finite $M$.
 \end{thm}
 %
 %
 \begin{proof}
-From~\eqref{eq:Xk:iteration} and Proposition~\ref{prop:Dk:iteration} it is clear that $\mathcal X^\infty$ is empty if $\mathcal{R}_k =\emptyset$ for some $k\geq 0$.
+From~\eqref{eq:Xk:iteration} and Proposition~\ref{prop:Dk:iteration} it is clear that $\mathcal X^\infty$ is empty if $\mathcal{R}_k =\emptyset$ for some $k$.
 %
-For the remainder of the proof we assume that $\mathcal{R}^\infty \neq \emptyset$ exists such that $\mathcal{R}_k \supseteq \mathcal{R}^\infty$ for all $k$.
+For the remainder of the proof we assume that $\mathcal{R}^\infty \neq \emptyset$ exists such that $\mathcal{R}_k \supseteq \mathcal{R}^\infty$ for all $k\in\mathbb N$.
 %
 The proof has two main steps: 
 %
 (i) we prove boundedness of $\mathcal X_k$ for all $k\geq n$, where $n$ is the state dimension;
 %
-(ii) we show that $\mathcal D_k$ grows exponentially with $k$, so that, for any bounded set $\mathcal C$, finite $M$ exists such that $\mathcal D_{M+1}\supseteq \mathcal{C}$. The proof is concluded by setting 
-$\mathcal C = \mathcal X_{M}$ and deducing that $\mathcal X^\infty = \mathcal X_M$. 
+(ii) we show that $\mathcal D_k$ grows exponentially with $k$, so that, for any bounded set $\mathcal C$, finite $M$ exists such that $\mathcal D_{M+1}\supseteq \mathcal{C}$. 
+%Setting $\mathcal C = \mathcal X_{M}$ in (\ref{eq:Xk:iteration}) then gives $\mathcal X^\infty = \mathcal X_M$. 
+The proof is concluded by setting $\mathcal C = \mathcal X_{M}$ and deducing that $\mathcal X^\infty = \mathcal X_M$. 
 %
 
-For the first step, notice that $(\Psi,\Gamma)$ is observable if and only if $\mathrm{rank}(\mathcal{O}) = n$ where $\mathcal{O}^T=\begin{bmatrix} \Gamma^T \ \cdots \ 
-(\Gamma\Psi^{n-1})^T\end{bmatrix}$, and this implies that the set 
+First note that $(\Psi,\Gamma)$ is observable if and only if $\mathrm{rank}(\mathcal{O}) = n$, where $\mathcal{O}^T=\begin{bmatrix} \Gamma^T \ \cdots \ 
+(\Gamma\Psi^{n-1})^T\end{bmatrix}$, in which case the set 
 %
 \begin{equation}\label{eq:def:Pn}
 \mathcal{P}_{n} = \{x: 
-\mathcal O x\leq{\bf{1}}\wedge-\mathcal O x\leq{\bf{1}}\} = \bigcap_{k\in \mathbb N_{[0,n-1]}} \Psi^{-k} \mathcal{P}
+\mathcal O x\leq{\bf{1}}, {-\mathcal O} x\leq{\bf{1}}\} = \bigcap_{k\in \mathbb N_{[0,n-1]}} \Psi^{-k} \mathcal{P}
 \end{equation}
 %
 is bounded. 
 %
-(Here $\Psi^{-1}\mathcal{P}$ denotes the pre-image of $\mathcal{P}$ under the linear map $\Psi$\todo{Manuel:invertability:assumption}{, and $\Psi$ is not assumed to be an invertible matrix}.)
+%(Here $\Psi^{-1}\mathcal{P}$ denotes the pre-image of $\mathcal{P}$ under the linear map $\Psi$.)
+%\todo{Manuel:invertability:assumption}{, and $\Psi$ is not assumed to be an invertible matrix}.)
 %
-But from (\ref{eq:Xk:iteration})-(\ref{eq:Rk:iteration}) and Proposition~\ref{prop:Dk:iteration} we have $\mathcal{D}_k\subseteq \Psi^{-k}\mathcal{X} \subseteq \Psi^{-k}\mathcal{P}$ and hence $\mathcal X_k\subseteq \mathcal P_k$ for all $k$. Therefore $\mathcal X_{n}$ is bounded and $\mathcal{X}^\infty$ is also bounded since $\mathcal{X}_k\supseteq\mathcal{X}_{k+1}\supseteq\mathcal{X}^\infty$ for all $k$.
+But (\ref{eq:Rk:iteration}) implies $\mathcal R_k \subseteq \mathcal R_{0}= \mathcal X$ for all $k$, so Proposition~\ref{prop:Dk:iteration} and $\mathcal X \subseteq \mathcal P$ imply
+$\mathcal{D}_k\subseteq \Psi^{-k}\mathcal{X} \subseteq \Psi^{-k}\mathcal{P}$, and hence from
+(\ref{eq:Xk:iteration}) and (\ref{eq:def:Pn}) we have $\mathcal X_k\subseteq \mathcal P_n$ for all $k\geq n$. Therefore $\mathcal X_{n}$ is bounded and $\mathcal{X}^\infty$ is also bounded since $\mathcal{X}_k\supseteq\mathcal{X}_{k+1}\supseteq\mathcal{X}^\infty$ for all $k$.
 
-To see that $\mathcal D_k$ grows exponentially, let $r_1$ denote the radius of the largest $P$-ball centred at the origin that is contained in $\mathcal R^\infty$, i.e. $\mathscr B_P(r_1) = \{x:x^TPx\leq r_1^2\}\subseteq\mathcal R^\infty$. 
+To see that $\mathcal D_k$ grows exponentially, define $r_1>0$ such that $\mathscr B_P(r_1)\subseteq \mathcal R^\infty$, then Proposition~\ref{prop:Dk:iteration} and (\ref{eq:Pcondition}) imply
 %
-Then Proposition~\ref{prop:Dk:iteration} in conjunction with Theorem~\ref{thm:norm:balls:set:operations} yield that 
-\begin{multline}
-  \mathcal D_k = \Psi^{-k}\mathcal R_k\supseteq \Psi^{-k}\mathcal R^\infty\supseteq \left\{x:\norm{\Psi^{-k}x}_P\leq r_1\right\}\supseteq\\ 
-\mathscr B_P\left(\left((1-\delta)^{-\frac{1}{2}}\right)^k r_1\right)% \supseteq\mathscr B_P\left(\rho^{-k} r_1\right).
-\end{multline}
+% let $r_1$ denote the radius of a $P$-ball centred at the origin that is contained in $\mathcal R^\infty$, i.e. $\mathscr B_P(r_1) = \{x: \|x\|_P \leq r_1\}\subseteq\mathcal R^\infty$. 
+% %
+% Then from Proposition~\ref{prop:Dk:iteration} 
+% %and the property that $\mathscr B_P(\sigma_1-\sigma_2)\subseteq\mathscr B_P(\sigma_1)\ominus\mathscr B_P(\sigma_2)$ for all non-negative scalars $\sigma_1,\sigma_2$ (which follows from the triangle inequality) 
+% we have
+\[%\begin{multline*}
+\mathcal D_k = \Psi^{-k}\mathcal R_k\supseteq \Psi^{-k}\mathcal R^\infty\supseteq \Psi^{-k}\mathscr B_P(r_1)
+%\left\{x:\norm{\Psi^k x}_P\leq r_1\right\}\\ 
+% \supseteq\mathscr B_P\left(\left((1-\delta)^{-\frac{1}{2}}\right)^k r_1\right) 
+%\supseteq
+\supseteq\mathscr B_P\left(\varrho^{-k} r_1\right).
+\]%\end{multline*}
 %
-To complete the proof let $r_2$ denote the largest $P$-ball containing $\mathcal X_n$, i.e. $\mathcal X_n\subseteq\mathscr B_P(r_2)$.
+Next define $r_2$ so that $\mathscr B_P(r_2)\supseteq \mathcal X_n$,
 %
-Then for $k\geq n$ such that $\left((1-\delta)^{-\frac{1}{2}}\right)^k r_1\geq r_2$ we have that $\mathcal D_k\supseteq\mathcal X_n\supseteq\mathcal X_{k-1}$ so that $\mathcal X_k = \mathcal X_{k-1}$, which concludes the proof.
-
+then for all $k > n$ such that %$\left((1-\delta)^{-\frac{1}{2}}\right)^k r_1\geq r_2$ 
+$\varrho^{-k} r_1 \geq r_2$
+we have $\mathcal D_k\supseteq\mathcal X_n\supseteq\mathcal X_{k-1}$ so that $\mathcal X_k = \mathcal X_{k-1}$.
+%, which concludes the proof.
+%\end{proof}
+%
 % To see that $\mathcal{D}_k$ grows exponentially, let $r_1$ be the radius of the largest ball centred on the origin that is contained in $\mathcal{R}^\infty$ so that $\mathcal{R}^\infty \supseteq r_1\mathcal{E}$ (where 
 % for notational convenience we write $\mathcal E=B_1(0)$). Then Proposition~\ref{prop:Dk:iteration} implies $\mathcal{D}_k=\Psi^{-k}\mathcal{R}_k\supseteq\Psi^{-k}\mathcal R^\infty\supseteq \rho^{-k}r_1\mathcal{E}$. 
-
+%
 % To see that $\mathcal{D}_k$ grows exponentially we denote the spectral radius of $\Psi$ by $\rho$ (where $\rho<1$ since $\Psi$ is asymptotically stable), and 
 % for notational convenience we write $\mathcal E=B_1(0)$.
 % %
@@ -1525,77 +1555,124 @@ Then for $k\geq n$ such that $\left((1-\delta)^{-\frac{1}{2}}\right)^k r_1\geq r
 % Hence~(\ref{eq:set:iteration:Dl}) shows that~$D_l$ consists of the Pontryagin difference between $\mathcal S_1$, which grows exponentially with $l$, and the set~$\mathcal S_2$, which is bounded for all $l$. Therefore~$D_l$ itself grows exponentially,
 % that is $D_l\supseteq(\rho^{-l} r_1 - (1-\rho)^{-1} r_2)\mathcal E$.
 % %
-
+%
 % To complete the proof, let $r_2$ denote the radius of the smallest ball centred on the origin that contains $\mathcal X_n$.
 % %(noting that $\mathcal X_p$ is necessarily bounded for $p\geq n$). 
 % %
-\end{proof}
+%\end{proof}
 %
-For the choice $P=\Psi^T\Psi$ we have that for any $k\geq n+1$ such that $\rho^{-k} r_1 \geq r_2$, we can conclude that $\mathcal D_k\supseteq \mathcal X_n$ and, since $\mathcal X_n \supseteq \mathcal X_{k-1}$, we also have $\mathcal D_k\supseteq \mathcal X_{k-1}$ so that $\mathcal X_k = \mathcal{X}_{k-1}$.
+%For the choice $P=\Psi^T\Psi$ we have that for any $k\geq n+1$ such that $\rho^{-k} r_1 \geq r_2$, we can conclude that $\mathcal D_k\supseteq \mathcal X_n$ and, since $\mathcal X_n \supseteq \mathcal X_{k-1}$, we also have $\mathcal D_k\supseteq \mathcal X_{k-1}$ so that $\mathcal X_k = \mathcal{X}_{k-1}$.
 %
 Therefore $\mathcal X^\infty = \mathcal X_M$ where
 \begin{equation}\label{eq:iteration:bound}
-M = \max \Bigl\{ n , \todo{Mark:log:bounds}{\bigl\lceil 
-\log_{\rho}(r_1/r_2)\bigr\rceil -1}\Bigr\},
+M \leq \max \Bigl\{ n , {\bigl\lceil 
+\log_{\varrho}(r_1/r_2)\bigr\rceil -1}\Bigr\},
 %\frac{\log(r_2/r_1)}{\log(1/\rho)}\right\rfloor} \right\},
 \end{equation}
 and it follows that $\mathcal{X}^\infty$ is a bounded polytopic set.
+\end{proof}
 
+Although the bound (\ref{eq:iteration:bound}) on the number of iterations required by Algorithm~\ref{alg:MRPI:set} is necessarily finite, $r_1$ and $r_2$ cannot in general be determined \textit{a priori}. 
+%
+This motivates the following bound, which can be evaluated under mild conditions. 
 
-Although the bound (\ref{eq:iteration:bound}) on the number of iterations required by Algorithm~\ref{alg:MRPI:set} is clearly finite, $r_1$ and $r_2$ cannot in general be determined \textit{a priori}. 
+\begin{thm}\label{thm:Mbnd}
+Let $c_1$, $c_2$, $c_3$ be scalars satisfying
+$\mathscr B_P(c_1) \subseteq \mathcal X$, $\mathscr B_P(c_2) \supseteq \mathcal P_n$, and $\mathscr B_P(c_3) \supseteq \mathcal V(x)$ for all $x\in\mathcal X$.
+% \begin{align*}
+% \mathscr B_P(c_1) &\subseteq \mathcal X\\
+% \mathscr B_P(c_2) &\supseteq \mathcal P_n\\
+% \mathscr B_P(c_3) &\supseteq \mathcal V_1(x) \ \forall x\in\mathcal X
+% \end{align*}
+% Let $c_1$, $c_2$ and $c_3$ denote respectively the radii of: %
+% the largest $P$-ball centred on the origin contained in $\mathcal{X}$, 
+% %
+% the smallest $P$-ball centred on the origin that contains $\mathcal{P}_n$, and
+% %
+% the smallest $P$-ball centred on the origin that contains $\mathcal{V}_1(x)$ for all $x\in\mathcal{X}$.
 %
-We therefore provide an alternative bound that can be evaluated numerically. 
-
-\begin{cor}
-Let $c_1$, $c_2$ and $c_3$ denote respectively the radii of: %
-the largest $P$-ball centred on the origin contained in $\mathcal{X}$, 
-%
-the smallest $P$-ball centred on the origin that contains $\mathcal{P}_n$, and
-%
-the smallest $P$-ball centred on the origin that contains $\mathcal{V}_1(x)$ for all $x\in\mathcal{X}$.
-%
-If $c_i > (1-\rho)^{-1}c_3$ for $i=1,2$, then $\mathcal X^\infty = \mathcal X_M$ where
+If $c_1 > (1-\varrho)^{-1}c_3$, then $\mathcal X^\infty = \mathcal X_M$ where
 \begin{equation}\label{eq:iteration:cbound}
-M = \max \biggl\{ n , 
-\todo{Mark:log:bounds}{
-\biggl\lceil \log_{\rho}\Bigl(\frac{c_1-(1-\rho)^{-1}c_3}{c_2-(1-\rho)^{-1}c_3}\Bigr)\biggr\rceil -1 \biggr\}}.
+M \leq \max \biggl\{ n , 
+\biggl\lceil \log_{\varrho}\Bigl(\frac{c_1-(1-\varrho)^{-1}c_3}{c_2-(1-\varrho)^{-1}c_3}\Bigr)\biggr\rceil - 1 \biggr\}.
 \end{equation}
-\end{cor}
+\end{thm}
 %
 
+\def\X{\mathcal{X}}
+\def\B{\mathscr{B}}
+\def\D{\mathcal{D}}
+\def\V{\mathcal{V}}
 \begin{proof}
-\todo{Manuel:proof:rewritten}{
-Iteration~\eqref{eq:Xk:iteration} can be defined as $\mathcal X_{k+1} = \mathcal X_k\cap\mathcal D_{k+1}^\prime$ with $\mathcal X_0=\mathcal X$ where
-$\mathcal D_k^\prime$ is defined by 
-%
-$$
-\mathcal D_k^\prime = \{x\in\mathcal X_{k-1}:\{\Psi x\}\oplus\mathcal V(x)\subseteq \mathcal D_{k-1}^\prime\}
-$$
-%
-and initialised as $\mathcal D_0^\prime=\mathcal X$.
-%
-It follows from the definition that $\mathcal X_k\subseteq\mathcal X_0=\mathcal X$ for all $k\in\mathbb N$ that $\mathcal V(x)\subseteq \mathscr B_P(c_3)$ for all $x\in\mathcal X$ implies that the containment holds for all $x\in\mathcal X_k$.
-%
-We argue inductively: Clearly every $x$ such that $\{\rho x\}\oplus \mathscr B_P(c_3)\subseteq\mathscr B_P(c_1)$ also satisfies $\{\Psi x\}\oplus \mathcal V(x)\subseteq\mathscr B_P(c_3) \subseteq \mathcal X_0$, but the first condition is equivalent to $x\in\rho^{-1}(\mathscr B_P(c_1)\ominus\mathscr B_P(c_3))=\rho^{-1}\mathscr B_P(c_1-c_3)$.
-%
-It follows that the $P$-ball of radius $\rho^{-1}(c_1-c_3)$ is contained in $\mathcal D_1^\prime$, we continue by determining the largest $P$-ball contained in $\mathcal D_2^\prime$ in the same fashion.
-%
-All points that satisfy $\{\rho x\}\oplus\mathscr B_P(c_3) \subseteq \rho^{-1}\mathscr B_P(c_1-c_3)$ also satisfy $\{\Psi x\}\oplus\mathcal V(x)\subseteq \mathcal D_2^\prime$ and so on.
-%
-Recursively we derive a $P$-ball for all subsequent~$k$ such that $\mathscr B_P(r_k)\subseteq\mathcal D_k^\prime$, this radius is given by $r_k = \rho^{-k}(c_1-c_3\sum_{l=0}^{k-1}\rho^l) = \rho^{-k}(c_1-c_3\frac{1-\rho^k}{1-\rho})$.
-%
-Since $\mathcal X_k$ is defined as an intersection with the previous iterate the set can not change as soon as the inner $P$-ball has \emph{outgrown} any $P$-ball that contains $\mathcal X_k$.
-%
-We know that $\mathcal X_k\subseteq\mathcal P_n\subseteq\mathscr B_P(c_2)$ for all $k\geq n$ so that we have that $\mathcal X_k = \mathcal X_{k+1}=\mathcal X^\infty$ no later than the smallest $k\in\mathbb N$ such that $k\geq n$ and $c_2<r_k$, bound~\eqref{eq:iteration:cbound} follows from:
-%
+Since $\X_k\subseteq \X$ for all $k$, the iteration (\ref{eq:Xk:iteration}) is equi\-valent to $\X_k = \X_{k-1}\cap \D^\prime_k$, where $\D^\prime_0 = \X$ and, for $k\in\mathbb N$,
 \[
-\rho^k(c_2-\frac{c_3}{1-\rho})<c_1-\frac{c_3}{1-\rho}
+\D^\prime_k = \bigl\{x :\{\Psi x\}\oplus\mathcal V^\prime(x)\subseteq \mathcal \D^\prime_{k-1}\bigr\},
 \]
+with $\V^\prime(x) = \V(\pi_{\X}(x))$ and $\pi_{\X}(x) = \arg\min_{y\in\X} \|y-x\|$.
 %
-To preserve the orientation of the inequality we require $c_2-c_3(1-\rho)^{-1}>0$ and in order to obtain a positive argument in the logarithm we also require $c_1-c_3(1-\rho)^{-1}>0$.
+The bound (\ref{eq:iteration:cbound}) can therefore be derived by  determining $r_k$ such that $\D^\prime_k \supseteq \B_P(r_k)$ for all $k$, then finding 
+$M$ such that $\D_k^\prime\supseteq \X_{k-1}$ for all $k > M$ (so that $\X_M=\X^\infty$)
+by using the property that $\X_k \subseteq \mathcal P_n \subseteq \mathscr B_P(c_2)$ for all $k\geq n$.
+%to find $M$ such that $\D_k^\prime\supseteq \X_{k-1}$ for all $k > M$, since this implies that $\X_M=\X^\infty$.
+
+% The bound (\ref{eq:iteration:cbound}) is determined by finding $r_k$ such that $\X_k \supseteq \B_P(r_k)$ for all $k> 0$, then using the property that $\X_k \subseteq \mathcal P_n \subseteq \mathscr B_P(c_2)$ for all $k\geq n$ to find $M$ such that $\X_k\supseteq \X_{k-1}$ for all $k >M$. Since (\ref{eq:Xk:iteration}) implies $\X_k\subseteq \X_{k-1}$ for all $k$, we can conclude that $\X_M=\X_{k-1}=\X_k=\X^\infty$.
+
+To this end, we first show that, for all $k\in\mathbb N$,
+\begin{equation}\label{eq:rk_def}
+\D^\prime_k \supseteq \B_P(r_k) , \ \ 
+r_k = \varrho^{-k} \Bigl( c_1 - \frac{c_3}{1-\varrho}\Bigr) + \frac{c_3}{1-\varrho}.
+%r_k = \varrho^{-k} \Bigl( c_1 - c_3 \sum_{j=0}^{k-1} \varrho^j \Bigr) .
+\end{equation}
+Clearly (\ref{eq:rk_def}) holds for $k=1$ since $\V^\prime(x)\subseteq\B_P(c_3)$ for all $x$, so that $\D^\prime_1
+\supseteq\Psi^{-1}\bigl(\X \ominus\B_P(c_3)\bigr)
+\supseteq\Psi^{-1}\bigl(\B_P(c_1)\ominus\B_P(c_3)\bigr)$, and since $\B_P(c_1)\ominus\B_P(c_3) = \B_P(c_1-c_3)$ %for all $c_1,c_3 >0$ 
+we have
+\[
+\D^\prime_1 
+\supseteq \Psi^{-1} \B_P(c_1-c_3) \supseteq \varrho^{-1}\B_P(c_1-c_3) .
+\]
+% \begin{multline*}
+% \D^\prime_1 
+% \supseteq \Psi^{-1}\bigl(\B_P(c_1)\ominus \B_P(c_3)\bigr) = \Psi^{-1} \B_P(c_1-c_3) 
+% %\supseteq \B_P\bigl(r_1) 
+% \\ \supseteq \varrho^{-1}\B_P(c_1-c_3)
+%  \end{multline*}
+Next suppose that (\ref{eq:rk_def}) holds for $k=j-1$. This implies $\D^\prime_j \supseteq \{x :\{\Psi x\}\oplus\mathcal V^\prime(x)\subseteq \B_P(r_{j-1})\}$ and hence
+\begin{align*}
+\D^\prime_j &
+\supseteq \Psi^{-1} \bigl(\B_P(r_{j-1}) \ominus \B_P(c_3) \bigr) = \Psi^{-1} \B_P( r_{j-1} - c_3 )
+\\ &\supseteq \varrho^{-1}\B_P(r_{j-1} -c_3) = \B_P(r_j).
+\end{align*}
+By induction therefore, (\ref{eq:rk_def}) holds for $k=j$, for all $j\in \mathbb N$.
 %
-This proves the assertion.
-}
+
+Finally, if $c_1 > (1-\varrho)^{-1} c_3$, then for any $M\geq n$ such that $r_{M+1} \geq c_2$, we have 
+$r_{k} \geq c_2$ for all $k> M$ and hence
+$\D^\prime_{k} \supseteq \B_P(r_{k}) \supseteq \B_P(c_2)\supseteq \X_{k-1}$ for all $k>M$. It follows that $\X^\infty=\X_M$ for some $M$ satisfying (\ref{eq:iteration:cbound}).
+\end{proof}
+%
+%
+%It follows that $\mathcal X_k\subseteq\mathcal X_0=\mathcal X$ for all $k\in\mathbb N$, and hence $\mathcal V(x)\subseteq \mathscr B_P(c_3)$ for all $x\in\mathcal X$ implies $\mathcal V(x)\subseteq \mathscr B_P(c_3)$ for all $x\in\mathcal X_k$.
+%
+%We argue inductively: Clearly every $x$ such that $\{\varrho x\}\oplus \mathscr B_P(c_3)\subseteq\mathscr B_P(c_1)$ also satisfies $\{\Psi x\}\oplus \mathcal V(x)\subseteq\mathscr B_P(c_3) \subseteq \mathcal X_0$, but the first condition is equivalent to $x\in\varrho^{-1}(\mathscr B_P(c_1)\ominus\mathscr B_P(c_3))=\varrho^{-1}\mathscr B_P(c_1-c_3)$.
+%
+%It follows that the $P$-ball of radius $\varrho^{-1}(c_1-c_3)$ is contained in $\mathcal D_1^\prime$, we continue by determining the largest $P$-ball contained in $\mathcal D_2^\prime$ in the same fashion.
+%
+%All points that satisfy $\{\varrho x\}\oplus\mathscr B_P(c_3) \subseteq \varrho^{-1}\mathscr B_P(c_1-c_3)$ also satisfy $\{\Psi x\}\oplus\mathcal V(x)\subseteq \mathcal D_2^\prime$ and so on. 
+%
+%Recursively we derive a $P$-ball for all subsequent~$k$ such that $\mathscr B_P(r_k)\subseteq\mathcal D_k^\prime$, this radius is given by $r_k = \varrho^{-k}(c_1-c_3\sum_{l=0}^{k-1}\varrho^l) = \varrho^{-k}(c_1-c_3\frac{1-\varrho^k}{1-\varrho})$.
+%
+%Since $\mathcal X_k$ is defined as an intersection with the previous iterate the set cannot change as soon as the inner $P$-ball has \emph{outgrown} any $P$-ball that contains $\mathcal X_k$.
+%
+%We know that $\mathcal X_k\subseteq\mathcal P_n\subseteq\mathscr B_P(c_2)$ for all $k\geq n$ so that we have that $\mathcal X_k = \mathcal X_{k+1}=\mathcal X^\infty$ no later than the smallest $k\in\mathbb N$ such that $k\geq n$ and $c_2<r_k$, bound~\eqref{eq:iteration:cbound} follows from:
+%
+% \[
+% \varrho^k(c_2-\frac{c_3}{1-\varrho})<c_1-\frac{c_3}{1-\varrho}
+% \]
+% %
+% To preserve the orientation of the inequality we require $c_2-c_3(1-\varrho)^{-1}>0$ and in order to obtain a positive argument in the logarithm we also require $c_1-c_3(1-\varrho)^{-1}>0$.
+% %
+% This proves the assertion.
 % \todo{Mark:proof:cor15}{%
 % \def\X{\mathcal{X}}%
 % \def\D{\mathcal{D}}%
@@ -1623,36 +1700,42 @@ This proves the assertion.
 % %given by (\ref{eq:iteration:cbound}).}
 % the smallest integer such that $k= M+1$ satisfies this condition, which is given by (\ref{eq:iteration:cbound})
 % since $c_2>(1-\rho)^{-1}c_3$ is assumed.}
-
-\end{proof}
+%\end{proof}
 
 \begin{rem}
-The constants $c_1$, $c_2$, $c_3$ appearing in~(\ref{eq:iteration:cbound}) can be computed as follows:
-\[
-c_1 = \min_j\{\min_x x^TPx \ \ \text{subject to} \ \  \Xi x\leq {\bf{1}}, \xi_j x = 1\}
-\]
-
-which requires the solution of $\abs{\mathcal I_{\mathcal X}}$ quadratic programs (QPs);
+The condition that $c_1 > (1-\varrho)^{-1}c_3$ in Theorem~\ref{thm:Mbnd} implies a restriction on the size of the disturbance set $\V(x)$ for $x\in\X$ that might not be met even if $\X^\infty$ is non-empty. To minimize the implied degree of conservativeness therefore the constants $c_1$, $c_2$, $c_3$ appearing in~(\ref{eq:iteration:cbound}) can be computed as follows:
+\textcolor{blue}{\[
+c_1 = \max_x x^T P x \ \ \text{subject to} \ \  \Xi x\leq {\bf{1}},
+\]}
+% \[
+% c_1 = \min_j\bigl\{\min_x x^T P x \ \ \text{subject to} \ \  \Xi x\leq {\bf{1}},\ \xi_j x = 1\bigr\}
+% \]
+which requires the solution of a nonconvex quadratic program (QP); 
+% which requires the solution of $\abs{\mathcal I_{\mathcal X}}$ quadratic programs (QPs); 
 \[
 c_2 = \max_{j} x_j^TPx_j,
 \]
 where 
 %$x_j$ for $j\in\mathbb{N}_p$ are the vertices of $\mathcal{P}_n$;
 $\mathcal{P}_n  =\conv_j\{x_j\}$; 
-and for $c_3$ we can use a projection and the known combinatorial structure of~$\mathcal W(x)$ in the sense of~\eqref{eq:def:v:kappa}.
+and for $c_3$ we can use a projection and the known combinatorial structure of~$\mathcal V(x)$ in the sense of~\eqref{eq:def:v:kappa}.
 %
-First project the set 
+\textcolor{red}{First project the set 
 %
 $$
-  \mathcal T = \{(\tau,x):\Xi x\leq {\bf{1}}\wedge b_{i,k}+c_{i,k}x\leq \tau_i\forall i\in\mathbb N_m,k\}
+  \mathcal T = \bigl\{(\tau,x):\Xi x\leq {\bf{1}},\ b_{i,k}+c_{i,k}x\leq \tau_i \ \forall i\in\mathbb N_m,\ \forall k\bigr\}
 $$
-onto $\mathbb R^m$, thereby all vertices of the projection are such that there exists a state~$\tilde x\in\mathcal X$ such that $\mathcal W(\tilde x)=\conv_\kappa\{\{w:a_i w = \tau_i\, i\in\mathcal A_\kappa\}\}$.
+onto $\mathbb R^m$, 
+thereby all vertices of the projection are such that there exists $\tilde x\in\mathcal X$ such that $\mathcal V(\tilde x)=\conv_\kappa\{v : a_i v = \tau_i, \ i\in\mathcal A_\kappa\}$.
 %
-Therefore maximising over all vertices of the projection leads to the desired radius
+Therefore maximising over all vertices of the projection leads to the desired radius 
 \[
-c_3 = \max_{\tau\in\text{vert}(\pi_m(\mathcal T))}\max_\kappa w_\kappa^TPw_\kappa, w_\kappa = \{w:a_i w = \tau_i\, i\in\mathcal A_\kappa\}
-\]
+c_3 = \max_{\tau\in\text{vert}(\pi_m(\mathcal T))}\max_\kappa v_\kappa^TPv_\kappa, \ v_\kappa = \{v : a_i v = \tau_i, \  i\in\mathcal A_\kappa\} .
+\]}
+%In the interests of minimizing $M$, it makes sense to set $\varrho$ equal to $\rho(\Psi)$, in which case $P = \Psi\Psi^T$.
 \end{rem}
+
+
 
 % \todo{\begin{rem}
 % Notice that the constants used in~\eqref{eq:iteration:bound} are not
@@ -1770,8 +1853,11 @@ B = T_s \frac{\partial f}{\partial u}(\hat x,\hat u) .
 \]
 %
 Although this system has a control input, Algorithm~\ref{alg:MRPI:set} can be used to compute the MRPI set for the closed loop system under a linear feedback law $u=Kx$, where $K$ satisfies the robust 
-Lyapunov condition $V(x)-V((A+BK)x+v)\leq \gamma^2v^Tv$ with $V(x)=x^T P x\geq0$, i.e. $x^TPx - ((A+BK)x+v)^TP(
-(A+BK)x+v)\geq x^T(Q+K^TRK)x -\gamma^2 v^Tv$ for a minimum  $\gamma^2$, see e.g.~\cite{Boyd:94}.
+Lyapunov condition 
+% $V(x)-V((A+BK)x+v)\leq \gamma^2\|v\|^2$ with $V(x)=\|x\|_P^2$ for $P\succ 0$, 
+% i.e.\ 
+$\|x\|_P^2 - \|(A+BK)x+v\|_P^2 \geq \|x\|_{Q+K^TRK}^2 -\gamma^2 \|v\|^2$ for some $P\succ 0$.
+%for a minimum  $\gamma^2$, see e.g.~\cite{Boyd:94}.
 %
 A representation of additive disturbances acting on the linearised model due to linearisation errors, 
 i.e.~a system representation $x^+=Ax + Bu + v$ with an additive disturbance $v$, can be obtained using the
@@ -1840,7 +1926,7 @@ i \in \mathbb N_n
 \end{equation}
 %
 Notice that~\eqref{eq:definition:element:wise:constraints:on:nonlinearities} is of the form~\eqref{eq:definition:PWA:polytopic:set:general}
-and the theory introduced in Section~\ref{sec:p:convex:sets} applies.
+and the results of Section~\ref{sec:p:convex:sets} apply.
 %
 The additively perturbed linear system $\tilde x^+ = A\tilde x + B\tilde u + v$ accounts for all nonlinearities 
 within $\mathcal{X}\times\mathcal{U}$ if $v\in\mathcal V(\tilde x,\tilde u)$. 
@@ -1913,7 +1999,7 @@ The algorithm for computing the MRPI set terminates after 3 iterations.
 
 
 In this section we discuss how multi-parametric quadratic programs (mpQP, see e.g.~\cite{Tondel:2003,Bemporad:2002} 
-for detailed discussions) can be solved efficiently online with an active set solver (see e.g.~\cite{Fletcher:2000}).
+for detailed discussions) can be solved efficiently online with an active set solver (e.g.~\cite{Fletcher:2000}). For the case of a fixed disturbance set we refer the reader to~\cite{Buerger:ACC,Buerger:IJRNC}.
 %
 The active set of constraints will be determined by a line-search, we will also deal with \emph{degenerate
 constraints}, which can arise during the line-search.
@@ -2135,7 +2221,7 @@ depends continuously on~$\phi$.
 In order to compute the solution for the parameter~$\phi = \phi^\ast$ we perform a line-search in order
 to determine the set of active constraints at $\phi = \phi^\ast$.
 %
-For this we notice that we have an affine formulation of all optima with respect to~$\phi$, i.e.
+For this we note that we have an affine dependence of all optima with respect to~$\phi$, i.e.
 %
 \begin{equation}\label{mpQP:affine:parameterisation}
   \begin{array}{rcl} 
@@ -2147,7 +2233,7 @@ For this we notice that we have an affine formulation of all optima with respect
   \end{array}
 \end{equation}
 %
-The dependency on $\hat\beta$ remains if the initial stage~\eqref{mpQP:second:stage} is degenerate.
+The dependence on $\hat\beta$ remains if the initial stage~\eqref{mpQP:second:stage} is degenerate.
 %
 We can use~\eqref{mpQP:affine:parameterisation} to determine the set of active constraints along the line
 %
@@ -2155,7 +2241,7 @@ We can use~\eqref{mpQP:affine:parameterisation} to determine the set of active c
   \phi(\alpha) = \phi_0 + \alpha(\phi^\ast-\phi_0)
 \end{equation}
 %
-that means that the first change in the set of active constraints is the one associated with smallest
+and hence that the first change in the set of active constraints is the one associated with smallest
 value~$\alpha^\ast$ to produce an equality in
 %
 \begin{equation}\label{mpQP:conditions:for:the:line:search}
@@ -2167,18 +2253,16 @@ value~$\alpha^\ast$ to produce an equality in
   \end{split}
 \end{equation}
 %
-After updating the active set $\mathcal A$ and $\hat{\mathcal A}$ accordingly the optimisation sequence~\eqref{app:mpQP:primal}
-and~\eqref{mpQP:second:stage} are re-solved and the line search can be performed with updated affine 
+After updating the active sets $\mathcal A$ and $\hat{\mathcal A}$ accordingly, the optimisation sequences~\eqref{app:mpQP:primal}
+and~\eqref{mpQP:second:stage} are re-solved and the line search is then performed with updated affine 
 parametrisations~\eqref{mpQP:affine:parameterisation} starting the line at~$\phi_0=\phi(\alpha^\ast)$.
 
-
-Notice that in~\eqref{mpQP:conditions:for:the:line:search} we set $\hat \beta=0$, this is justified in
-most cases because the existence of a non-trivial dependence on~$\hat\beta$ implies that $\theta$ is uniquely
-defined by the constraints (assuming the constraints are non-redundant), so that $\phi$ is fixed by constraints.
+Notice that in~\eqref{mpQP:conditions:for:the:line:search} we set $\hat \beta=0$, this is justified (except in the case considered in the next section) because the existence of a non-trivial dependence on~$\hat\beta$ implies that $\theta$ is uniquely
+defined by the constraints, and hence $\phi$ is fixed by the constraints.
 %
 \subsection{Degeneracy in Initial Stage}\label{ssec:degeneracy}
 %
-When the dependence on~$\hat\beta$ is non-trivial two or more constraints on the first minimisation~\eqref{mpQP:second:stage}
+When the dependence of ~\eqref{mpQP:conditions:for:the:line:search} on~$\hat\beta$ is non-trivial, two or more constraints on the first minimisation~\eqref{mpQP:second:stage}
 are linearly dependent,
 % 
 i.e. there exists an $i^\ast\in\mathcal A$ such that the solution
@@ -2195,8 +2279,8 @@ problem and its dependence on~$\hat\beta$.
   -(e_{\mathcal A}+T_{\mathcal A}\phi)^T \eta+ d_\theta.
 \end{multline}
 %
-From first order conditions~\eqref{mpQP:second:stage:conditions} we know that 
-$\eta = O_\phi\phi+O_{\hat\beta}\hat\beta+o$ with~$C^T_{\mathcal A}O_{\hat\beta}=0$, hence we have
+From first order conditions~\eqref{mpQP:second:stage:conditions} we have that 
+$\eta = O_\phi\phi+O_{\hat\beta}\hat\beta+o$ with~$C^T_{\mathcal A}O_{\hat\beta}=0$; hence
 %
 \begin{equation}\label{mpQP:linesearch:degenerate:constraints:beta}
   J_{\mathcal A,\hat{\mathcal A}}^d(\phi) = \left\{\begin{array}{rcl}
@@ -2226,7 +2310,7 @@ the line-search can be continued without redundancy.
 
 
 Notice that here we only deal with a single stage problem, that is we have a recursion of one
-maximisation and one minimisation, however all methods discussed here translate one-to one-to the
+maximisation and one minimisation, however all methods discussed here extend trivially to the
 case where more min-max programs are concatenated recursively, as in multi stage min-max control.
 %
 %
@@ -2234,13 +2318,13 @@ case where more min-max programs are concatenated recursively, as in multi stage
 %
 \section{Solving Min-Max Programs}\label{sec:solving:min:max:programs}
 
-In this section we apply the results derived in the previous section to the considered min-max robust
-control problem~\eqref{seq:general:problem:statement}. 
+In this section we apply the results derived in the previous section to the min-max robust
+control problem considered in~\eqref{seq:general:problem:statement}. 
 %
 For the case that the set of active constraints is known, we define a recursion that provides a 
-closed solution for~\eqref{seq:general:problem:statement}.
+closed form solution for~\eqref{seq:general:problem:statement}.
 %
-We first express~\eqref{seq:general:problem:statement} in the form
+We first express~\eqref{seq:general:problem:statement} as
 %
 \begin{subequations}\label{eq:the:problem:reformulated}%
 \begin{equation}
@@ -2428,21 +2512,20 @@ For completeness the $m=2$ maximisation and its solution are given as
 \end{gather*}
 %
 where $\hat C_2 x = {\bf{1}}$ is a normalised version of $L^T_\beta(\bar T x + \bar e) = 0$.
-All subsequent minimisations and maximisations can be solved analogously provided the active set is
-known.
+All subsequent minimisations and maximisations can be solved analogously given knowledge of the active set.
 %
 \subsection{Line Search with Piecewise Affine Disturbance Set}
 %
 In order to solve the multi-stage problem for a given system state~$x^\ast$ we perform a line search
-form a known active set~${\bar{\mathcal A}} = \{\mathcal A_N,\hat {\mathcal A}_N,\dots,\hat{\mathcal A}_1\}$
+starting from a known active set~${\bar{\mathcal A}} = \{\mathcal A_N,\hat {\mathcal A}_N,\dots,\hat{\mathcal A}_1\}$
 as described in section~\ref{ssec:line:search}.
 %
 To determine the active right hand side of~\eqref{eq:dist:cons}, i.e. ${\bf{k}}^\ast_m$, we use a similar line 
-search based approach.
+search approach.
 %
-In the sequel of this section we assume that the origin is an interior point of the disturbance set for vanishing
+In the remainder of this section we assume that the origin is an interior point of the disturbance set for vanishing
 states and inputs, i.e.~$0<H(0,0)$ which implies $b_{{\bf{k}}^\ast}>0$ at the origin, this is important in order to guarantee
-the non-degeneracy of the problem, at the origin $x=0$ no constraints are active.
+the non-degeneracy of the problem, since at the origin, $x=0$, no constraints are then active.
 %
 We use the affine representation of the optimal state and input at stage $k$ with respect to the initial 
 state~$x_N$ denoted by $x_m = \Psi_m^x x_N + \psi_m^x$ and $u_k = \Psi_m^u x_N + \psi_m^u$ respectively.
@@ -2471,7 +2554,7 @@ which we can rewrite as
 Thus the elementwise determination of the active affine representation is a multi-parametric linear program
 (see e.g.~\cite{Gal:1995}) that has to be solved in every active set update in order to provide the active solution.
 %
-This can be done by computing the vertices of $\mathcal H = \{(t,\alpha):0\leq\alpha\leq1\wedge f_j\alpha+g_j
+This can be done by computing the vertices of $\mathcal H = \{(t,\alpha):0\leq\alpha\leq1,\; f_j\alpha+g_j
 \leq t\;\forall j\}$ and ordering the vertices such that $0=\alpha_1\leq\alpha_2\leq\dots$ the solution that 
 has to be considered in the line search is then given by the one corresponding to $\alpha_2$.
 %
@@ -2480,16 +2563,15 @@ The active indices of the right hand side~${\bf{k}}^\ast_m$ can be included in t
 %
 Notice that although $\bar{\mathcal A}$ needs to be updated by performing the line search discussed in 
 section~\ref{ssec:line:search} and solving the scalar mpLP~\eqref{eq:definition:as:mpLP}, the recursion solving equality constrained mpQPs discussed in section~\eqref{ssec:recursive:mpQP} does not need to be performed when
-some~${\bf{k}}^\ast_m$ changes for an inactive constraint, i.e. only when $W_m^x$, $W_m^u$ and $w_m^c$ change the
-recursion has to be solved again.
+some~${\bf{k}}^\ast_m$ changes for an inactive constraint, i.e.~ the
+recursion has to be re-solved only when $W_m^x$, $W_m^u$ and $w_m^c$ change.
 %
 Since the solution to the min-max problem is obtained recursively an update of $\hat{\mathcal A}_m$ only
-affects the solution to mpQPs at higher stages, i.e. $J_m^\ast$ and all $\hat J_i^\ast$, $J_i^\ast$ have to be
-solved for $m< i\leq N$. 
+affects the solution to mpQPs at higher stages; i.e.~only $J_m^\ast$ and $\hat J_i^\ast$, $J_i^\ast$  for $m< i\leq N$ have to be re-solved. 
 %
 This allows us to reduce the computational workload carried out online. 
 %
-In the next section the complexity of the presented algorithm is discussed.
+In the next section the complexity of the algorithm is discussed.
 %
 %
 %
@@ -2512,12 +2594,12 @@ inversion of a definite matrix $W$ using Cholesky decomposition with $n^3/3$ flo
 matrix, several matrix multiplications and additions with $mn$ flops, and inversion of a definite matrix
 $\Delta$. 
 %
-In the worst case this adds up to at most $11n^3+n^2-n/3$ flops to obtain $\Sigma$. 
+In the worst case at most $11n^3+n^2-n/3$ flops  are required to obtain $\Sigma$. 
 %
 The solution to
 the problem is then the result of a matrix multiplication, and, in order to be able to solve the subsequent
 mpQP, the matrix $W_\theta$ and the vector $c_\theta$ also need to be computed. Hence the overall flop count
-in the worst case adds up to $11n^3+n^2+2/3n+2n^2 n_\theta$, where $n_\theta$ denotes the dimension of the
+in the worst case is $11n^3+n^2+2/3n+2n^2 n_\theta$, where $n_\theta$ denotes the dimension of the
 parameter~$\theta$. 
 %
 In the worst case the
@@ -2537,10 +2619,10 @@ section~\ref{sec:example:II}.
 
 \section{Example II}\label{sec:example:II}
 
-Using the levitating ball system introduced in section~\ref{sec:example:I} we calculate stage wise state constraints
+Using the levitating ball system introduced in section~\ref{sec:example:I} we calculate stagewise state constraints
 and solve the recursive min-max problem.
 %
-We perform a cold started line search from $x_a=(0,0)$ to the outer bound of the constraint set at $x_e=(1,-30)$, 
+We perform a cold-started line search from $x_a=(0,0)$ to the outer bound of the constraint set at $x_e=(1,-30)$, 
 the resulting trajectories at the boundaries of individual active sets are plotted in Figure~\ref{fig:plot}.
 %
 The weights chosen for this experiment are~$Q=\text{diag}(2,1)$, $R=1$ and $\gamma^2=1175$.
@@ -2572,7 +2654,7 @@ at the active set changes and on the boundary in blue.}
 \includegraphics[width=\columnwidth]{ComputationTimes.pdf}
 \caption{The \textcolor[rgb]{0,0,1}{blue points} show the overall computation time from a cold start 
 at~$x_a=(0,0)$ to the boundary of the feasible set. The \textcolor[rgb]{0,.6,0}{green points} show the slowest recursion
-performed which approximately is linear.}
+performed which approximately is linear. **LABEL AXES**}
 \label{fig:computation:times}
 \end{figure}
 
@@ -2679,7 +2761,7 @@ performed which approximately is linear.}
 
 
 \section{Conclusion}\label{sec:conclusion}
-In this paper we presented a framework to treat robust model predictive control problems that are formulated with state and input dependent disturbance constraints.
+In this paper we present a framework to treat robust model predictive control problems that are formulated with state and input dependent disturbance constraints.
 %
 These problems are formulated as a sequence of min-max programs where the constraints at each stage are chosen in such a way that at the last stage the state is contained in the maximal positive robust invariant set.
 %
@@ -2693,7 +2775,7 @@ For a known sequence of active constraints the optimal control strategy is affin
 %
 Both main concepts are illustrated with a numerical example.
 %
-\par The complexity of the solver is linear in the horizon length for each set of active constraints, however no sensible bound on the number of active-set updates can be given. 
+\par The complexity of the solver is linear in the horizon length for each set of active constraints, however in general no practically useful bound on the number of active-set updates can be given. 
 %
 
 
@@ -2723,6 +2805,36 @@ Both main concepts are illustrated with a numerical example.
 
 The first author is supported by the Worcester College Senior Scholarship and an EPSRC doctoral studentship.  
 
+% \section*{Appendix}
+
+% \textit{Proof of Proposition~\ref{prop:Dk:iteration}.}\hspace{1ex}%
+% %
+% Since $\mathcal{D}_k$ is the set of states for which the $k$ steps ahead state lies in $\mathcal{X}$, we have $\mathcal{D}_0 = \mathcal{X}$ and
+% %, for $k\geq 1$,
+% \[
+% \mathcal{D}_k = \bigl\{ x : \{\Psi x\} \oplus \mathcal{V}(x) \subseteq \mathcal{D}_{k-1}\bigr\}  
+% \ \forall k = 1,2\ldots 
+% \]
+% Hence for $k\geq 1$, $\Psi^k \mathcal{D}_k$ is given by
+% \begin{align*}
+% \Psi^k\mathcal{D}_k &= \bigl\{ \Psi^k x : \{\Psi x\} \oplus \mathcal{V}(x) \subseteq \mathcal{D}_{k-1}\bigr\} \\
+% & = \bigl\{ y : \{\Psi^{-k+1} y\} \oplus \mathcal{V}_k(y) \subseteq \mathcal{D}_{k-1}\bigr\} \\
+% & = \bigl\{ y : \{ y\} \oplus \Psi^{k-1}\mathcal{V}_k(y) \subseteq \Psi^{k-1}\mathcal{D}_{k-1}\bigr\} .
+% \end{align*}
+% Using the definition of the parametric Pontryagin difference, this implies
+% \[
+% \Psi^{k}\mathcal{D}_k = (\Psi^{k-1}\mathcal{D}_{k-1}) \ominus \Psi^{k-1}\mathcal{V}_k(\Psi^{k-1}\mathcal{D}_{k-1}) \ \forall k=1,2\ldots 
+% \]
+% and the result therefore follows from  $\mathcal{R}_0=\mathcal{D}_0$ and (\ref{eq:Rk:iteration}).%
+% %
+% % so if $\Psi^{k}\mathcal{D}_k = \mathcal{R}_k$ and $\Psi^{k-1}\mathcal{D}_{k-1} = \mathcal{R}_{k-1}$, then by the definition of the parametric Pontryagin difference we have
+% % \[
+% % \mathcal{R}_k = \mathcal{R}_{k-1}\ominus \Psi^{k-1} \mathcal{V}_k(\mathcal{R}_{k-1}), \ \forall k=1,2,\ldots,
+% % \]
+% % and the result follows from
+% % (\ref{eq:Rk:iteration}) and $\mathcal{R}_0=\mathcal{D}_0 = \mathcal{X}$.
+% %\end{proof}%
+% \hfill\qed
 
 
 % Can use something like this to put references on a page
