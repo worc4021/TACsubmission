@@ -1454,7 +1454,7 @@ where $P$ is a positive definite matrix satisfying
 for some scalar $\varrho\in (0,1)$, so that $\Psi\mathscr B_P(r) \subseteq \varrho\mathscr B_P(r)$ and $\Psi^{-1}\mathscr B_P(r) \supseteq \varrho^{-1}\mathscr B_P(r)$ for all $r>0$. 
 Note that $P\succ 0$ and $\varrho$ exist satisfying (\ref{eq:Pcondition}) whenever
 %$\Psi$ is assumed to be an asymptotically stable matrix.
-$\varrho \leq \rho(\Psi) < 1$
+$\rho(\Psi) \leq \varrho < 1$
 where $\rho(\Psi)$ is the spectral radius of $\Psi$ (see e.g.~\cite{Boyd:94}). 
 
 \begin{thm}\label{thm:finite:MRPI:set:state:dependable}
@@ -1704,14 +1704,10 @@ $\D^\prime_{k} \supseteq \B_P(r_{k}) \supseteq \B_P(c_2)\supseteq \X_{k-1}$ for 
 
 \begin{rem}
 The condition that $c_1 > (1-\varrho)^{-1}c_3$ in Theorem~\ref{thm:Mbnd} implies a restriction on the size of the disturbance set $\V(x)$ for $x\in\X$ that might not be met even if $\X^\infty$ is non-empty. To minimize the implied degree of conservativeness therefore the constants $c_1$, $c_2$, $c_3$ appearing in~(\ref{eq:iteration:cbound}) can be computed as follows:
-\textcolor{blue}{\[
-c_1 = \max_x x^T P x \ \ \text{subject to} \ \  \Xi x\leq {\bf{1}},
-\]}
-% \[
-% c_1 = \min_j\bigl\{\min_x x^T P x \ \ \text{subject to} \ \  \Xi x\leq {\bf{1}},\ \xi_j x = 1\bigr\}
-% \]
-which requires the solution of a nonconvex quadratic program (QP); 
-% which requires the solution of $\abs{\mathcal I_{\mathcal X}}$ quadratic programs (QPs); 
+\[
+c_1 = \min_j\{\min_x x^TPx \ \ \text{subject to} \ \  \Xi x\leq {\bf{1}}, \ \xi_j x = 1\}
+\]
+which requires the solution of $\abs{\mathcal I_{\mathcal X}}$ quadratic programs (QPs);
 \[
 c_2 = \max_{j} x_j^TPx_j,
 \]
