@@ -1,0 +1,64 @@
+
+\documentclass[11pt, oneside]{article}
+
+\usepackage[a4paper, tmargin=30mm, bmargin=30mm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumerate}	
+\usepackage{amsmath}
+\usepackage{amssymb,mathrsfs}
+\usepackage{parskip}
+
+\newcounter{thmcount}
+\renewcommand{\thethmcount}{\arabic{thmcount}}
+
+\newtheorem{thm}[thmcount]{Theorem}
+\newtheorem{cor}[thmcount]{Corollary}
+\newtheorem{prop}[thmcount]{Proposition}
+
+\def\X{\mathcal{X}}
+\def\U{\mathcal{U}}
+\def\V{\mathcal{V}}
+\def\W{\mathcal{W}}
+\def\Y{\mathcal{Y}}
+
+\def\E{\mathbb{E}}
+\def\P{\mathbb{P}}
+\def\R{\mathbb{R}}
+\def\B{\mathscr{B}}
+\begin{document}
+
+Let $\|x\|=\sqrt{x^T x}$ and let $\|x\|_P=\sqrt{x^T P x}$ for a positive definite matrix $P$. \\
+Denote the $P$-ball as $\mathscr B_P(r) = \{x: \|x\|_P \leq r\}$. \\
+The Minkowski sum, $\mathcal{X}\oplus\mathcal{Y}$, of sets $\mathcal{X},\mathcal{Y}$ is the set $\{z: \exists (x,y)\in\mathcal{X}\times\mathcal{Y}, z = x+y\}$.
+
+\begin{prop}
+The two following equalities hold:
+\begin{subequations}\label{eq:balladd}
+\begin{equation}
+  \mathscr B_P(r_1+r_2) = \mathscr B_P(r_1)\oplus\mathscr B_P(r_2)
+\end{equation}
+\begin{equation}
+  \mathscr B_P(r_1-r_2) = \mathscr B_P(r_1)\ominus\mathscr B_P(r_2) .
+\end{equation}
+\end{subequations}
+\end{prop}
+
+\textit{Proof:}\hspace{1ex}
+Let $x_1\in\B_P(r_1)$ and $x_2\in\B_P(r_2)$, then:
+\begin{enumerate}[(i).]
+\item
+the triangle inequality implies $\|x_1+x_2\|_P\leq \|x_1\|_P+\|x_2\|_P$;
+%and hence $\B(x_1)\oplus\B_P(x_2) \leq r_1 + r_2$;
+\item
+choose any $x_1$ such that $\|x_1\|_P = r_1$ and set $x_2 = (r_2/r_1)x_1$ then $\|x_1+x_2\|_P = (1+r_2/r_1)\|x_1\|_P = r_1 + r_2$.
+\end{enumerate}
+From (i) we have $\B_P(r_1)\oplus\B_P(r_2) \subseteq \B_P(r_1+r_2)$ but (ii) implies $\B_P(r_1)\oplus\B_P(r_2) \supseteq \B_P(r_1+r_2)$ and it follows that $\B_P(r_1) \oplus \B_P(r_2) = \B_P(r_1 + r_2)$.
+
+Define $r_3 = r_1-r_2$ where $r_1\geq r_2 > 0$.
+Then $\B_P(r_3 + r_2) = \B_P(r_3) \oplus \B_P(r_2)$ implies $\B_P(r_3) = \B_P(r_3 + r_2) \ominus \B_P(r_2)$, and hence $\B_P(r_1-r_2) = \B_P(r_1) \ominus \B_P(r_2)$.
+\mbox{}\hfill$\square$
+
+
+
+\end{document}  
