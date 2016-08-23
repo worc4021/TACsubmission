@@ -1,0 +1,42 @@
+
+\documentclass[11pt, oneside]{article}
+
+\usepackage[a4paper, tmargin=30mm, bmargin=30mm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumerate}	
+\usepackage{amsmath}
+\usepackage{amssymb,mathrsfs}
+\usepackage{parskip}
+
+\newcounter{thmcount}
+\renewcommand{\thethmcount}{\arabic{thmcount}}
+
+\newtheorem{thm}[thmcount]{Theorem}
+\newtheorem{cor}[thmcount]{Corollary}
+\newtheorem{prop}[thmcount]{Proposition}
+
+\def\X{\mathcal{X}}
+\def\U{\mathcal{U}}
+\def\V{\mathcal{V}}
+\def\W{\mathcal{W}}
+\def\Y{\mathcal{Y}}
+
+\def\E{\mathbb{E}}
+\def\P{\mathbb{P}}
+\def\R{\mathbb{R}}
+\def\B{\mathscr{B}}
+\begin{document}
+
+Define $c_1 = c_1(\varrho)$, $P = P(\varrho)$ and 
+$\varrho = \arg\max_{r} (1-r) c_1(r)$, where $c_1(r) = 1/\sqrt{t(r)}$ and $t(r)$, $P(r)$ are defined for any given $r\in(\rho(\Psi),1)$ by
+\[
+\bigl(t(r),P(r)\bigr) 
+= \arg\min_{t,P}\ t \ \ \text{subject to} \ \
+r^2 P \succ \Psi^T P \Psi \ \ \text{and} \ \
+\begin{bmatrix} t & \xi_j^T \\ \xi_j & P\end{bmatrix} \succ 0 \ \forall j\in\mathbb N_r ,
+\]
+which requires solution of a semidefinite program. The optimal value of $\varrho$ (and hence $c_1(\varrho)$ and $P(\varrho)$) can be determined by performing a line-search over $r\in(\rho(\Psi),1)$ to find the maximizer of $(1-r)c_1(r)$.
+%; this requires the solution of a sequence of SDPs. 
+
+\end{document}
