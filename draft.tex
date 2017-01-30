@@ -561,19 +561,26 @@ General parametrised disturbance bounding sets were used in~\cite{Rakovic03,Rako
 % 
 The paper's main contributions are to develop
 %extends~\cite{Schaich:CDC:2015} by developing 
-the analytical and computational tools that are needed to characterise and determine convex invariant and controllable sets for systems with parametrised uncertainty sets, and to employ these sets in a closed loop RMPC strategy. To this end, we make use of necessary and sufficient conditions for the property, introduced in~\cite{Schaich:CDC:2015}, of \emph{parametric convexity}. We show that this condition is both necessary and sufficient to ensure that the corresponding robustly invariant and controllable sets are convex.
+the analytical and computational tools that are needed to characterise and determine convex invariant and controllable sets for systems with parametrised uncertainty sets, and to employ these sets in a closed loop RMPC strategy. 
+%
+To this end, we make use of necessary and sufficient conditions for the property, introduced in~\cite{Schaich:CDC:2015}, of \emph{parametric convexity}. 
+%
+We show that this condition is both necessary and sufficient to ensure that the corresponding robustly invariant and controllable sets are convex.
 
 A major challenge in RMPC is to guarantee feasibility of the control problem for all possible uncertainties in the presence of state constraints.
 %
 This can be achieved by introducing additional constraints into the problem that force the state at the end of the horizon to lie in a set that is feasible and invariant for all possible realisations of uncertainty under a given feedback law; the largest such set, the so-called \emph{maximal robust positively invariant} (MRPI) set, is often used for this purpose.
 %
-The concept of MRPI sets and their analytical properties were introduced in the literature (e.g.~\cite{Bertsekas:1971,Glover:1971}) shortly after robust model predictive control was originally proposed. However algorithms for numerically 
-computing MRPI sets were not developed until more than two decades later~\cite{Blanchini:1994,DeSantis:1994,Kolmanovsky:1998}.
+The concept of MRPI sets and their analytical properties were introduced in the literature (e.g.~\cite{Bertsekas:1971,Glover:1971}) shortly after robust model predictive control was originally proposed. 
+%
+However algorithms for numerically computing MRPI sets were not developed until more than two decades later~\cite{Blanchini:1994,DeSantis:1994,Kolmanovsky:1998}.
 % earlier algorithms either failed to ensure finite determinability
 % of the MRPI set (see e.g.~\cite{Blanchini:1990}), 
 % or were not guaranteed to produce the maximal RPI set (e.g.~\cite{Blanchini:1991}).
 %
-This paper builds on the work of~\cite{Kolmanovsky:1998,Rakovic06} by proposing an iterative procedure for computing the MRPI set for the case of parametrically convex state and input dependent disturbance sets. We show that, under mild assumptions, this procedure determines the MRPI set in a finite number of iterations, and we provide a bound on the number of iterations required.
+This paper builds on the work of~\cite{Kolmanovsky:1998,Rakovic06} by proposing an iterative procedure for computing the MRPI set for the case of parametrically convex state and input dependent disturbance sets. 
+%
+We show that, under mild assumptions, this procedure determines the MRPI set in a finite number of iterations, and we provide a bound on the number of iterations required.
 
 The current paper also develops an online implementation of closed loop min-max RMPC that allows the bounds on model uncertainty to depend on the model state and control input.
 %
@@ -608,20 +615,19 @@ to calculate the MRPI set we present an example in section~\ref{sec:example:I}.
 %
 The solver we present here relies entirely on a recursive use of multi-parametric programming techniques, 
 which are presented in section~\ref{ssec:recursive:mpQP} for a given active set, the active set is then
-updated using a line search which is described in subsection~\ref{ssec:line:search}. In order to account for the 
-degeneracy that can occur in the optimisation, we consider the case of degenerate problems in subsection~\ref{ssec:degeneracy}.
+updated using a line search which is described in subsection~\ref{ssec:line:search}. 
 %
-In section~\ref{sec:solving:min:max:programs} we translate the general formulation of section~\ref{sec:recursive:mpQP:via:line:search}
-to the problem presented in section~\ref{sec:problem:statement}, and section~\ref{sec:complexity}
+In order to account for the degeneracy that can occur in the optimisation, we consider the case of degenerate problems in subsection~\ref{ssec:degeneracy}.
+%
+In section~\ref{sec:solving:min:max:programs} we translate the general formulation of section~\ref{sec:recursive:mpQP:via:line:search} to the problem presented in section~\ref{sec:problem:statement}, and section~\ref{sec:complexity}
 considers the complexity of the proposed algorithm.
 %
-We revisit the example system presented in section~\ref{sec:example:I} to illustrate the proposed RMPC
-algorithm in section~\ref{sec:example:II} and section~\ref{sec:conclusion} provides brief conclusions.
+We revisit the example system presented in section~\ref{sec:example:I} to illustrate the proposed RMPC algorithm in section~\ref{sec:example:II} and section~\ref{sec:conclusion} provides brief conclusions.
 %
 %Section~\ref{sec:conclusion} provides brief conclusions and proofs are given in the Appendix. 
 
 \emph{Notation:} 
-Throughout this paper we denote sequences of integers $\mathbb N_m = \{1,\ldots,m\}$ for $m\geq 1$, $\mathbb N_{[n,m]} = \{n,\ldots,m\}$ for $n\leq m$, and $\mathbb N = \mathbb N_\infty$.
+Throughout this paper we denote sequences of integers $\mathbb N_m = \{1,\ldots,m\}$ for $m\geq 1$ and $\mathbb N = \mathbb N_\infty$.
 %
 Given a collection of row-vectors $a_i$ and scalars $b_i$ for $i\in\mathbb N_m$, we denote ${\bf{a}}_{\mathcal I}$ and ${\bf{b}}_{\mathcal I}$ as the matrix and vector with rows equal to $a_i$ and $b_i$ for all $i$ in the index set $\mathcal I\subseteq \mathbb N_m$.
 %
@@ -633,7 +639,7 @@ $\mathscr B_P(r) = \{x: \|x\|_P \leq r\}$.
 %$\mathscr B_P(r) = \{x: \|x\|_P \leq r\}$.
 %$\mathscr B_\epsilon(x) = \{y\in\mathbb R^n : \|x-y\| \leq \epsilon\}$.
 %
-The image of a set $\mathcal C\subseteq X$ under the map $f:X\mapsto Y$ is denoted $f\vert_{\mathcal C} = \{y\in Y:\exists x\in\mathcal C,\;y=f(x)\}$ and the pre-image is $f^{-1}\vert_{\mathcal C} = \{x\in X : f(x)\in \mathcal C\}$; for $f(x) = Ax$ we write $f\vert_{\mathcal{C}} = A\mathcal{C}$ and $f^{-1}\vert_{\mathcal{C}} = A^{-1}\mathcal{C}$.
+The image of a set $\mathcal C\subseteq X$ under the linear map $A:X\mapsto Y$ is denoted $A\mathcal{C}=\{y\in Y: y=Ax,\, x\in\mathcal C\}$ and the preimage of $\mathcal D\subseteq Y$ is $A^{-1}\mathcal{D}=\{x\in Y:Ax\in \mathcal D\}$.
 %
 The Minkowski sum, $\mathcal{X}\oplus\mathcal{Y}$, of sets $\mathcal{X},\mathcal{Y}\subseteq\mathbb{R}^n$ is the set $\{ z \in\mathbb{R}^n : z = x+y,  x\in\mathcal{X}, y\in\mathcal{Y} \}$.
 %
@@ -730,7 +736,7 @@ The properties of such sets are discussed in the next section.
 %
 %
 \section{Parametrically Convex Sets}\label{sec:p:convex:sets}
-% In this section we define the property of \emph{parametric convexity} in the context of set valued maps (so called point-to-set maps, see e.g.~\cite{Hogan:1973}). This property is then used 
+% In this section we define the property of \emph{parametric convexity} in the context of set valued maps (so called set-valued maps, see e.g.~\cite{Hogan:1973}). This property is then used 
 % %here and in Section~\ref{sec:example:I} 
 % to demonstrate the convexity of a generalised Pontryagin difference and thus determine the conditions under which $\mathcal{X}^\infty$ and $\mathcal{X}_i$ are convex polyhedra. 
 % %
@@ -742,7 +748,7 @@ For a detailed discussion of parametric convexity
 we refer the reader to~\cite{Schaich:2016comb}.
 %
 \begin{defi}[Parametric Convexity]\label{def:parametric:convexity}
-Let $\mathcal W:Y\rightarrow \mathscr P(Z)$, where $Y\ni p\mapsto \mathcal W(p) \subset Z$, be a continuous point-to-set map. The map $\mathcal W$ is \emph{parametrically convex} if it satisfies
+Let $\mathcal W:Y\rightarrow \mathscr P(Z)$, where $Y\ni p\mapsto \mathcal W(p) \subset Z$, be a continuous set-valued map. The map $\mathcal W$ is \emph{parametrically convex} if it satisfies
 %
   \begin{equation}\label{eq:def:parametrically:convex}
   \mathcal W(\lambda p_1 + (1-\lambda)p_2)\subseteq\lambda \mathcal W(p_1) \oplus (1-\lambda) \mathcal W(p_2)
@@ -756,12 +762,12 @@ Let $\mathcal W:Y\rightarrow \mathscr P(Z)$, where $Y\ni p\mapsto \mathcal W(p) 
 %
 In the following we provide a characterisation of parametric convexity based on the \emph{graph} of the set-valued map.
 % We begin by introducing an equivalent characterisation of parametric convexity that provides an insight into the geometrical properties of 
-% point-to-set maps satisfying~(\ref{eq:def:parametrically:convex}).
+% set-valued maps satisfying~(\ref{eq:def:parametrically:convex}).
 %Definition~\ref{def:parametric:convexity}. 
-% This is based on a description of parametric convexity in terms of conditions on the graph of a point-to-set map.
+% This is based on a description of parametric convexity in terms of conditions on the graph of a set-valued map.
 %
 \begin{defi}\label{def:graph:of:map}
-Let $\mathcal W:Y\rightarrow \mathscr P(Z)$ be a continuous point-to-set map
+Let $\mathcal W:Y\rightarrow \mathscr P(Z)$ be a continuous set-valued map
 such that $\mathcal W(p)$ is convex for all $p\in Y$, then 
 %
 \[
@@ -913,7 +919,7 @@ then $\mathcal W$ is parametrically convex iff the function $r$ is concave in $p
 %
 \begin{cor}%[\cite{Schaich:2016comb}]
 \label{thm:p:convexity:PWA:set:constant:num:verts}
-The generic piecewise affine polytopic parametric point-to-set valued map 
+The generic piecewise affine polytopic parametric set-valued valued map 
 %
 \begin{equation}\label{eq:definition:PWA:polytopic:set:general}
   \mathcal W(p) := \Bigl\{z\in\mathbb R^n: a_i z \leq \max_{k}\{b_{i,k} + c_{i,k}p\} \; \forall i\in\mathbb N_m \Bigr\}
@@ -1077,7 +1083,7 @@ Given knowledge of all index sets $\mathcal A_\kappa$, we therefore have the equ
 To determine MRPI sets we need to calculate the Pontryagin difference between set-valued maps, this is defined as follows.
 %
 \begin{defi}[Parametric Pontryagin Difference]\label{def:parametric:pontryagin:difference}
-  Let $S\subseteq Z$ and let $\mathcal W:Z\to\mathscr P(Z)$ be a continuous point-to-set map such that
+  Let $S\subseteq Z$ and let $\mathcal W:Z\to\mathscr P(Z)$ be a continuous set-valued map such that
   $\mathcal W(p)$ is convex for all $p\in Z$, then the \emph{parametric Pontryagin difference} 
   $S\ominus \mathcal W(S)$ is defined
 %
@@ -1098,10 +1104,10 @@ For the parametric Pontryagin difference of a convex set and a parametrically co
 have the following result.
 %
 \begin{thm}[\cite{Schaich:2016comb}]\label{thm:convexity:of:pontryagin:difference}
-Let $\mathcal W: Z\rightarrow\mathscr P(Z)$ be a given point-to-set map, then the parametric Pontryagin difference $S \ominus \mathcal W(S)$ is convex for every convex $S\subseteq Z$ if and only if $\mathcal W$ is parametrically convex.
+Let $\mathcal W: Z\rightarrow\mathscr P(Z)$ be a given set-valued map, then the parametric Pontryagin difference $S \ominus \mathcal W(S)$ is convex for every convex $S\subseteq Z$ if and only if $\mathcal W$ is parametrically convex.
 \end{thm}
 % \begin{thm}\label{thm:convexity:of:pontryagin:difference}
-%   Let $S\subseteq X$ be a convex set and let $\mathcal W:X\rightarrow\mathscr P(X)$ be a parametrically convex point-to-set
+%   Let $S\subseteq X$ be a convex set and let $\mathcal W:X\rightarrow\mathscr P(X)$ be a parametrically convex set-valued
 %   map such that $\mathcal W(p)$ is convex for all $p\in X$, then $S\ominus \mathcal W(S)$ is convex.
 % \end{thm}
 %
@@ -1158,7 +1164,7 @@ This section describes an iterative algorithm to compute the MRPI set for a line
 \[
 x^+=\Psi x + v, \quad v\in\mathcal V(x),
 \]
-where $\mathcal V(x)$ is a continuous point-to-set map. The state $x$ is subject to the constraint $x\in\mathcal{X}$ and $x^+ = \Psi x$ is assumed to be an asymptotically stable system. 
+where $\mathcal V(x)$ is a continuous set-valued map. The state $x$ is subject to the constraint $x\in\mathcal{X}$ and $x^+ = \Psi x$ is assumed to be an asymptotically stable system. 
 %
 To compute the MRPI set $\mathcal X^\infty$ we start from the constraint set $\mathcal X$ and  iteratively remove points that do not satisfy the definition~\eqref{eq:definition:MRPI:set}
 by introducing constraints that exclude states for which a successor state can lie outside 
@@ -1178,7 +1184,7 @@ To explain how $\mathcal{X}_k$ is computed and to simplify the analysis of $\mat
 \begin{equation}\label{eq:Rk:iteration}
 \mathcal{R}_k = \mathcal{R}_{k-1}\ominus \Psi^{k-1} \mathcal{V}_k(\mathcal{R}_{k-1}) ,
 \end{equation} 
-with $\mathcal{V}_k$ defined as the point-to-set map $\mathcal{V}_k(x) = \mathcal{V}(\Psi^{-k} x)$.%
+with $\mathcal{V}_k$ defined as the set-valued map $\mathcal{V}_k(x) = \mathcal{V}(\Psi^{-k} x)$.%
 %
 \begin{prop}\label{prop:Dk:iteration}
 $\mathcal{D}_k = \Psi^{-k}\mathcal{R}_k$ for all $k\geq 0$.
@@ -1230,7 +1236,7 @@ It can be shown by induction using (\ref{eq:Rk:iteration}) and Theorem~\ref{thm:
 % It can therefore be shown by induction using Theorem~\ref{thm:convexity:of:pontryagin:difference} that if $\mathcal{X}$ is convex and $\mathcal{V}(x)$ is parametrically convex, then $\mathcal{R}_k$, $\mathcal{D}_k$ and $\mathcal{X}_k$ are convex for all $k$, and hence $\mathcal{X}^\infty$ is also convex.
 
 We assume that $\mathcal V(x)$ is a piecewise affine parametrically convex 
-%point-to-set map defined 
+%set-valued map defined 
 set defined as in~\eqref{eq:definition:PWA:polytopic:set:general}:
 \begin{equation}\label{eq:definition:PWA:polytopic:set:cl}
 \mathcal{V}(x) = \Bigl\{ v : a_i v \leq\max_{k} \{ b_{i,k} + c_{i,k} x\} \ \forall i \in\mathbb N_m\Bigr\} ,
@@ -1274,7 +1280,9 @@ S \ominus \mathcal{V}(S)
 &= \{x : h_i x + \underbrace{\max_{j} h_i v_j(x)}_{=\zeta_i(x)} \leq 1 
 \ \forall i \in\mathcal{I}\} .
 \end{align*}
-Here $\zeta_i(x)$ is the solution of a mpLP and hence is a continuous and concave piecewise affine function of $x$~\cite{Gal:1995}. It follows that $S\ominus\mathcal{V}(S)$ is a convex polyhedral set.
+Here $\zeta_i(x)$ is the solution of a mpLP and hence is a continuous and concave piecewise affine function of $x$, see e.g.~\cite{Gal:1995}. 
+%
+It follows that $S\ominus\mathcal{V}(S)$ is a convex polyhedral set.
 %
 To compute $\zeta_i(x)$ for all $x\in\mathcal X$ is, in general, a challenging problem, and a simpler method of determining the supporting hyperplanes of $S\ominus\mathcal{V}(S)$ is to include all possible affine inequalities in the set description:
 \[
@@ -1325,7 +1333,7 @@ and $\mathcal A_j$ for all $j\in\mathbb N_q$.
 % equivalently determine $\mathcal A_j$ for all $j\in\mathbb N_q$.
 % \end{tabular}
 \\
-\textsc{Initialization}:
+\textsc{Initialisation}:
 $\mathcal{X}_0 \gets \mathcal{X}$, 
 % \textcolor{red}{
 $\mathcal{R}_0 \gets \mathcal{X}$
@@ -1448,26 +1456,37 @@ The finite determinability of the MRPI set $\mathcal X^\infty$ implies that ther
 The analysis uses $P$-balls $\mathscr B_P(r)$ 
 %that contain $\mathcal X_k$ and are contained within $\mathcal R_k$. We define 
 where $P$ is a positive definite matrix satisfying 
+%
 \begin{equation}\label{eq:Pcondition}
 \varrho^2 P \succ \Psi^T P \Psi
 \end{equation} 
-for some scalar $\varrho\in (0,1)$, so that $\Psi\mathscr B_P(r) \subseteq \varrho\mathscr B_P(r)$ and $\Psi^{-1}\mathscr B_P(r) \supseteq \varrho^{-1}\mathscr B_P(r)$ for all $r>0$. 
+for some scalar $\varrho\in (0,1)$, so that $\Psi\mathscr B_P(r) \subseteq \varrho\mathscr B_P(r) = \mathscr B_P(\varrho r)$ and $\Psi^{-1}\mathscr B_P(r) \supseteq \mathscr B_P(\varrho^{-1}r)$ for all $r>0$. 
 Note that $P\succ 0$ and $\varrho$ exist satisfying (\ref{eq:Pcondition}) whenever
 %$\Psi$ is assumed to be an asymptotically stable matrix.
-$\rho(\Psi) \leq \varrho < 1$
-where $\rho(\Psi)$ is the spectral radius of $\Psi$ (see e.g.~\cite{Boyd:94}). 
+$\rho(\Psi) \leq \varrho < 1$ where $\rho(\Psi)$ is the spectral radius of $\Psi$ (see e.g.~\cite{Boyd:94}), in particular there exists a~$P\succ0$ such that~\eqref{eq:Pcondition} holds for~$\varrho=\rho(\Psi)$.
+
+We distinguish between the three alternatives:
+\begin{enumerate}
+\item There exists a finite number~$n\in\mathbb N$ such that $\mathcal R_n=\emptyset$.
+\item For all $k\in\mathbb N$ the inclusion~$\mathscr B_P(r_k)\subseteq\mathcal R_k$ holds for the aforementioned matrix~$P\succ0$, a sequence~$r_k>\bar r\rho(\Psi)^k$ and a positive number~$\bar r$.
+\item The inclusion~$\mathscr B_P(r_k)\subseteq\mathcal R_k$ holds with~$P\succ0$, but there exists no~$\bar r$ such that sequence~$r_k>\bar r\rho(\Psi)^k$ is satisfied for all $k\in\mathbb N$.
+\end{enumerate}
+%
+These three cases classify the rate at which the set sequence~$\mathcal R_k$ shrinks, which of these cases applies for a particular system has to be determined for the given problem.
+%
+Which case applies depends on the system~$\Psi$, the set-valued map~$\mathcal W(x)$ and the structure of the constraint set~$\mathcal X$.
 
 \begin{thm}\label{thm:finite:MRPI:set:state:dependable}
-Let $\rho(\Psi) < 1$ and let $\mathcal{X}\subseteq\mathcal{P}$, $\mathcal{P}=\{x:\Gamma x\leq{\bf{1}}, {-\Gamma} x\leq{\bf{1}}\}$, where $(\Psi,\Gamma)$ is an observable pair.
+Let $\rho(\Psi) < 1$ and let $\mathcal{X}\subseteq\mathcal{P}$, $\mathcal{P}=\{x:\Gamma x\leq{\bf{1}}, {-\Gamma} x\leq{\bf{1}}\}$, where $(\Psi,\Gamma)$ is an observable pair, and let the set sequence~$\mathcal R_k$ be of type 1 or 2.
 %
 Then the MRPI set $\mathcal X^\infty$ for the system $x^+ = \Psi x + v$ subject to disturbances $v\in\mathcal{V}(x)$, where $\mathcal V(x)$ is a continuous and piece-wise affine set-valued map as defined in~\eqref{eq:definition:PWA:polytopic:set:cl}, and constraints $x\in\mathcal{X}$, is either empty or else is a bounded polytopic set satisfying $\mathcal X^\infty =\mathcal X_M$ for finite $M$.
 \end{thm}
 %
 %
 \begin{proof}
-From~\eqref{eq:Xk:iteration} and Proposition~\ref{prop:Dk:iteration} it is clear that $\mathcal X^\infty$ is empty if $\mathcal{R}_k =\emptyset$ for some $k$.
+From~\eqref{eq:Xk:iteration} and Proposition~\ref{prop:Dk:iteration} it is clear that $\mathcal X^\infty$ is empty if $\mathcal{R}_n =\emptyset$ for some~$n$, hence if~$\mathcal R_k$ is of type 1 the MRPI set~$\mathcal X^\infty=\emptyset$ and is determined after~$M=n$ iterations.
 %
-For the remainder of the proof we assume that $\mathcal{R}^\infty \neq \emptyset$ exists such that $\mathcal{R}_k \supseteq \mathcal{R}^\infty$ for all $k\in\mathbb N$.
+For the remainder of the proof we assume that $\mathcal{R}^\infty \neq \emptyset$ exists and is of type~2, i.e. there exists a sequence~$r_k$ such that $\mathscr B_P(r_k)\subseteq\mathcal R_k$ for all~$k\geq0$.
 %
 The proof has two main steps: 
 %
@@ -1503,17 +1522,21 @@ To see that $\mathcal D_k$ grows exponentially, define $r_1>0$ such that $\maths
 % %and the property that $\mathscr B_P(\sigma_1-\sigma_2)\subseteq\mathscr B_P(\sigma_1)\ominus\mathscr B_P(\sigma_2)$ for all non-negative scalars $\sigma_1,\sigma_2$ (which follows from the triangle inequality) 
 % we have
 \[%\begin{multline*}
-\mathcal D_k = \Psi^{-k}\mathcal R_k\supseteq \Psi^{-k}\mathcal R^\infty\supseteq \Psi^{-k}\mathscr B_P(r_1)
+\mathcal D_k = \Psi^{-k}\mathcal R_k\supseteq\Psi^{-k}\mathscr B_P(r_k)
 %\left\{x:\norm{\Psi^k x}_P\leq r_1\right\}\\ 
 % \supseteq\mathscr B_P\left(\left((1-\delta)^{-\frac{1}{2}}\right)^k r_1\right) 
 %\supseteq
-\supseteq\mathscr B_P\left(\varrho^{-k} r_1\right).
+\supseteq\mathscr B_P\left(\varrho^{-k} r_k\right).
 \]%\end{multline*}
 %
-Next define $r_2$ so that $\mathscr B_P(r_2)\supseteq \mathcal X_n$,
+By using~$P\succ0$ such that~\eqref{eq:Pcondition} holds with $\varrho=\rho(\Psi)$, we have~$\mathcal D_k\supseteq\mathscr B_P(\rho(\Psi)^{-k}r_k)$. 
+%
+However due to being of type 2 the sequence~$r_k$ satisfies~$r_k>\bar r\rho(\Psi)^k$ and therefore there exists~$\beta>\rho(\Psi)$ such that $r_k\geq\bar r\beta^k$ which yields $\mathcal D_k\supseteq\mathscr B_P(\rho(\Psi)^{-k}r_k)\supseteq\mathscr B_P((\frac{\beta}{\rho(\Psi)})^k\bar r)$ where~$\frac{\beta}{\rho(\Psi)}>1$.
+%
+Next define $R$ so that $\mathscr B_P(R)\supseteq \mathcal X_n$,
 %
 then for all $k > n$ such that %$\left((1-\delta)^{-\frac{1}{2}}\right)^k r_1\geq r_2$ 
-$\varrho^{-k} r_1 \geq r_2$
+$(\frac{\beta}{\rho(\Psi)})^k\bar r \geq R$
 we have $\mathcal D_k\supseteq\mathcal X_n\supseteq\mathcal X_{k-1}$ so that $\mathcal X_k = \mathcal X_{k-1}$.
 %, which concludes the proof.
 %\end{proof}
@@ -1566,13 +1589,13 @@ we have $\mathcal D_k\supseteq\mathcal X_n\supseteq\mathcal X_{k-1}$ so that $\m
 Therefore $\mathcal X^\infty = \mathcal X_M$ where
 \begin{equation}\label{eq:iteration:bound}
 M \leq \max \Bigl\{ n , {\bigl\lceil 
-\log_{\varrho}(r_1/r_2)\bigr\rceil -1}\Bigr\},
+\frac{\log(R)-\log(\bar r)}{\log(\beta)-\log(\rho(\Psi))}\bigr\rceil -1}\Bigr\},
 %\frac{\log(r_2/r_1)}{\log(1/\rho)}\right\rfloor} \right\},
 \end{equation}
 and it follows that $\mathcal{X}^\infty$ is a bounded polytopic set.
 \end{proof}
 
-Although the bound (\ref{eq:iteration:bound}) on the number of iterations required by Algorithm~\ref{alg:MRPI:set} is necessarily finite, $r_1$ and $r_2$ cannot in general be determined \textit{a priori}. 
+Although the bound (\ref{eq:iteration:bound}) on the number of iterations required by Algorithm~\ref{alg:MRPI:set} is necessarily finite, neither $R$ nor $\bar r$ and $\beta$ can in general be determined \textit{a priori}. 
 %
 This motivates the following bound, which can be evaluated under mild conditions. 
 
